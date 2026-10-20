@@ -70,13 +70,13 @@
     "semantic_hash": ""
   },
   "frontend/src/App.test.tsx": {
-    "mtime": 1792490124.123726,
-    "ast_hash": "f4e82e2314faddc2a244a727008b2865",
+    "mtime": 1792491481.2031627,
+    "ast_hash": "6bf6ba1e5adb19d46f9a8815f8de78e4",
     "semantic_hash": ""
   },
   "frontend/src/App.tsx": {
-    "mtime": 1792490043.9223325,
-    "ast_hash": "4aa24fbaad4fc60e697123a82060fd9f",
+    "mtime": 1792491332.1295655,
+    "ast_hash": "7b8bf2b63169e78b15f241b1b2192e8b",
     "semantic_hash": ""
   },
   "frontend/src/components/common/Badge.tsx": {
@@ -100,13 +100,13 @@
     "semantic_hash": ""
   },
   "frontend/src/components/discovery/DestinationCard.tsx": {
-    "mtime": 1792489980.8508904,
-    "ast_hash": "74078a3f913f2b16e6ed863682830ad7",
+    "mtime": 1792491419.1621833,
+    "ast_hash": "8b37adc5fcfc616fad1a39146bd4db11",
     "semantic_hash": ""
   },
   "frontend/src/components/discovery/DestinationDetailModal.tsx": {
-    "mtime": 1792490014.4101565,
-    "ast_hash": "3df6f4dca91101ea1bc79a6e13cd9353",
+    "mtime": 1792491204.530746,
+    "ast_hash": "6d94146d9ea6bb7a1cc1c5d6e9b6dfd0",
     "semantic_hash": ""
   },
   "frontend/src/components/discovery/FilterBar.tsx": {
@@ -115,8 +115,8 @@
     "semantic_hash": ""
   },
   "frontend/src/components/discovery/HeroSection.tsx": {
-    "mtime": 1792489953.315411,
-    "ast_hash": "ba41a652b6925fda6358250b1892d14b",
+    "mtime": 1792491238.6521175,
+    "ast_hash": "13342d4bac1719abfee8053683468c40",
     "semantic_hash": ""
   },
   "frontend/src/components/layout/Navbar.tsx": {
@@ -125,8 +125,8 @@
     "semantic_hash": ""
   },
   "frontend/src/data/mockDestinations.ts": {
-    "mtime": 1792489848.8699648,
-    "ast_hash": "580b095519312eebf4cb9d3ab833eaab",
+    "mtime": 1792491108.4342341,
+    "ast_hash": "dffba77b60e4a86978e0437c0c98b89e",
     "semantic_hash": ""
   },
   "frontend/src/main.tsx": {
@@ -550,43 +550,53 @@
     "semantic_hash": ""
   },
   "discovery_prototype_budget.png": {
-    "mtime": 1792490297.4222467,
-    "ast_hash": "57558ebec4853b03ffa4c3d6f32b05d0",
+    "mtime": 1792491794.4928722,
+    "ast_hash": "f93835a9522e2c08619d5d8bb98109af",
     "semantic_hash": ""
   },
   "discovery_prototype_hero.png": {
-    "mtime": 1792490247.5523334,
-    "ast_hash": "078b5fe6071e7b0f84c99367e3726640",
+    "mtime": 1792491680.4162786,
+    "ast_hash": "335d0a9d3dc442946fafbbc8f3f9398c",
     "semantic_hash": ""
   },
   "discovery_prototype_main.png": {
-    "mtime": 1792490214.0192385,
-    "ast_hash": "3ca570020c4bea04191d9febfc3df793",
+    "mtime": 1792491630.3032794,
+    "ast_hash": "a66c718aaf6c1c96075b5e7f8e65636f",
     "semantic_hash": ""
   },
   "discovery_prototype_modal.png": {
-    "mtime": 1792490269.986146,
-    "ast_hash": "4fe51a9c1f10f2a375cc1caee8ff5f2d",
+    "mtime": 1792491715.2675545,
+    "ast_hash": "f085f370780a421d50db978ea0df3ae3",
     "semantic_hash": ""
   },
   "docs/screenshots/discovery_prototype_budget.png": {
-    "mtime": 1792490297.4222467,
-    "ast_hash": "57558ebec4853b03ffa4c3d6f32b05d0",
+    "mtime": 1792491794.4928722,
+    "ast_hash": "f93835a9522e2c08619d5d8bb98109af",
     "semantic_hash": ""
   },
   "docs/screenshots/discovery_prototype_hero.png": {
-    "mtime": 1792490247.5523334,
-    "ast_hash": "078b5fe6071e7b0f84c99367e3726640",
+    "mtime": 1792491680.4162786,
+    "ast_hash": "335d0a9d3dc442946fafbbc8f3f9398c",
     "semantic_hash": ""
   },
   "docs/screenshots/discovery_prototype_main.png": {
-    "mtime": 1792490214.0192385,
-    "ast_hash": "3ca570020c4bea04191d9febfc3df793",
+    "mtime": 1792491630.3032794,
+    "ast_hash": "a66c718aaf6c1c96075b5e7f8e65636f",
     "semantic_hash": ""
   },
   "docs/screenshots/discovery_prototype_modal.png": {
-    "mtime": 1792490269.986146,
-    "ast_hash": "4fe51a9c1f10f2a375cc1caee8ff5f2d",
+    "mtime": 1792491715.2675545,
+    "ast_hash": "f085f370780a421d50db978ea0df3ae3",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/common/ImageWithFallback.test.tsx": {
+    "mtime": 1792491347.4401014,
+    "ast_hash": "9aba861b8de2f488c11f428b4a93e4cb",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/common/ImageWithFallback.tsx": {
+    "mtime": 1792491124.1632507,
+    "ast_hash": "971b27c4fb6aa0642ff6a48fcfb9ab41",
     "semantic_hash": ""
   }
 }

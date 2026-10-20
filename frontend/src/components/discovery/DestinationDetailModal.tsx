@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Destination } from '../../types/destination';
 import {
   X,
@@ -13,9 +13,11 @@ import {
   Check,
   Bookmark,
   ExternalLink,
+  Info,
 } from 'lucide-react';
 import { Badge } from '../common/Badge';
 import { Button } from '../common/Button';
+import { ImageWithFallback } from '../common/ImageWithFallback';
 
 export interface DestinationDetailModalProps {
   destination: Destination | null;
@@ -33,21 +35,68 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
   onToggleSave,
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const previousActiveElement = useRef<HTMLElement | null>(null);
 
-  // Handle ESC key to dismiss modal per accessibility standards
+  // Focus management, focus trap, and Escape key handling
   useEffect(() => {
+    if (!destination) return;
+
+    // Store previously focused element for focus restoration
+    previousActiveElement.current = document.activeElement as HTMLElement | null;
+
+    // Prevent body background scroll while modal is open
+    document.body.style.overflow = 'hidden';
+
+    // Focus close button initially
+    const timer = setTimeout(() => {
+      closeBtnRef.current?.focus();
+    }, 50);
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
+        e.preventDefault();
         onClose();
+        return;
+      }
+
+      // Keyboard Focus Trap inside modal
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const focusable = Array.from(focusableElements).filter(
+          (el) => !el.hasAttribute('disabled') && el.offsetParent !== null
+        );
+
+        if (focusable.length === 0) return;
+
+        const firstElement = focusable[0];
+        const lastElement = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
       }
     };
-    if (destination) {
-      document.body.style.overflow = 'hidden';
-      window.addEventListener('keydown', handleKeyDown);
-    }
+
+    window.addEventListener('keydown', handleKeyDown);
+
     return () => {
+      clearTimeout(timer);
       document.body.style.overflow = 'unset';
       window.removeEventListener('keydown', handleKeyDown);
+      // Restore focus to trigger element
+      previousActiveElement.current?.focus();
     };
   }, [destination, onClose]);
 
@@ -55,43 +104,51 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-200 motion-reduce:transition-none"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
+      aria-describedby="modal-description"
       onClick={onClose}
     >
       {/* Modal Container with Emil Kowalski entrance physics (scale 0.96 -> 1, 200ms ease-out) */}
       <div
-        className="relative bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col transform transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)]"
+        ref={modalRef}
+        className="relative bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col transform transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none motion-reduce:transform-none"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header Hero Banner */}
-        <div className="relative h-64 sm:h-72 w-full bg-slate-900 shrink-0">
-          <img
+        {/* Header Hero Banner with Fallback */}
+        <div className="relative h-64 sm:h-72 w-full bg-slate-900 shrink-0 overflow-hidden">
+          <ImageWithFallback
             src={destination.heroImageUrl || destination.imageUrl}
             alt={destination.name}
+            fallbackTitle={destination.name}
+            fallbackSubtitle={`${destination.state}, India`}
             className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/40 to-transparent pointer-events-none" />
 
           {/* Close Button */}
           <button
+            ref={closeBtnRef}
             onClick={onClose}
             aria-label="Close modal"
-            className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition-transform active:scale-90"
+            className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition-transform active:scale-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <X className="w-5 h-5" />
           </button>
 
           {/* Title and Key Badges */}
-          <div className="absolute bottom-5 left-6 right-6 text-white">
+          <div className="absolute bottom-5 left-6 right-6 text-white pointer-events-none">
             <div className="flex flex-wrap items-center gap-2 mb-2">
               <Badge variant="terracotta" size="sm" className="bg-terracotta-600/90 text-white border-transparent">
                 {destination.region}
               </Badge>
               <span className="text-xs text-slate-200 font-medium">
                 {destination.state}, India
+              </span>
+              <span className="text-[10px] font-medium bg-black/50 text-slate-300 px-2 py-0.5 rounded-full border border-white/10">
+                Curated Prototype Data
               </span>
             </div>
             <h2 id="modal-title" className="text-3xl sm:text-4xl font-extrabold font-display tracking-tight text-white mb-1">
@@ -104,7 +161,7 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
         </div>
 
         {/* Navigation Tabs Bar */}
-        <div className="flex items-center gap-1 px-6 border-b border-slate-200 bg-slate-50/70 overflow-x-auto shrink-0 scrollbar-none">
+        <div className="flex items-center gap-1 px-6 border-b border-slate-200 bg-slate-50/70 overflow-x-auto shrink-0 scrollbar-none" role="tablist">
           {[
             { id: 'overview', label: 'Overview', icon: <Landmark className="w-3.5 h-3.5" /> },
             { id: 'stays', label: `Stays (${destination.stays.length})`, icon: <Bed className="w-3.5 h-3.5" /> },
@@ -116,8 +173,10 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
             return (
               <button
                 key={tab.id}
+                role="tab"
+                aria-selected={isActive}
                 onClick={() => setActiveTab(tab.id as TabType)}
-                className={`flex items-center gap-1.5 py-3.5 px-3 border-b-2 text-xs font-semibold whitespace-nowrap transition-colors duration-150 active:scale-95 ${
+                className={`flex items-center gap-1.5 py-3.5 px-3 border-b-2 text-xs font-semibold whitespace-nowrap transition-colors duration-150 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 ${
                   isActive
                     ? 'border-brand-900 text-brand-900 bg-white/60'
                     : 'border-transparent text-slate-600 hover:text-slate-900'
@@ -135,11 +194,19 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
           {/* TAB 1: OVERVIEW */}
           {activeTab === 'overview' && (
             <div className="space-y-6">
+              {/* Illustrative Transparency Note */}
+              <div className="p-3.5 rounded-2xl bg-slate-100/80 border border-slate-200 text-xs text-slate-600 flex items-start gap-2.5">
+                <Info className="w-4 h-4 text-brand-700 shrink-0 mt-0.5" />
+                <p>
+                  <strong className="text-slate-900 font-semibold">Curated Prototype Data:</strong> Ratings, climate temperatures, and duration figures are realistic benchmark estimates curated for early itinerary planning.
+                </p>
+              </div>
+
               {/* Quick Info Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600 block mb-1">
-                    Rating
+                    Rating (Curated)
                   </span>
                   <div className="flex items-center gap-1.5 text-sm font-bold text-slate-900">
                     <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
@@ -169,7 +236,7 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
 
                 <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600 block mb-1">
-                    Current Climate
+                    Climate (Seasonal Est.)
                   </span>
                   <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900">
                     <CloudSun className="w-4 h-4 text-amber-500 shrink-0" />
@@ -183,7 +250,7 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
                 <h3 className="text-sm font-bold uppercase tracking-wider text-slate-600 mb-2">
                   Destination Story
                 </h3>
-                <p className="text-sm text-slate-700 leading-relaxed font-sans">
+                <p id="modal-description" className="text-sm text-slate-700 leading-relaxed font-sans">
                   {destination.description}
                 </p>
               </div>
@@ -220,11 +287,15 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
                     key={stay.id}
                     className="flex flex-col sm:flex-row gap-4 p-4 rounded-2xl border border-slate-200 bg-white shadow-xs hover:border-slate-300 transition-colors"
                   >
-                    <img
-                      src={stay.imageUrl}
-                      alt={stay.name}
-                      className="w-full sm:w-40 h-32 object-cover rounded-xl shrink-0"
-                    />
+                    <div className="w-full sm:w-40 h-32 rounded-xl overflow-hidden shrink-0 bg-slate-900">
+                      <ImageWithFallback
+                        src={stay.imageUrl}
+                        alt={stay.name}
+                        fallbackTitle={stay.name}
+                        fallbackSubtitle={stay.type}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                     <div className="flex-1 flex flex-col justify-between">
                       <div>
                         <div className="flex items-center justify-between mb-1">
@@ -233,7 +304,7 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
                           </span>
                           <span className="flex items-center gap-1 text-xs font-bold text-slate-900">
                             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                            {stay.rating}
+                            {stay.rating} <span className="text-[10px] font-normal text-slate-600">(Curated)</span>
                           </span>
                         </div>
                         <h4 className="text-base font-bold text-slate-900 font-display">
@@ -248,7 +319,9 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
                         </div>
                       </div>
                       <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
-                        <span className="text-xs text-slate-600">From ₹{stay.pricePerNight.toLocaleString()} / night</span>
+                        <span className="text-xs text-slate-600">
+                          From <strong className="text-slate-900">₹{stay.pricePerNight.toLocaleString()}</strong> / night (Illustrative)
+                        </span>
                         <span className="text-xs font-semibold text-brand-900 hover:underline cursor-pointer flex items-center gap-1">
                           View details <ExternalLink className="w-3 h-3" />
                         </span>
@@ -290,7 +363,8 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
                     <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
                       <span className="flex items-center gap-1">
                         <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <span className="font-semibold text-slate-900">{dine.rating}</span> rating
+                        <span className="font-semibold text-slate-900">{dine.rating}</span>
+                        <span className="text-[10px] text-slate-600">(Curated)</span>
                       </span>
                     </div>
                   </div>
@@ -329,7 +403,7 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
                     </div>
                     <div className="text-right shrink-0">
                       <span className="text-[10px] uppercase tracking-wider text-slate-600 block">
-                        Entry Fee
+                        Est. Entry Fee
                       </span>
                       <span className="text-sm font-bold text-slate-900">
                         {attr.entryFee === 0 ? 'Free Entry' : `₹${attr.entryFee}`}
@@ -344,12 +418,13 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
           {/* TAB 5: HONEST BUDGET INTELLIGENCE */}
           {activeTab === 'budget' && (
             <div className="space-y-6">
-              <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/80">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-amber-900 mb-1">
-                  Honest Data Provenance Principle
-                </h4>
-                <p className="text-xs text-amber-800 leading-relaxed font-sans">
-                  Unlike conventional aggregators that omit hidden expenses, Voyage-AI provides realistic daily estimates covering curated stays, dining, transport, and admissions for 2 travelers.
+              <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80">
+                <div className="flex items-center gap-2 text-amber-900 font-bold text-xs uppercase tracking-wider mb-1">
+                  <Info className="w-4 h-4 text-amber-700 shrink-0" />
+                  <span>Honest Data Provenance & Illustrative Estimates</span>
+                </div>
+                <p className="text-xs text-amber-900 leading-relaxed font-sans">
+                  Unlike conventional booking engines that conceal fees or assume zero-cost categories, Voyage-AI provides realistic daily cost models covering curated stays, dining, transport, and admissions for 2 travelers. All rates are illustrative planning estimates based on historical seasonal medians.
                 </p>
               </div>
 
@@ -398,7 +473,9 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
               {/* Total trip estimate */}
               <div className="p-4 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-between">
                 <div>
-                  <span className="text-xs text-slate-600">Estimated Total for 2 Travelers ({destination.recommendedDurationDays} Days):</span>
+                  <span className="text-xs text-slate-600">
+                    Illustrative Total for 2 Travelers ({destination.recommendedDurationDays} Days):
+                  </span>
                   <p className="text-lg font-bold text-slate-900 font-sans">
                     ₹{destination.budgetBreakdown.estimatedTotalForTwo.toLocaleString()} (Comfort Baseline)
                   </p>
@@ -414,7 +491,7 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
         {/* Modal Footer with Tactile Action Bar */}
         <div className="p-4 px-6 border-t border-slate-200 bg-white flex items-center justify-between gap-3 shrink-0">
           <div className="text-xs text-slate-600">
-            <span>Avg Daily: </span>
+            <span>Avg Daily Est.: </span>
             <span className="font-bold text-slate-900 font-sans">₹{destination.budgetBreakdown.averageDaily.toLocaleString()}</span>
           </div>
 

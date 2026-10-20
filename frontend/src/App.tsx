@@ -8,8 +8,9 @@ import { SkeletonCard } from './components/common/SkeletonCard';
 import { EmptyState } from './components/common/EmptyState';
 import { MOCK_DESTINATIONS } from './data/mockDestinations';
 import { Destination, Region, TravelStyle, BudgetTier } from './types/destination';
-import { Compass, Sparkles, MapPin, Calendar, Heart, Layers } from 'lucide-react';
+import { Compass, Sparkles, MapPin, Calendar, Heart, Layers, Info } from 'lucide-react';
 import { Button } from './components/common/Button';
+import { ImageWithFallback } from './components/common/ImageWithFallback';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('destinations');
@@ -177,9 +178,15 @@ export const App: React.FC = () => {
               <h2 className="text-3xl font-bold font-display text-slate-900 tracking-tight mb-3">
                 Curated Stays & Boutique Havelis
               </h2>
-              <p className="text-slate-600 max-w-2xl text-sm leading-relaxed mb-8">
+              <p className="text-slate-600 max-w-2xl text-sm leading-relaxed mb-4">
                 Explore hand-vetted royal havelis, plantation eco-villas, and boutique coastal retreats. Each stay is selected for cultural provenance, transparent pricing, and exceptional guest hospitality.
               </p>
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 flex items-center gap-2 mb-8">
+                <Info className="w-4 h-4 text-brand-700 shrink-0" />
+                <span>
+                  <strong className="text-slate-900 font-semibold">Illustrative Benchmark Rates:</strong> Stay prices per night represent seasonal historical averages for early planning.
+                </span>
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {MOCK_DESTINATIONS.flatMap((d) =>
@@ -189,11 +196,15 @@ export const App: React.FC = () => {
                     key={stay.id}
                     className="flex flex-col sm:flex-row gap-4 p-4 rounded-2xl border border-slate-200 bg-white shadow-xs hover:border-slate-300 transition-colors"
                   >
-                    <img
-                      src={stay.imageUrl}
-                      alt={stay.name}
-                      className="w-full sm:w-44 h-36 object-cover rounded-xl shrink-0"
-                    />
+                    <div className="w-full sm:w-44 h-36 rounded-xl overflow-hidden shrink-0 bg-slate-900">
+                      <ImageWithFallback
+                        src={stay.imageUrl}
+                        alt={stay.name}
+                        fallbackTitle={stay.name}
+                        fallbackSubtitle={stay.type}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                     <div className="flex-1 flex flex-col justify-between">
                       <div>
                         <div className="flex items-center justify-between text-xs mb-1">
@@ -327,11 +338,14 @@ export const App: React.FC = () => {
                           className="flex items-center justify-between p-4 rounded-2xl border border-slate-200 bg-white shadow-xs"
                         >
                           <div className="flex items-center gap-3">
-                            <img
-                              src={dest.imageUrl}
-                              alt={dest.name}
-                              className="w-12 h-12 rounded-xl object-cover"
-                            />
+                            <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-slate-900">
+                              <ImageWithFallback
+                                src={dest.imageUrl}
+                                alt={dest.name}
+                                fallbackTitle={dest.name}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
                             <div>
                               <h4 className="text-sm font-bold text-slate-900 font-display">
                                 {dest.name}

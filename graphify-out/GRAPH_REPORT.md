@@ -1,16 +1,16 @@
 # Graph Report - Voyage-AI  (2026-10-20)
 
 ## Corpus Check
-- 105 files · ~384,186 words
+- 107 files · ~433,237 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1374 nodes · 1383 edges · 92 communities (85 shown, 7 thin omitted)
+- 1378 nodes · 1395 edges · 92 communities (85 shown, 7 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f02f4578`
+- Built from commit: `53e3915e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -133,7 +133,7 @@
 
 ### Community 0 - "App.tsx"
 Cohesion: 0.08
-Nodes (31): App(), Badge(), BadgeProps, Button(), ButtonProps, EmptyState(), EmptyStateProps, SkeletonCard() (+23 more)
+Nodes (33): App(), Badge(), BadgeProps, Button(), ButtonProps, EmptyState(), EmptyStateProps, ImageWithFallback() (+25 more)
 
 ### Community 1 - "devDependencies"
 Cohesion: 0.05
@@ -448,7 +448,7 @@ Cohesion: 0.50
 Nodes (4): Baseline decisions, Documents, How to use this pack, Voyage-AI — Project Documentation
 
 ## Knowledge Gaps
-- **994 isolated node(s):** `com.voyageai:voyage-ai-backend`, `name`, `private`, `version`, `type` (+989 more)
+- **995 isolated node(s):** `com.voyageai:voyage-ai-backend`, `name`, `private`, `version`, `type` (+990 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -456,11 +456,11 @@ Nodes (4): Baseline decisions, Documents, How to use this pack, Voyage-AI — Pr
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Design Engineering` connect `Design Engineering` to `The Animation Decision Framework`, `clip-path for Animation`, `Performance Rules`, `Gesture and Drag Interactions`, `CSS Transform Mastery`, `The Sonner Principles (Building Loved Components)`, `Spring Animations`, `Core Philosophy`, `Debugging Animations`, `Component Building Principles`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
+  _High betweenness centrality (0.003) - this node is a cross-community bridge._
 - **What connects `com.voyageai:voyage-ai-backend`, `name`, `private` to the rest of the system?**
-  _994 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _995 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `App.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.08484848484848485 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08163265306122448 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
 - **Should `Voyage-AI — Software Requirements Specification (SRS)` be split into smaller, more focused modules?**

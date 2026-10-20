@@ -1,6 +1,7 @@
 import React from 'react';
 import { Compass, Sparkles, MapPin, ShieldCheck, Banknote } from 'lucide-react';
 import { Badge } from '../common/Badge';
+import { ImageWithFallback } from '../common/ImageWithFallback';
 
 export interface HeroSectionProps {
   onFeaturedClick: () => void;
@@ -10,14 +11,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onFeaturedClick }) => 
   return (
     <section className="relative overflow-hidden rounded-3xl bg-slate-900 text-white mb-10 shadow-lg border border-slate-800">
       {/* Background Photography with Dark Gradient Overlay for Contrast */}
-      <div className="absolute inset-0 z-0">
-        <img
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <ImageWithFallback
           src="https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1600&q=85"
           alt="Rajasthan Royal Palace"
-          className="w-full h-full object-cover object-center opacity-40 scale-105 transition-transform duration-700 ease-out"
+          fallbackTitle="Curated Journeys Across the Subcontinent"
+          className="w-full h-full object-cover object-center opacity-40 scale-105 transition-transform duration-700 ease-out motion-reduce:transform-none"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/80 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/80 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/60 to-transparent pointer-events-none" />
       </div>
 
       <div className="relative z-10 max-w-4xl px-6 py-12 sm:px-10 sm:py-16 lg:py-20 flex flex-col items-start justify-center">
@@ -28,6 +30,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onFeaturedClick }) => 
           </Badge>
           <span className="text-xs text-slate-300 font-medium flex items-center gap-1">
             <MapPin className="w-3.5 h-3.5 text-terracotta-400" /> 6 Handpicked Indian Regions
+          </span>
+          <span className="text-[11px] font-medium text-slate-400 bg-white/10 px-2.5 py-0.5 rounded-full border border-white/10">
+            Curated Benchmark Data
           </span>
         </div>
 
