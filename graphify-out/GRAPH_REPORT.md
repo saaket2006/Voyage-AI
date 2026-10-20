@@ -1,16 +1,16 @@
 # Graph Report - Voyage-AI  (2026-10-20)
 
 ## Corpus Check
-- 142 files · ~281,276 words
+- 142 files · ~281,796 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1724 nodes · 1995 edges · 128 communities (102 shown, 26 thin omitted)
+- 1729 nodes · 2000 edges · 127 communities (102 shown, 25 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 55 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a530c424`
+- Built from commit: `98bf99b3`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -95,7 +95,6 @@
 - normalize.md
 - VoyageAiApplication
 - Voyage-AI Database Migrations Directory
-- Voyage-AI — Project Documentation
 - vite-env.d.ts
 - BasePlaywrightTest
 - rules/graphify.md
@@ -161,7 +160,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (128 total, 26 thin omitted)
+## Communities (127 total, 25 thin omitted)
 
 ### Community 0 - "App.tsx"
 Cohesion: 0.08
@@ -324,8 +323,8 @@ Cohesion: 0.10
 Nodes (20): compilerOptions, isolatedModules, lib, module, moduleDetection, moduleResolution, noEmit, noFallthroughCasesInSwitch (+12 more)
 
 ### Community 40 - "Voyage-AI — All-in-One Travel Companion"
-Cohesion: 0.12
-Nodes (16): 1. Prerequisites & Required Tools, 2. Port Allocation & Host Collision Avoidance, 3. Quick Start & Local Setup, 4. Development & Build Commands, 5. Architecture & Project Layout, 6. Approved Architecture Decisions & Deferred Items, Approved Decisions, Backend (`backend/`) (+8 more)
+Cohesion: 0.09
+Nodes (21): 1. Prerequisites & Required Tools, 2. Port Allocation & Host Collision Avoidance, 3. Quick Start & Local Setup, 4. Automated Testing Framework, 5. Development & Build Commands, 6. Project Layout & Directory Structure, 7. Data Authenticity & Architecture Principles, Backend (`backend/`) (+13 more)
 
 ### Community 41 - "Implement Adaptations"
 Cohesion: 0.13
@@ -394,6 +393,10 @@ Nodes (9): 1. Component Inventory, 2. Design Review Table (Emil Kowalski Philoso
 ### Community 57 - "Design Engineering"
 Cohesion: 0.22
 Nodes (8): Accessibility, Design Engineering, Initial Response, prefers-reduced-motion, Review Checklist, Review Format (Required), Stagger Animations, Touch device hover states
+
+### Community 58 - "docs/README.md"
+Cohesion: 0.17
+Nodes (6): Baseline decisions, Documents, How to use this pack, Voyage-AI — Project Documentation, Course-outcome coverage notes, Voyage-AI — Requirements Traceability Matrix
 
 ### Community 59 - "API Design Principles"
 Cohesion: 0.25
@@ -475,10 +478,6 @@ Nodes (3): Clean Up, Execute, Plan
 Cohesion: 0.50
 Nodes (3): Migration Naming Convention, Phase Boundaries, Voyage-AI Database Migrations Directory
 
-### Community 80 - "Voyage-AI — Project Documentation"
-Cohesion: 0.50
-Nodes (4): Baseline decisions, Documents, How to use this pack, Voyage-AI — Project Documentation
-
 ### Community 82 - "BasePlaywrightTest"
 Cohesion: 0.06
 Nodes (36): AfterAll, AfterEach, BeforeAll, Browser, BrowserContext, files, references, Page (+28 more)
@@ -532,9 +531,9 @@ Cohesion: 0.50
 Nodes (4): 8. MVP features, Must have, Out of scope for MVP, Should have if time/data permits
 
 ## Knowledge Gaps
-- **1030 isolated node(s):** `com.voyageai:voyage-ai-backend`, `name`, `private`, `version`, `type` (+1025 more)
+- **1034 isolated node(s):** `com.voyageai:voyage-ai-backend`, `name`, `private`, `version`, `type` (+1029 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **25 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
@@ -546,7 +545,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `BasePlaywrightTest` connect `BasePlaywrightTest` to `DestinationDetailModalTest`, `DestinationsDiscoveryTest`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **What connects `com.voyageai:voyage-ai-backend`, `name`, `private` to the rest of the system?**
-  _1030 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1034 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `App.tsx` be split into smaller, more focused modules?**
   _Cohesion score 0.08163265306122448 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**

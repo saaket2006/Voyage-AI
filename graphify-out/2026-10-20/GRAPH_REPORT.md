@@ -1,12 +1,12 @@
 # Graph Report - Voyage-AI  (2026-10-20)
 
 ## Corpus Check
-- 133 files · ~443,499 words
+- 142 files · ~281,276 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1636 nodes · 1793 edges · 110 communities (97 shown, 13 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 43 edges (avg confidence: 0.8)
+- 1724 nodes · 1995 edges · 128 communities (102 shown, 26 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 55 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
@@ -33,7 +33,7 @@
 - Write Swift
 - onboard.md
 - ErrorResponse
-- scripts
+- dependencies
 - 3. Functional requirements
 - compilerOptions
 - Apple Design
@@ -78,7 +78,7 @@
 - Component Building Principles
 - Step 2: Ask UX-Focused Questions
 - Voyage-AI — High-Level System Architecture
-- HealthControllerTest.java
+- .get
 - The Animation Decision Framework
 - clip-path for Animation
 - Performance Rules
@@ -97,7 +97,7 @@
 - Voyage-AI Database Migrations Directory
 - Voyage-AI — Project Documentation
 - vite-env.d.ts
-- tsconfig.json
+- BasePlaywrightTest
 - rules/graphify.md
 - workflows/graphify.md
 - com.voyageai:voyage-ai-backend
@@ -111,43 +111,65 @@
 - DatabaseFlywayIntegrationTest
 - 4. Execution Commands
 - run-all-tests.sh script
+- .getWeather
+- DestinationsDiscoveryTest
+- DestinationDetailModalTest
+- scripts
+- HttpStatus
+- OpenMeteoWeatherService
+- Voyage-AI — Centralized Automated Testing Workspace
+- package.json
+- 8. MVP features
+- Voyage-AI — Database Testing Strategy & Isolation
+- @eslint/js
+- eslint-plugin-react-hooks
+- eslint-plugin-react-refresh
+- postcss
+- tailwindcss
+- @testing-library/jest-dom
+- @testing-library/react
+- @types/node
+- typescript-eslint
+- vite
+- @vitejs/plugin-react
+- com.voyageai:voyage-ai-tests
 
 ## God Nodes (most connected - your core abstractions)
 1. `WeatherResponse` - 29 edges
 2. `CurrentWeatherDTO` - 24 edges
-3. `Apple Design` - 21 edges
-4. `CurrentData` - 20 edges
-5. `Write Swift` - 19 edges
-6. `OpenMeteoApiResponse` - 18 edges
-7. `Capabilities` - 18 edges
-8. `ErrorResponse` - 17 edges
-9. `compilerOptions` - 17 edges
-10. `DailyForecastDTO` - 16 edges
+3. `BasePlaywrightTest` - 22 edges
+4. `Apple Design` - 21 edges
+5. `CurrentData` - 20 edges
+6. `Write Swift` - 19 edges
+7. `OpenMeteoApiResponse` - 18 edges
+8. `Capabilities` - 18 edges
+9. `ErrorResponse` - 17 edges
+10. `compilerOptions` - 17 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `OpenMeteoWeatherService` --implements--> `WeatherProvider`  [EXTRACTED]
   backend/src/main/java/com/voyageai/integration/weather/OpenMeteoWeatherService.java → backend/src/main/java/com/voyageai/integration/weather/WeatherProvider.java
+- `OpenMeteoWeatherServiceTest` --references--> `OpenMeteoWeatherService`  [EXTRACTED]
+  backend/src/test/java/com/voyageai/integration/weather/OpenMeteoWeatherServiceTest.java → backend/src/main/java/com/voyageai/integration/weather/OpenMeteoWeatherService.java
+- `WeatherControllerTest` --references--> `WeatherProvider`  [EXTRACTED]
+  backend/src/test/java/com/voyageai/integration/weather/WeatherControllerTest.java → backend/src/main/java/com/voyageai/integration/weather/WeatherProvider.java
 - `WeatherResponse` --references--> `CurrentWeatherDTO`  [EXTRACTED]
   backend/src/main/java/com/voyageai/integration/weather/dto/WeatherResponse.java → backend/src/main/java/com/voyageai/integration/weather/dto/CurrentWeatherDTO.java
 - `WeatherResponse` --references--> `DailyForecastDTO`  [EXTRACTED]
   backend/src/main/java/com/voyageai/integration/weather/dto/WeatherResponse.java → backend/src/main/java/com/voyageai/integration/weather/dto/DailyForecastDTO.java
-- `WeatherResponse` --references--> `WeatherProvenanceDTO`  [EXTRACTED]
-  backend/src/main/java/com/voyageai/integration/weather/dto/WeatherResponse.java → backend/src/main/java/com/voyageai/integration/weather/dto/WeatherProvenanceDTO.java
-- `WeatherResponse` --references--> `WeatherUnitsDTO`  [EXTRACTED]
-  backend/src/main/java/com/voyageai/integration/weather/dto/WeatherResponse.java → backend/src/main/java/com/voyageai/integration/weather/dto/WeatherUnitsDTO.java
 
 ## Import Cycles
 - None detected.
 
-## Communities (110 total, 13 thin omitted)
+## Communities (128 total, 26 thin omitted)
 
 ### Community 0 - "App.tsx"
 Cohesion: 0.08
 Nodes (33): App(), Badge(), BadgeProps, Button(), ButtonProps, EmptyState(), EmptyStateProps, ImageWithFallback() (+25 more)
 
 ### Community 1 - "devDependencies"
-Cohesion: 0.05
-Nodes (41): autoprefixer, eslint, @eslint/js, eslint-plugin-react-hooks, eslint-plugin-react-refresh, devDependencies, autoprefixer, eslint (+33 more)
+Cohesion: 0.12
+Nodes (17): autoprefixer, eslint, devDependencies, autoprefixer, eslint, globals, jsdom, @types/react (+9 more)
 
 ### Community 2 - "Voyage-AI — Software Requirements Specification (SRS)"
 Cohesion: 0.05
@@ -210,12 +232,12 @@ Cohesion: 0.09
 Nodes (22): Assess Onboarding Needs, Context Over Ceremony, Contextual Help, Design Onboarding Experiences, Documentation & Help, Empty State Design, Feature Discovery & Adoption, Guided Tours & Walkthroughs (+14 more)
 
 ### Community 17 - "ErrorResponse"
-Cohesion: 0.08
-Nodes (22): ErrorResponse, GlobalExceptionHandler, Logger, ResponseEntity, Logger, OpenMeteoWeatherService, WeatherServiceException, BeforeEach (+14 more)
+Cohesion: 0.13
+Nodes (10): ErrorResponse, GlobalExceptionHandler, Logger, ResponseEntity, ExceptionHandler, MethodArgumentNotValidException, MethodArgumentTypeMismatchException, MissingServletRequestParameterException (+2 more)
 
-### Community 18 - "scripts"
-Cohesion: 0.07
-Nodes (26): clsx, dependencies, clsx, lucide-react, react, react-dom, tailwind-merge, name (+18 more)
+### Community 18 - "dependencies"
+Cohesion: 0.18
+Nodes (11): clsx, dependencies, clsx, lucide-react, react, react-dom, tailwind-merge, lucide-react (+3 more)
 
 ### Community 19 - "3. Functional requirements"
 Cohesion: 0.09
@@ -266,8 +288,8 @@ Cohesion: 0.11
 Nodes (18): 10. Microcopy & Voice, 1. AI Slop Detection (CRITICAL), 2. Visual Hierarchy, 3. Information Architecture, 4. Emotional Resonance, 5. Discoverability & Affordance, 6. Composition & Balance, 7. Typography as Communication (+10 more)
 
 ### Community 31 - "ApiResponse"
-Cohesion: 0.08
-Nodes (20): Autowired, ApiResponse, HealthController, GetMapping, RequestMapping, ResponseEntity, RestController, GetMapping (+12 more)
+Cohesion: 0.11
+Nodes (12): ApiResponse, HealthController, GetMapping, RequestMapping, ResponseEntity, RestController, GetMapping, RequestMapping (+4 more)
 
 ### Community 32 - "Animation Performance"
 Cohesion: 0.11
@@ -282,8 +304,8 @@ Cohesion: 0.11
 Nodes (17): 1. Overview & Strategy, 2.1 Token Issuance, 2.2 Client-Side Storage: In-Memory Only, 2.3 Token Transport, 2.4 Token Expiry & Expired Token Handling, 2.5 Logout & Client-Side Token Removal, 2.6 Server-Side Invalidation Expectations & Limitations, 2. Token Lifecycle & Transport (+9 more)
 
 ### Community 35 - "Voyage-AI — Product Requirements Document (PRD)"
-Cohesion: 0.11
-Nodes (18): 10. Success measures, 11. Assumptions and constraints, 12. Risks, 13. Release acceptance, 14. Next documents, 1. Executive summary, 2. Problem, 3. Vision (+10 more)
+Cohesion: 0.14
+Nodes (14): 10. Success measures, 11. Assumptions and constraints, 12. Risks, 13. Release acceptance, 14. Next documents, 1. Executive summary, 2. Problem, 3. Vision (+6 more)
 
 ### Community 36 - "Voyage-AI — UI/UX Specification"
 Cohesion: 0.11
@@ -389,9 +411,9 @@ Nodes (7): Accessibility & Inclusion, Aesthetic Preferences, Brand & Personality
 Cohesion: 0.22
 Nodes (8): 1. Overview & Major Components, 2. Communication and Data Flows, 3. Primary Data Stores & Persistence, 4. Authentication & Authorization Boundaries, 5. Major External Dependencies & Integrations, 6. Deployment Boundaries, 7. Automated Testing & Verification Architecture, Voyage-AI — High-Level System Architecture
 
-### Community 63 - "HealthControllerTest.java"
-Cohesion: 0.39
-Nodes (6): HealthControllerTest, ActiveProfiles, AutoConfigureMockMvc, MockMvc, SpringBootTest, Test
+### Community 63 - ".get"
+Cohesion: 0.18
+Nodes (14): Autowired, HealthControllerTest, ActiveProfiles, AutoConfigureMockMvc, MockMvc, SpringBootTest, Test, ActiveProfiles (+6 more)
 
 ### Community 64 - "The Animation Decision Framework"
 Cohesion: 0.33
@@ -457,6 +479,10 @@ Nodes (3): Migration Naming Convention, Phase Boundaries, Voyage-AI Database Mig
 Cohesion: 0.50
 Nodes (4): Baseline decisions, Documents, How to use this pack, Voyage-AI — Project Documentation
 
+### Community 82 - "BasePlaywrightTest"
+Cohesion: 0.06
+Nodes (36): AfterAll, AfterEach, BeforeAll, Browser, BrowserContext, files, references, Page (+28 more)
+
 ### Community 92 - "Voyage-AI — Data Authenticity, Provenance & Academic Provider Plan (v2.1)"
 Cohesion: 0.10
 Nodes (20): 1. Executive Summary & Non-Negotiable Rules, 2.1 Core Component Strategy, 2.2 First Integration Scope (Academic Prototype), 2. Approved Architecture Direction & Scope Prioritization, 3.1 OpenStreetMap (OSM) Tiles & Leaflet, 3.2 Open-Meteo Weather API, 3.3 Google Gemini API (Google AI Studio Free Tier), 3.4 Wikimedia Commons REST API (+12 more)
@@ -470,28 +496,60 @@ Cohesion: 0.25
 Nodes (10): DatabaseFlywayIntegrationTest, ActiveProfiles, BeforeEach, DisplayName, SpringBootTest, Test, DataSource, Flyway (+2 more)
 
 ### Community 100 - "4. Execution Commands"
-Cohesion: 0.15
-Nodes (12): 1. Overview & Test Architecture, 2. Test Suites Summary, 3. Database Safety Mandate, 4. Execution Commands, 5. Prerequisites for Local Testing, Backend Unit, Controller & Database Tests, Frontend Unit & Component Tests (Vitest), Full Local Test Suite (All Layers) (+4 more)
+Cohesion: 0.17
+Nodes (11): 1. Overview & Test Architecture, 2. Test Suites Summary, 3. Database Safety Mandate, 4. Execution Commands, 5. Prerequisites for Local Testing, Backend Unit, Controller & Database Tests, Frontend Unit & Component Tests (Vitest), Full Local Test Suite (All Layers) (+3 more)
+
+### Community 102 - ".getWeather"
+Cohesion: 0.26
+Nodes (6): BeforeEach, DisplayName, Test, OpenMeteoWeatherServiceTest, MockRestServiceServer, Override
+
+### Community 103 - "DestinationsDiscoveryTest"
+Cohesion: 0.40
+Nodes (4): DestinationsDiscoveryTest, BeforeEach, DisplayName, Test
+
+### Community 104 - "DestinationDetailModalTest"
+Cohesion: 0.42
+Nodes (4): DestinationDetailModalTest, BeforeEach, DisplayName, Test
+
+### Community 105 - "scripts"
+Cohesion: 0.25
+Nodes (8): scripts, build, dev, lint, preview, test, test:unit, typecheck
+
+### Community 107 - "OpenMeteoWeatherService"
+Cohesion: 0.60
+Nodes (4): Logger, OpenMeteoWeatherService, RestClient, Service
+
+### Community 110 - "Voyage-AI — Centralized Automated Testing Workspace"
+Cohesion: 0.33
+Nodes (5): Directory Structure, Failure Artifacts, Running Tests, Test Suites & Responsibilities, Voyage-AI — Centralized Automated Testing Workspace
+
+### Community 111 - "package.json"
+Cohesion: 0.40
+Nodes (4): name, private, type, version
+
+### Community 112 - "8. MVP features"
+Cohesion: 0.50
+Nodes (4): 8. MVP features, Must have, Out of scope for MVP, Should have if time/data permits
 
 ## Knowledge Gaps
 - **1030 isolated node(s):** `com.voyageai:voyage-ai-backend`, `name`, `private`, `version`, `type` (+1025 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `WeatherResponse` connect `WeatherResponse` to `DailyForecastDTO`, `WeatherProvenanceDTO`, `WeatherUnitsDTO`, `ErrorResponse`, `CurrentData`, `CurrentWeatherDTO`, `ApiResponse`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
-- **Why does `Voyage-AI — Product Requirements Document (PRD)` connect `Voyage-AI — Product Requirements Document (PRD)` to `docs/README.md`?**
-  _High betweenness centrality (0.004) - this node is a cross-community bridge._
-- **Why does `OpenMeteoWeatherService` connect `ErrorResponse` to `CurrentData`, `ApiResponse`?**
-  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+- **Why does `WeatherResponse` connect `WeatherResponse` to `DailyForecastDTO`, `WeatherProvenanceDTO`, `WeatherUnitsDTO`, `.getWeather`, `.get`, `CurrentData`, `CurrentWeatherDTO`, `ApiResponse`?**
+  _High betweenness centrality (0.024) - this node is a cross-community bridge._
+- **Why does `ApiResponse` connect `ApiResponse` to `BasePlaywrightTest`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+- **Why does `BasePlaywrightTest` connect `BasePlaywrightTest` to `DestinationDetailModalTest`, `DestinationsDiscoveryTest`?**
+  _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **What connects `com.voyageai:voyage-ai-backend`, `name`, `private` to the rest of the system?**
   _1030 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `App.tsx` be split into smaller, more focused modules?**
   _Cohesion score 0.08163265306122448 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.04878048780487805 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11764705882352941 - nodes in this community are weakly interconnected._
 - **Should `Voyage-AI — Software Requirements Specification (SRS)` be split into smaller, more focused modules?**
   _Cohesion score 0.05263157894736842 - nodes in this community are weakly interconnected._

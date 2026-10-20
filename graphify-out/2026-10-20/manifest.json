@@ -60,8 +60,8 @@
     "semantic_hash": ""
   },
   "frontend/package.json": {
-    "mtime": 1792496908.115441,
-    "ast_hash": "b6af842c09bcf0b570bfd91faa363c29",
+    "mtime": 1792499643.1442428,
+    "ast_hash": "446c69fda480a0c30807b346acfc343d",
     "semantic_hash": ""
   },
   "frontend/postcss.config.js": {
@@ -549,26 +549,6 @@
     "ast_hash": "6ec840f4576c6dd858e411a751d2dff9",
     "semantic_hash": ""
   },
-  "discovery_prototype_budget.png": {
-    "mtime": 1792491794.4928722,
-    "ast_hash": "f93835a9522e2c08619d5d8bb98109af",
-    "semantic_hash": ""
-  },
-  "discovery_prototype_hero.png": {
-    "mtime": 1792491680.4162786,
-    "ast_hash": "335d0a9d3dc442946fafbbc8f3f9398c",
-    "semantic_hash": ""
-  },
-  "discovery_prototype_main.png": {
-    "mtime": 1792491630.3032794,
-    "ast_hash": "a66c718aaf6c1c96075b5e7f8e65636f",
-    "semantic_hash": ""
-  },
-  "discovery_prototype_modal.png": {
-    "mtime": 1792491715.2675545,
-    "ast_hash": "f085f370780a421d50db978ea0df3ae3",
-    "semantic_hash": ""
-  },
   "docs/screenshots/discovery_prototype_budget.png": {
     "mtime": 1792491794.4928722,
     "ast_hash": "f93835a9522e2c08619d5d8bb98109af",
@@ -679,54 +659,99 @@
     "ast_hash": "7ca43f752dc23cbfa7a0386a62651d00",
     "semantic_hash": ""
   },
-  "frontend/e2e/app-navigation.spec.ts": {
-    "mtime": 1792497584.892096,
-    "ast_hash": "f55af343d0a2bbda5993044d8e691d63",
-    "semantic_hash": ""
-  },
-  "frontend/e2e/destination-detail-modal.spec.ts": {
-    "mtime": 1792498168.245149,
-    "ast_hash": "95a19deb60d5b7dc12c49a67b88794cb",
-    "semantic_hash": ""
-  },
-  "frontend/e2e/destinations-discovery.spec.ts": {
-    "mtime": 1792497736.1100056,
-    "ast_hash": "7d53404488acf4fdcd20f4c867768a54",
-    "semantic_hash": ""
-  },
-  "frontend/e2e/responsive.spec.ts": {
-    "mtime": 1792498007.7419095,
-    "ast_hash": "f7a0e0f3b0df6bd6bba5f0a283510b1a",
-    "semantic_hash": ""
-  },
-  "frontend/e2e/weather-integration.spec.ts": {
-    "mtime": 1792497443.1488435,
-    "ast_hash": "0509f2ebe6567bd51134ee8a96379fb1",
-    "semantic_hash": ""
-  },
-  "frontend/playwright.config.ts": {
-    "mtime": 1792497137.7409835,
-    "ast_hash": "4709621115519a0794976a103dc9cfe2",
-    "semantic_hash": ""
-  },
   "scripts/run-all-tests.ps1": {
-    "mtime": 1792498343.190225,
-    "ast_hash": "9ed33e52b6b8c0850b009813f6f90d6a",
+    "mtime": 1792499846.2842126,
+    "ast_hash": "c92c2540b8caee17ec44d1b2765aecc5",
     "semantic_hash": ""
   },
   "scripts/run-all-tests.sh": {
-    "mtime": 1792498356.2938015,
-    "ast_hash": "cc8600e3c5d2134783625615c67e8a3a",
+    "mtime": 1792499787.3323379,
+    "ast_hash": "6993bb0c7c32276e2b013846cd2e88be",
     "semantic_hash": ""
   },
   "scripts/run-smoke-tests.ps1": {
-    "mtime": 1792498366.2917764,
-    "ast_hash": "fd08720fdd3695db1324994ef8114c29",
+    "mtime": 1792499944.8318164,
+    "ast_hash": "04b134a25b4f73f77b08e2a2483f308e",
     "semantic_hash": ""
   },
   "docs/TEST_STRATEGY.md": {
-    "mtime": 1792498383.1025352,
-    "ast_hash": "e48605b3e1ad88df480353a4bea2c81e",
+    "mtime": 1792499822.9613612,
+    "ast_hash": "8576457ea33423d7e14456ee3c867f88",
+    "semantic_hash": ""
+  },
+  "tests/fixtures/mock-weather.json": {
+    "mtime": 1792499004.5465136,
+    "ast_hash": "9234c1440a25297f29a8a14bedf2cdc3",
+    "semantic_hash": ""
+  },
+  "tests/pom.xml": {
+    "mtime": 1792499542.9044394,
+    "ast_hash": "aa1c180a203c6ea4a408977ea659c177",
+    "semantic_hash": ""
+  },
+  "tests/scripts/run-api-tests.ps1": {
+    "mtime": 1792499194.456874,
+    "ast_hash": "f2f02b22d1c7863dccc2338bc8cddbec",
+    "semantic_hash": ""
+  },
+  "tests/scripts/run-browser-tests.ps1": {
+    "mtime": 1792499187.547359,
+    "ast_hash": "12489b8dd37bbc4bc7f1e744994f9040",
+    "semantic_hash": ""
+  },
+  "tests/src/test/java/com/voyageai/tests/api/HealthApiTest.java": {
+    "mtime": 1792499457.935994,
+    "ast_hash": "039ddeb30d226d119986e1ad6e11cb73",
+    "semantic_hash": ""
+  },
+  "tests/src/test/java/com/voyageai/tests/api/WeatherApiTest.java": {
+    "mtime": 1792499169.2477527,
+    "ast_hash": "9801dcf4b06d2dd0c81f54bc7d0cb0a0",
+    "semantic_hash": ""
+  },
+  "tests/src/test/java/com/voyageai/tests/base/BasePlaywrightTest.java": {
+    "mtime": 1792499086.1695669,
+    "ast_hash": "29afcc3e540e0f64be3132aa35f660fb",
+    "semantic_hash": ""
+  },
+  "tests/src/test/java/com/voyageai/tests/browser/DestinationDetailModalTest.java": {
+    "mtime": 1792499276.1474602,
+    "ast_hash": "edd56ba1943c9b8d97543d4055cfb3c5",
+    "semantic_hash": ""
+  },
+  "tests/src/test/java/com/voyageai/tests/browser/DestinationsDiscoveryTest.java": {
+    "mtime": 1792499265.2792418,
+    "ast_hash": "6e67bc1d4a136ef4a8f82b7ef6c7f1d0",
+    "semantic_hash": ""
+  },
+  "tests/src/test/java/com/voyageai/tests/browser/NavigationTest.java": {
+    "mtime": 1792499253.4273953,
+    "ast_hash": "e2ab403260185c39753ccbb9207663ca",
+    "semantic_hash": ""
+  },
+  "tests/src/test/java/com/voyageai/tests/browser/ResponsiveTest.java": {
+    "mtime": 1792499286.0867271,
+    "ast_hash": "c7e41636ac32ad0a11957924e3be64ff",
+    "semantic_hash": ""
+  },
+  "tests/src/test/java/com/voyageai/tests/config/TestConfig.java": {
+    "mtime": 1792499050.8358853,
+    "ast_hash": "5d31198f15e3b2bd6db11d64c362e2c6",
+    "semantic_hash": ""
+  },
+  "tests/src/test/java/com/voyageai/tests/e2e/WeatherE2ETest.java": {
+    "mtime": 1792499298.991586,
+    "ast_hash": "1d0349e8bad37d60517acfdf5728f8fa",
+    "semantic_hash": ""
+  },
+  "tests/README.md": {
+    "mtime": 1792499205.8060117,
+    "ast_hash": "0bddb41707b8f0cfb3d7b7a0b8824d19",
+    "semantic_hash": ""
+  },
+  "tests/database/README.md": {
+    "mtime": 1792499179.582134,
+    "ast_hash": "452128ef860b456a38334ed65aec5d1a",
     "semantic_hash": ""
   }
 }

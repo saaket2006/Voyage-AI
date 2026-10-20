@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1792488424.2622302,
-    "ast_hash": "3d06a5c248e46cdc971153a9678a8edf",
+    "mtime": 1792500636.2950363,
+    "ast_hash": "52bd333093bd3a811fe8108632d9acdd",
     "semantic_hash": ""
   },
   "backend/src/main/resources/application-dev.yml": {
