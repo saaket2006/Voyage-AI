@@ -52,6 +52,33 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
+    @ExceptionHandler(org.springframework.web.bind.MissingServletRequestParameterException.class)
+    public ResponseEntity<ErrorResponse> handleMissingParameterException(org.springframework.web.bind.MissingServletRequestParameterException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "MISSING_PARAMETER",
+                "Required request parameter '" + ex.getParameterName() + "' is missing."
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleTypeMismatchException(org.springframework.web.method.annotation.MethodArgumentTypeMismatchException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "TYPE_MISMATCH",
+                "Parameter '" + ex.getName() + "' must be of type " + (ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "valid type") + "."
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(com.voyageai.integration.weather.WeatherServiceException.class)
+    public ResponseEntity<ErrorResponse> handleWeatherServiceException(com.voyageai.integration.weather.WeatherServiceException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getErrorCode(),
+                ex.getMessage()
+        );
+        return ResponseEntity.status(ex.getStatus()).body(errorResponse);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
         log.error("Unhandled exception intercepted by GlobalExceptionHandler", ex);

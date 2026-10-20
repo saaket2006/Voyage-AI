@@ -26,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-4">
+        <div className="flex items-center justify-between h-20 gap-2 sm:gap-4">
           {/* Logo & Brand Identity */}
           <div className="flex items-center gap-3 shrink-0">
             <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-900 to-brand-700 text-white flex items-center justify-center shadow-md shadow-brand-900/10 border border-brand-950/20 transition-transform active:scale-95 duration-150">
@@ -71,9 +71,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Right Section: Search & System Status */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* Search Input Box */}
-            <div className="relative w-44 sm:w-64">
+            <div className="relative w-20 xs:w-28 sm:w-64">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 pointer-events-none" />
               <input
                 type="text"

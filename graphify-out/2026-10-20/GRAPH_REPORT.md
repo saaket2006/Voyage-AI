@@ -1,16 +1,16 @@
 # Graph Report - Voyage-AI  (2026-10-20)
 
 ## Corpus Check
-- 105 files · ~384,186 words
+- 133 files · ~443,499 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1374 nodes · 1383 edges · 92 communities (85 shown, 7 thin omitted)
-- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
+- 1636 nodes · 1793 edges · 110 communities (97 shown, 13 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 43 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f02f4578`
+- Built from commit: `a530c424`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -33,7 +33,7 @@
 - Write Swift
 - onboard.md
 - ErrorResponse
-- package.json
+- scripts
 - 3. Functional requirements
 - compilerOptions
 - Apple Design
@@ -101,43 +101,53 @@
 - rules/graphify.md
 - workflows/graphify.md
 - com.voyageai:voyage-ai-backend
+- Voyage-AI — Data Authenticity, Provenance & Academic Provider Plan (v2.1)
+- CurrentData
+- CurrentWeatherDTO
+- WeatherResponse
+- DailyForecastDTO
+- WeatherProvenanceDTO
+- WeatherUnitsDTO
+- DatabaseFlywayIntegrationTest
+- 4. Execution Commands
+- run-all-tests.sh script
 
 ## God Nodes (most connected - your core abstractions)
-1. `Apple Design` - 21 edges
-2. `Write Swift` - 19 edges
-3. `Capabilities` - 18 edges
-4. `compilerOptions` - 17 edges
-5. `Design Engineering` - 16 edges
-6. `Animation Standards Reference` - 16 edges
-7. `Animation Recipes` - 15 edges
-8. `Voyage-AI — Product Requirements Document (PRD)` - 15 edges
-9. `Voyage-AI — Technical Design Document (TDD)` - 15 edges
-10. `ErrorResponse` - 14 edges
+1. `WeatherResponse` - 29 edges
+2. `CurrentWeatherDTO` - 24 edges
+3. `Apple Design` - 21 edges
+4. `CurrentData` - 20 edges
+5. `Write Swift` - 19 edges
+6. `OpenMeteoApiResponse` - 18 edges
+7. `Capabilities` - 18 edges
+8. `ErrorResponse` - 17 edges
+9. `compilerOptions` - 17 edges
+10. `DailyForecastDTO` - 16 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `DestinationCardProps` --references--> `Destination`  [EXTRACTED]
-  frontend/src/components/discovery/DestinationCard.tsx → frontend/src/types/destination.ts
-- `DestinationDetailModalProps` --references--> `Destination`  [EXTRACTED]
-  frontend/src/components/discovery/DestinationDetailModal.tsx → frontend/src/types/destination.ts
-- `App()` --references--> `MOCK_DESTINATIONS`  [EXTRACTED]
-  frontend/src/App.tsx → frontend/src/data/mockDestinations.ts
-- `FilterBarProps` --references--> `BudgetTier`  [EXTRACTED]
-  frontend/src/components/discovery/FilterBar.tsx → frontend/src/types/destination.ts
-- `FilterBarProps` --references--> `Region`  [EXTRACTED]
-  frontend/src/components/discovery/FilterBar.tsx → frontend/src/types/destination.ts
+- `OpenMeteoWeatherService` --implements--> `WeatherProvider`  [EXTRACTED]
+  backend/src/main/java/com/voyageai/integration/weather/OpenMeteoWeatherService.java → backend/src/main/java/com/voyageai/integration/weather/WeatherProvider.java
+- `WeatherResponse` --references--> `CurrentWeatherDTO`  [EXTRACTED]
+  backend/src/main/java/com/voyageai/integration/weather/dto/WeatherResponse.java → backend/src/main/java/com/voyageai/integration/weather/dto/CurrentWeatherDTO.java
+- `WeatherResponse` --references--> `DailyForecastDTO`  [EXTRACTED]
+  backend/src/main/java/com/voyageai/integration/weather/dto/WeatherResponse.java → backend/src/main/java/com/voyageai/integration/weather/dto/DailyForecastDTO.java
+- `WeatherResponse` --references--> `WeatherProvenanceDTO`  [EXTRACTED]
+  backend/src/main/java/com/voyageai/integration/weather/dto/WeatherResponse.java → backend/src/main/java/com/voyageai/integration/weather/dto/WeatherProvenanceDTO.java
+- `WeatherResponse` --references--> `WeatherUnitsDTO`  [EXTRACTED]
+  backend/src/main/java/com/voyageai/integration/weather/dto/WeatherResponse.java → backend/src/main/java/com/voyageai/integration/weather/dto/WeatherUnitsDTO.java
 
 ## Import Cycles
 - None detected.
 
-## Communities (92 total, 7 thin omitted)
+## Communities (110 total, 13 thin omitted)
 
 ### Community 0 - "App.tsx"
 Cohesion: 0.08
-Nodes (31): App(), Badge(), BadgeProps, Button(), ButtonProps, EmptyState(), EmptyStateProps, SkeletonCard() (+23 more)
+Nodes (33): App(), Badge(), BadgeProps, Button(), ButtonProps, EmptyState(), EmptyStateProps, ImageWithFallback() (+25 more)
 
 ### Community 1 - "devDependencies"
 Cohesion: 0.05
-Nodes (39): autoprefixer, eslint, @eslint/js, eslint-plugin-react-hooks, eslint-plugin-react-refresh, devDependencies, autoprefixer, eslint (+31 more)
+Nodes (41): autoprefixer, eslint, @eslint/js, eslint-plugin-react-hooks, eslint-plugin-react-refresh, devDependencies, autoprefixer, eslint (+33 more)
 
 ### Community 2 - "Voyage-AI — Software Requirements Specification (SRS)"
 Cohesion: 0.05
@@ -200,12 +210,12 @@ Cohesion: 0.09
 Nodes (22): Assess Onboarding Needs, Context Over Ceremony, Contextual Help, Design Onboarding Experiences, Documentation & Help, Empty State Design, Feature Discovery & Adoption, Guided Tours & Walkthroughs (+14 more)
 
 ### Community 17 - "ErrorResponse"
-Cohesion: 0.15
-Nodes (8): ErrorResponse, GlobalExceptionHandler, ResponseEntity, ExceptionHandler, Logger, MethodArgumentNotValidException, ResponseStatusException, RestControllerAdvice
+Cohesion: 0.08
+Nodes (22): ErrorResponse, GlobalExceptionHandler, Logger, ResponseEntity, Logger, OpenMeteoWeatherService, WeatherServiceException, BeforeEach (+14 more)
 
-### Community 18 - "package.json"
-Cohesion: 0.09
-Nodes (22): clsx, dependencies, clsx, lucide-react, react, react-dom, tailwind-merge, name (+14 more)
+### Community 18 - "scripts"
+Cohesion: 0.07
+Nodes (26): clsx, dependencies, clsx, lucide-react, react, react-dom, tailwind-merge, name (+18 more)
 
 ### Community 19 - "3. Functional requirements"
 Cohesion: 0.09
@@ -256,8 +266,8 @@ Cohesion: 0.11
 Nodes (18): 10. Microcopy & Voice, 1. AI Slop Detection (CRITICAL), 2. Visual Hierarchy, 3. Information Architecture, 4. Emotional Resonance, 5. Discoverability & Affordance, 6. Composition & Balance, 7. Typography as Communication (+10 more)
 
 ### Community 31 - "ApiResponse"
-Cohesion: 0.15
-Nodes (6): ApiResponse, HealthController, ResponseEntity, GetMapping, RequestMapping, RestController
+Cohesion: 0.08
+Nodes (20): Autowired, ApiResponse, HealthController, GetMapping, RequestMapping, ResponseEntity, RestController, GetMapping (+12 more)
 
 ### Community 32 - "Animation Performance"
 Cohesion: 0.11
@@ -288,8 +298,8 @@ Cohesion: 0.12
 Nodes (16): Code Quality, Color & Contrast, Content & Copy, Edge Cases & Error States, Final Verification, Forms & Inputs, Icons & Images, Interaction States (+8 more)
 
 ### Community 39 - "compilerOptions"
-Cohesion: 0.12
-Nodes (16): compilerOptions, isolatedModules, lib, module, moduleDetection, moduleResolution, noEmit, noFallthroughCasesInSwitch (+8 more)
+Cohesion: 0.10
+Nodes (20): compilerOptions, isolatedModules, lib, module, moduleDetection, moduleResolution, noEmit, noFallthroughCasesInSwitch (+12 more)
 
 ### Community 40 - "Voyage-AI — All-in-One Travel Companion"
 Cohesion: 0.12
@@ -376,12 +386,12 @@ Cohesion: 0.25
 Nodes (7): Accessibility & Inclusion, Aesthetic Preferences, Brand & Personality, Step 1: Explore the Codebase, Step 2: Ask UX-Focused Questions, Step 3: Write Design Context, Users & Purpose
 
 ### Community 62 - "Voyage-AI — High-Level System Architecture"
-Cohesion: 0.25
-Nodes (7): 1. Overview & Major Components, 2. Communication and Data Flows, 3. Primary Data Stores & Persistence, 4. Authentication & Authorization Boundaries, 5. Major External Dependencies & Integrations, 6. Deployment Boundaries, Voyage-AI — High-Level System Architecture
+Cohesion: 0.22
+Nodes (8): 1. Overview & Major Components, 2. Communication and Data Flows, 3. Primary Data Stores & Persistence, 4. Authentication & Authorization Boundaries, 5. Major External Dependencies & Integrations, 6. Deployment Boundaries, 7. Automated Testing & Verification Architecture, Voyage-AI — High-Level System Architecture
 
 ### Community 63 - "HealthControllerTest.java"
-Cohesion: 0.43
-Nodes (6): AutoConfigureMockMvc, HealthControllerTest, ActiveProfiles, SpringBootTest, Test, MockMvc
+Cohesion: 0.39
+Nodes (6): HealthControllerTest, ActiveProfiles, AutoConfigureMockMvc, MockMvc, SpringBootTest, Test
 
 ### Community 64 - "The Animation Decision Framework"
 Cohesion: 0.33
@@ -447,25 +457,41 @@ Nodes (3): Migration Naming Convention, Phase Boundaries, Voyage-AI Database Mig
 Cohesion: 0.50
 Nodes (4): Baseline decisions, Documents, How to use this pack, Voyage-AI — Project Documentation
 
+### Community 92 - "Voyage-AI — Data Authenticity, Provenance & Academic Provider Plan (v2.1)"
+Cohesion: 0.10
+Nodes (20): 1. Executive Summary & Non-Negotiable Rules, 2.1 Core Component Strategy, 2.2 First Integration Scope (Academic Prototype), 2. Approved Architecture Direction & Scope Prioritization, 3.1 OpenStreetMap (OSM) Tiles & Leaflet, 3.2 Open-Meteo Weather API, 3.3 Google Gemini API (Google AI Studio Free Tier), 3.4 Wikimedia Commons REST API (+12 more)
+
+### Community 93 - "CurrentData"
+Cohesion: 0.06
+Nodes (5): CurrentData, DailyData, OpenMeteoApiResponse, WmoWeatherCode, JsonIgnoreProperties
+
+### Community 99 - "DatabaseFlywayIntegrationTest"
+Cohesion: 0.25
+Nodes (10): DatabaseFlywayIntegrationTest, ActiveProfiles, BeforeEach, DisplayName, SpringBootTest, Test, DataSource, Flyway (+2 more)
+
+### Community 100 - "4. Execution Commands"
+Cohesion: 0.15
+Nodes (12): 1. Overview & Test Architecture, 2. Test Suites Summary, 3. Database Safety Mandate, 4. Execution Commands, 5. Prerequisites for Local Testing, Backend Unit, Controller & Database Tests, Frontend Unit & Component Tests (Vitest), Full Local Test Suite (All Layers) (+4 more)
+
 ## Knowledge Gaps
-- **994 isolated node(s):** `com.voyageai:voyage-ai-backend`, `name`, `private`, `version`, `type` (+989 more)
+- **1030 isolated node(s):** `com.voyageai:voyage-ai-backend`, `name`, `private`, `version`, `type` (+1025 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Design Engineering` connect `Design Engineering` to `The Animation Decision Framework`, `clip-path for Animation`, `Performance Rules`, `Gesture and Drag Interactions`, `CSS Transform Mastery`, `The Sonner Principles (Building Loved Components)`, `Spring Animations`, `Core Philosophy`, `Debugging Animations`, `Component Building Principles`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
+- **Why does `WeatherResponse` connect `WeatherResponse` to `DailyForecastDTO`, `WeatherProvenanceDTO`, `WeatherUnitsDTO`, `ErrorResponse`, `CurrentData`, `CurrentWeatherDTO`, `ApiResponse`?**
+  _High betweenness centrality (0.015) - this node is a cross-community bridge._
+- **Why does `Voyage-AI — Product Requirements Document (PRD)` connect `Voyage-AI — Product Requirements Document (PRD)` to `docs/README.md`?**
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+- **Why does `OpenMeteoWeatherService` connect `ErrorResponse` to `CurrentData`, `ApiResponse`?**
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **What connects `com.voyageai:voyage-ai-backend`, `name`, `private` to the rest of the system?**
-  _994 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1030 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `App.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.08484848484848485 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08163265306122448 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.04878048780487805 - nodes in this community are weakly interconnected._
 - **Should `Voyage-AI — Software Requirements Specification (SRS)` be split into smaller, more focused modules?**
   _Cohesion score 0.05263157894736842 - nodes in this community are weakly interconnected._
-- **Should `Voyage-AI — Pre-Implementation Environment Audit & Product Readiness Report` be split into smaller, more focused modules?**
-  _Cohesion score 0.05555555555555555 - nodes in this community are weakly interconnected._
-- **Should `Expo Animation Recipes` be split into smaller, more focused modules?**
-  _Cohesion score 0.05714285714285714 - nodes in this community are weakly interconnected._

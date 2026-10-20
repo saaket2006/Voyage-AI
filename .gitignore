@@ -21,6 +21,10 @@ lerna-debug.log*
 .env
 .env.local
 .env.*.local
+**/application-local.yml
+**/application-local.yaml
+**/application-*.local.yml
+**/application-*.local.yaml
 *.pem
 *.key
 *.p12
@@ -36,6 +40,7 @@ lerna-debug.log*
 .settings/
 .classpath
 .project
+graphify-out/cache/
 
 # Operating System files
 .DS_Store
@@ -47,3 +52,11 @@ desktop.ini
 scratch/
 tmp/
 temp/
+
+# Test artifacts & reports
+**/test-results/
+**/playwright-report/
+**/blob-report/
+**/playwright/.cache/
+**/playwright-traces/
+**/playwright-screenshots/

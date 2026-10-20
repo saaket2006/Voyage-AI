@@ -5,7 +5,7 @@
     "semantic_hash": ""
   },
   "backend/pom.xml": {
-    "mtime": 1792489694.9469647,
+    "mtime": 1792497178.7885518,
     "ast_hash": "8a6d106ea189bf4eea5023aa5bfdb4ab",
     "semantic_hash": ""
   },
@@ -25,8 +25,8 @@
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/common/api/GlobalExceptionHandler.java": {
-    "mtime": 1792487557.186471,
-    "ast_hash": "2fdf82e0979d07e85529a27c5a9fee02",
+    "mtime": 1792496112.5374434,
+    "ast_hash": "edc98e0d973e2cbb3dc6de1b0bd80b76",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/common/health/HealthController.java": {
@@ -50,8 +50,8 @@
     "semantic_hash": ""
   },
   "backend/src/test/java/com/voyageai/common/health/HealthControllerTest.java": {
-    "mtime": 1792489702.2457187,
-    "ast_hash": "73ab8d12a0b0524373f98c1040479776",
+    "mtime": 1792496981.5654411,
+    "ast_hash": "b4423d9a46dd6933b31d8be700898b16",
     "semantic_hash": ""
   },
   "frontend/eslint.config.js": {
@@ -60,8 +60,8 @@
     "semantic_hash": ""
   },
   "frontend/package.json": {
-    "mtime": 1792487736.9390383,
-    "ast_hash": "538ee940b7e074b1f1cc7dcc911a1c30",
+    "mtime": 1792496908.115441,
+    "ast_hash": "b6af842c09bcf0b570bfd91faa363c29",
     "semantic_hash": ""
   },
   "frontend/postcss.config.js": {
@@ -70,13 +70,13 @@
     "semantic_hash": ""
   },
   "frontend/src/App.test.tsx": {
-    "mtime": 1792490124.123726,
-    "ast_hash": "f4e82e2314faddc2a244a727008b2865",
+    "mtime": 1792491481.2031627,
+    "ast_hash": "6bf6ba1e5adb19d46f9a8815f8de78e4",
     "semantic_hash": ""
   },
   "frontend/src/App.tsx": {
-    "mtime": 1792490043.9223325,
-    "ast_hash": "4aa24fbaad4fc60e697123a82060fd9f",
+    "mtime": 1792491332.1295655,
+    "ast_hash": "7b8bf2b63169e78b15f241b1b2192e8b",
     "semantic_hash": ""
   },
   "frontend/src/components/common/Badge.tsx": {
@@ -100,13 +100,13 @@
     "semantic_hash": ""
   },
   "frontend/src/components/discovery/DestinationCard.tsx": {
-    "mtime": 1792489980.8508904,
-    "ast_hash": "74078a3f913f2b16e6ed863682830ad7",
+    "mtime": 1792491419.1621833,
+    "ast_hash": "8b37adc5fcfc616fad1a39146bd4db11",
     "semantic_hash": ""
   },
   "frontend/src/components/discovery/DestinationDetailModal.tsx": {
-    "mtime": 1792490014.4101565,
-    "ast_hash": "3df6f4dca91101ea1bc79a6e13cd9353",
+    "mtime": 1792491204.530746,
+    "ast_hash": "6d94146d9ea6bb7a1cc1c5d6e9b6dfd0",
     "semantic_hash": ""
   },
   "frontend/src/components/discovery/FilterBar.tsx": {
@@ -115,18 +115,18 @@
     "semantic_hash": ""
   },
   "frontend/src/components/discovery/HeroSection.tsx": {
-    "mtime": 1792489953.315411,
-    "ast_hash": "ba41a652b6925fda6358250b1892d14b",
+    "mtime": 1792491238.6521175,
+    "ast_hash": "13342d4bac1719abfee8053683468c40",
     "semantic_hash": ""
   },
   "frontend/src/components/layout/Navbar.tsx": {
-    "mtime": 1792489938.949764,
-    "ast_hash": "bcfb36e8952037dbfacb7e470e3bb2c6",
+    "mtime": 1792498123.7863808,
+    "ast_hash": "824f981d0f5a28517aef7b6f424750da",
     "semantic_hash": ""
   },
   "frontend/src/data/mockDestinations.ts": {
-    "mtime": 1792489848.8699648,
-    "ast_hash": "580b095519312eebf4cb9d3ab833eaab",
+    "mtime": 1792491108.4342341,
+    "ast_hash": "dffba77b60e4a86978e0437c0c98b89e",
     "semantic_hash": ""
   },
   "frontend/src/main.tsx": {
@@ -165,13 +165,13 @@
     "semantic_hash": ""
   },
   "frontend/tsconfig.node.json": {
-    "mtime": 1792487766.7647233,
-    "ast_hash": "5a71d82452e9007e14f547fd0c0ed789",
+    "mtime": 1792497128.6581721,
+    "ast_hash": "7664daadcb9808b922b122a1cb9a0358",
     "semantic_hash": ""
   },
   "frontend/vite.config.ts": {
-    "mtime": 1792487777.2354627,
-    "ast_hash": "bc5a0f3196bc0ab03f3f9674247bc610",
+    "mtime": 1792498262.9958973,
+    "ast_hash": "2859176d962b9f38f6928ccf561920cf",
     "semantic_hash": ""
   },
   ".agents/rules/architecture-documentation.md": {
@@ -435,8 +435,8 @@
     "semantic_hash": ""
   },
   "Architecture.md": {
-    "mtime": 1792488384.2761765,
-    "ast_hash": "7543e66036a5102b6cfc50924b00d9eb",
+    "mtime": 1792498426.5810552,
+    "ast_hash": "04633e8810d4ae07f3b313650d734bd5",
     "semantic_hash": ""
   },
   "README.md": {
@@ -455,8 +455,8 @@
     "semantic_hash": ""
   },
   "backend/src/main/resources/application.yml": {
-    "mtime": 1792488245.2642882,
-    "ast_hash": "938b29bc94a6ef291a670ae49b96bc58",
+    "mtime": 1792495721.8683617,
+    "ast_hash": "61638556de0d94bea0cf705e05501cb8",
     "semantic_hash": ""
   },
   "backend/src/main/resources/db/migration/README.md": {
@@ -485,8 +485,8 @@
     "semantic_hash": ""
   },
   "docs/OPEN_DECISIONS.md": {
-    "mtime": 1792488369.4710903,
-    "ast_hash": "ce28d586ae77aeba3005a4342ffe6f5b",
+    "mtime": 1792494527.0243642,
+    "ast_hash": "fec0690163ca0750a6836f33d1f0458d",
     "semantic_hash": ""
   },
   "docs/PRD.md": {
@@ -540,8 +540,8 @@
     "semantic_hash": ""
   },
   "infra/docker-compose.yml": {
-    "mtime": 1792488256.3670976,
-    "ast_hash": "dcb06f59b7ee15f240738f8a188a4719",
+    "mtime": 1792495754.2140613,
+    "ast_hash": "1a5bd352ff6e8370d54333f9c66b8aad",
     "semantic_hash": ""
   },
   "task.md": {
@@ -550,43 +550,183 @@
     "semantic_hash": ""
   },
   "discovery_prototype_budget.png": {
-    "mtime": 1792490297.4222467,
-    "ast_hash": "57558ebec4853b03ffa4c3d6f32b05d0",
+    "mtime": 1792491794.4928722,
+    "ast_hash": "f93835a9522e2c08619d5d8bb98109af",
     "semantic_hash": ""
   },
   "discovery_prototype_hero.png": {
-    "mtime": 1792490247.5523334,
-    "ast_hash": "078b5fe6071e7b0f84c99367e3726640",
+    "mtime": 1792491680.4162786,
+    "ast_hash": "335d0a9d3dc442946fafbbc8f3f9398c",
     "semantic_hash": ""
   },
   "discovery_prototype_main.png": {
-    "mtime": 1792490214.0192385,
-    "ast_hash": "3ca570020c4bea04191d9febfc3df793",
+    "mtime": 1792491630.3032794,
+    "ast_hash": "a66c718aaf6c1c96075b5e7f8e65636f",
     "semantic_hash": ""
   },
   "discovery_prototype_modal.png": {
-    "mtime": 1792490269.986146,
-    "ast_hash": "4fe51a9c1f10f2a375cc1caee8ff5f2d",
+    "mtime": 1792491715.2675545,
+    "ast_hash": "f085f370780a421d50db978ea0df3ae3",
     "semantic_hash": ""
   },
   "docs/screenshots/discovery_prototype_budget.png": {
-    "mtime": 1792490297.4222467,
-    "ast_hash": "57558ebec4853b03ffa4c3d6f32b05d0",
+    "mtime": 1792491794.4928722,
+    "ast_hash": "f93835a9522e2c08619d5d8bb98109af",
     "semantic_hash": ""
   },
   "docs/screenshots/discovery_prototype_hero.png": {
-    "mtime": 1792490247.5523334,
-    "ast_hash": "078b5fe6071e7b0f84c99367e3726640",
+    "mtime": 1792491680.4162786,
+    "ast_hash": "335d0a9d3dc442946fafbbc8f3f9398c",
     "semantic_hash": ""
   },
   "docs/screenshots/discovery_prototype_main.png": {
-    "mtime": 1792490214.0192385,
-    "ast_hash": "3ca570020c4bea04191d9febfc3df793",
+    "mtime": 1792491630.3032794,
+    "ast_hash": "a66c718aaf6c1c96075b5e7f8e65636f",
     "semantic_hash": ""
   },
   "docs/screenshots/discovery_prototype_modal.png": {
-    "mtime": 1792490269.986146,
-    "ast_hash": "4fe51a9c1f10f2a375cc1caee8ff5f2d",
+    "mtime": 1792491715.2675545,
+    "ast_hash": "f085f370780a421d50db978ea0df3ae3",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/common/ImageWithFallback.test.tsx": {
+    "mtime": 1792491347.4401014,
+    "ast_hash": "9aba861b8de2f488c11f428b4a93e4cb",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/common/ImageWithFallback.tsx": {
+    "mtime": 1792491124.1632507,
+    "ast_hash": "971b27c4fb6aa0642ff6a48fcfb9ab41",
+    "semantic_hash": ""
+  },
+  "docs/DATA_AUTHENTICITY_AND_PROVIDER_PLAN.md": {
+    "mtime": 1792494485.4440858,
+    "ast_hash": "233a9547f9d08f562984f4f5ab1aea19",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/integration/weather/OpenMeteoWeatherService.java": {
+    "mtime": 1792496096.5971198,
+    "ast_hash": "dabfaea04df628310b850dcc2748966f",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/integration/weather/WeatherController.java": {
+    "mtime": 1792495940.353115,
+    "ast_hash": "03b820f7863f375a52966b16832e8598",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/integration/weather/WeatherProvider.java": {
+    "mtime": 1792495869.0055356,
+    "ast_hash": "556c43e10353b2e9c0da74d9ee538c67",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/integration/weather/WeatherServiceException.java": {
+    "mtime": 1792495860.3681989,
+    "ast_hash": "a9dc97be8ccdf0126c5bf38110cf42d8",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/integration/weather/WmoWeatherCode.java": {
+    "mtime": 1792495851.210843,
+    "ast_hash": "82f6efb149a9d216109b2be392f82754",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/integration/weather/dto/CurrentWeatherDTO.java": {
+    "mtime": 1792495806.815045,
+    "ast_hash": "111ea55b9fe9a374e4ab1c955ef58670",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/integration/weather/dto/DailyForecastDTO.java": {
+    "mtime": 1792495816.7570572,
+    "ast_hash": "a4ed15e4a3d9ac189f18306bf7badbfe",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/integration/weather/dto/OpenMeteoApiResponse.java": {
+    "mtime": 1792495840.9705954,
+    "ast_hash": "64da939bf75f0489c42866911957f8a8",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/integration/weather/dto/WeatherProvenanceDTO.java": {
+    "mtime": 1792495785.680499,
+    "ast_hash": "de5cdb16bf51e07a862126f2fc52b256",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/integration/weather/dto/WeatherResponse.java": {
+    "mtime": 1792495827.268785,
+    "ast_hash": "960c7cd18e82cf93b87f311600a6338f",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/integration/weather/dto/WeatherUnitsDTO.java": {
+    "mtime": 1792495794.999331,
+    "ast_hash": "996adde0b57f94c8034c25389584d880",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/com/voyageai/integration/weather/OpenMeteoWeatherServiceTest.java": {
+    "mtime": 1792497030.3507793,
+    "ast_hash": "310575871c375a1c2a5a66a4aa73c6b5",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/com/voyageai/integration/weather/WeatherControllerTest.java": {
+    "mtime": 1792497012.0501175,
+    "ast_hash": "1add451c5e246b778cd6ed20e2efd129",
+    "semantic_hash": ""
+  },
+  "infra/init-db.sql": {
+    "mtime": 1792495740.0514212,
+    "ast_hash": "484d0b762e1f2c0d6344fe15987c66b2",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/com/voyageai/integration/db/DatabaseFlywayIntegrationTest.java": {
+    "mtime": 1792497294.428209,
+    "ast_hash": "7ca43f752dc23cbfa7a0386a62651d00",
+    "semantic_hash": ""
+  },
+  "frontend/e2e/app-navigation.spec.ts": {
+    "mtime": 1792497584.892096,
+    "ast_hash": "f55af343d0a2bbda5993044d8e691d63",
+    "semantic_hash": ""
+  },
+  "frontend/e2e/destination-detail-modal.spec.ts": {
+    "mtime": 1792498168.245149,
+    "ast_hash": "95a19deb60d5b7dc12c49a67b88794cb",
+    "semantic_hash": ""
+  },
+  "frontend/e2e/destinations-discovery.spec.ts": {
+    "mtime": 1792497736.1100056,
+    "ast_hash": "7d53404488acf4fdcd20f4c867768a54",
+    "semantic_hash": ""
+  },
+  "frontend/e2e/responsive.spec.ts": {
+    "mtime": 1792498007.7419095,
+    "ast_hash": "f7a0e0f3b0df6bd6bba5f0a283510b1a",
+    "semantic_hash": ""
+  },
+  "frontend/e2e/weather-integration.spec.ts": {
+    "mtime": 1792497443.1488435,
+    "ast_hash": "0509f2ebe6567bd51134ee8a96379fb1",
+    "semantic_hash": ""
+  },
+  "frontend/playwright.config.ts": {
+    "mtime": 1792497137.7409835,
+    "ast_hash": "4709621115519a0794976a103dc9cfe2",
+    "semantic_hash": ""
+  },
+  "scripts/run-all-tests.ps1": {
+    "mtime": 1792498343.190225,
+    "ast_hash": "9ed33e52b6b8c0850b009813f6f90d6a",
+    "semantic_hash": ""
+  },
+  "scripts/run-all-tests.sh": {
+    "mtime": 1792498356.2938015,
+    "ast_hash": "cc8600e3c5d2134783625615c67e8a3a",
+    "semantic_hash": ""
+  },
+  "scripts/run-smoke-tests.ps1": {
+    "mtime": 1792498366.2917764,
+    "ast_hash": "fd08720fdd3695db1324994ef8114c29",
+    "semantic_hash": ""
+  },
+  "docs/TEST_STRATEGY.md": {
+    "mtime": 1792498383.1025352,
+    "ast_hash": "e48605b3e1ad88df480353a4bea2c81e",
     "semantic_hash": ""
   }
 }

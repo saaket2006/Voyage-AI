@@ -29,4 +29,13 @@ class HealthControllerTest {
                 .andExpect(jsonPath("$.data.status").value("UP"))
                 .andExpect(jsonPath("$.data.service").value("voyage-ai-backend"));
     }
+
+    @Test
+    void actuatorHealthEndpointShouldReturnUpStatus() throws Exception {
+        mockMvc.perform(get("/actuator/health")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value("UP"));
+    }
 }
