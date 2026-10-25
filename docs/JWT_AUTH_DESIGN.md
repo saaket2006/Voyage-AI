@@ -1,8 +1,8 @@
-# Voyage-AI — Future JWT Authentication & Authorization Security Specification
+# Voyage-AI — Stateless JWT Authentication & Authorization Security Specification
 
-**Document Version:** 1.0  
-**Status:** Approved Architectural Specification (Phase 2 Implementation Target)  
-**Scope:** Architecture & Contract Specification Only (No implementation in Phase 0)
+**Document Version:** 1.1  
+**Status:** Implemented & Verified Architectural Specification (Phase 2 Baseline)  
+**Scope:** Verified Implementation in `backend/src/main/java/com/voyageai/security/` and `auth/`
 
 ---
 

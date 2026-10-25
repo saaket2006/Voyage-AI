@@ -24,8 +24,21 @@ public class UserPrincipal implements UserDetails {
         this.authorities = authorities != null ? authorities : Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
+    public static UserPrincipal create(String id, String email, String displayName, String role) {
+        String effectiveRole = (role != null && !role.isBlank()) ? role : "ROLE_USER";
+        if (!effectiveRole.startsWith("ROLE_")) {
+            effectiveRole = "ROLE_" + effectiveRole;
+        }
+        return new UserPrincipal(id, email, displayName, "", Collections.singletonList(new SimpleGrantedAuthority(effectiveRole)));
+    }
+
     public static UserPrincipal create(String id, String email, String displayName) {
-        return new UserPrincipal(id, email, displayName, "", Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+        return create(id, email, displayName, "ROLE_USER");
+    }
+
+    public boolean isAdmin() {
+        return authorities != null && authorities.stream()
+                .anyMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()));
     }
 
     public String getId() {

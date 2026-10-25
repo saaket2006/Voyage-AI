@@ -3,9 +3,9 @@
 Voyage-AI is an AI-powered travel discovery and itinerary planning application that unifies destination exploration, accommodation and dining discovery, attraction selection, and day-by-day trip scheduling with transparent budget estimation and verified data provenance.
 
 The project is structured as a decoupled **modular monolith**:
-- **Frontend (`frontend/`):** React 18, TypeScript, Vite, Tailwind CSS with custom editorial tokens and Emil Kowalski interaction easing.
-- **Backend (`backend/`):** Java 17, Spring Boot 4.1.1 REST API, Spring Data JPA, Hibernate, Flyway migrations, and provider integration adapters.
-- **Centralized Testing (`tests/`):** Java Playwright, JUnit 5, and black-box REST API suites targeting local development servers.
+- **Frontend (`frontend/`):** React 18, TypeScript, Vite, Tailwind CSS with custom editorial tokens and Emil Kowalski interaction easing, integrated with persistent backend search.
+- **Backend (`backend/`):** Java 17, Spring Boot 4.1.1 REST API, Spring Data JPA, Hibernate, Flyway migrations (V0-V3), user profile persistence, JWT authentication, user-scoped trips CRUD, and automated Wikimedia destination data ingestion pipeline.
+- **Centralized Testing (`tests/`):** Java Playwright, JUnit 5, and black-box REST API suites targeting local development servers with 100% test pass rate.
 - **Infrastructure (`infra/`):** Docker Compose local orchestration with MySQL 8.0.
 
 ---
@@ -29,16 +29,27 @@ Verify the following tools are installed on your workstation:
 ## 2. Port Allocation & Host Collision Avoidance
 
 To prevent port conflicts with running Windows services on the host machine:
-- **MySQL Container:** Exposes host port **`3307`** (mapped internally to `mysql:3306`). This prevents collision with any existing host MySQL service listening on port `3306`.
-- **Host MySQL:** Can optionally be used on port **`3306`** with the dedicated `voyage` database.
-- **Spring Boot Backend:** Runs on host port **`8081`** (`http://localhost:8081`), avoiding port `8080` (occupied on some environments by `AgentService`).
+- **MySQL Container:** Exposes host port **`3307`** (mapped internally to `mysql:3306`) with the canonical application database **`voyage`**. External tools (such as MySQL Workbench or local CLI tools) access the Docker database at `127.0.0.1:3307/voyage` (user: `voyage_user`, password: `voyage_dev_password`).
+- **Host Native MySQL:** Remains untouched on port `3306` to avoid conflict with local developer services.
+- **Spring Boot Backend:** Runs on port **`8081`** (`http://localhost:8081`), avoiding port `8080` (occupied on some environments by `AgentService`). Inside Docker, it connects directly to `jdbc:mysql://mysql:3306/voyage`.
 - **Frontend Client:** Served via Vite on port **`5173`** (`http://localhost:5173`).
 
 ---
 
 ## 3. Quick Start & Local Setup
 
-### Step 1: Configure Local Environment
+### One-Click Launch (Windows)
+Run `start.bat` in the repository root to automatically verify and launch all dependencies in the correct order (MySQL -> Spring Boot backend -> Vite frontend), wait for readiness checks, open `http://localhost:5173` in your default browser, and display active service URLs:
+```cmd
+start.bat
+```
+The script safely reuses any already-running services and never modifies or resets existing database records.
+
+---
+
+### Manual Step-by-Step Setup
+
+#### Step 1: Configure Local Environment
 Copy the environment template:
 ```powershell
 # Windows PowerShell:
@@ -49,7 +60,7 @@ cp .env.example .env
 ```
 
 ### Step 2: Start the MySQL Database
-You can either use the containerized Docker MySQL instance:
+Start the containerized Docker MySQL instance:
 ```bash
 docker compose -f infra/docker-compose.yml up -d mysql
 ```
@@ -58,7 +69,7 @@ Verify the container is healthy:
 docker inspect --format="{{.State.Health.Status}}" voyage_ai_mysql
 # Output should be: healthy
 ```
-Or connect to a local MySQL 8.0 instance on `localhost:3306` ensuring the `voyage` database exists (see `infra/init-db.sql`).
+The container automatically provisions the canonical database **`voyage`** (see `infra/init-db.sql`). For local administration via MySQL Workbench, connect to `127.0.0.1:3307`, user `voyage_user`, password `voyage_dev_password`, default schema `voyage`.
 
 ### Step 3: Run the Backend (Spring Boot)
 In a terminal window:

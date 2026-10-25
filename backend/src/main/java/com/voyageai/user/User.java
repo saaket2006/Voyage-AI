@@ -20,8 +20,20 @@ public class User {
     @Column(name = "display_name", length = 100, nullable = false)
     private String displayName;
 
+    @Column(name = "auth_provider", length = 50, nullable = false)
+    private String authProvider = "LOCAL";
+
+    @Column(name = "provider_subject", length = 255)
+    private String providerSubject;
+
+    @Column(name = "profile_image_url", length = 512)
+    private String profileImageUrl;
+
     @Column(name = "preferences", columnDefinition = "TEXT")
     private String preferences;
+
+    @Column(name = "role", length = 20, nullable = false)
+    private String role = "ROLE_USER";
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
@@ -37,6 +49,16 @@ public class User {
         this.email = email;
         this.passwordHash = passwordHash;
         this.displayName = displayName;
+        this.authProvider = "LOCAL";
+    }
+
+    public User(String id, String email, String passwordHash, String displayName, String authProvider, String providerSubject) {
+        this.id = id;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.displayName = displayName;
+        this.authProvider = authProvider != null ? authProvider : "LOCAL";
+        this.providerSubject = providerSubject;
     }
 
     @PrePersist
@@ -86,12 +108,44 @@ public class User {
         this.displayName = displayName;
     }
 
+    public String getAuthProvider() {
+        return authProvider;
+    }
+
+    public void setAuthProvider(String authProvider) {
+        this.authProvider = authProvider;
+    }
+
+    public String getProviderSubject() {
+        return providerSubject;
+    }
+
+    public void setProviderSubject(String providerSubject) {
+        this.providerSubject = providerSubject;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
     public String getPreferences() {
         return preferences;
     }
 
     public void setPreferences(String preferences) {
         this.preferences = preferences;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = (role != null && !role.isBlank()) ? role : "ROLE_USER";
     }
 
     public Instant getCreatedAt() {

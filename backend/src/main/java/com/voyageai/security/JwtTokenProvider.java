@@ -44,6 +44,10 @@ public class JwtTokenProvider {
     }
 
     public String generateToken(String userId, String email, String displayName) {
+        return generateToken(userId, email, displayName, "ROLE_USER");
+    }
+
+    public String generateToken(String userId, String email, String displayName, String role) {
         long nowSeconds = Instant.now().getEpochSecond();
         long expSeconds = nowSeconds + (expirationMs / 1000);
 
@@ -59,6 +63,7 @@ public class JwtTokenProvider {
             payload.put("sub", userId);
             payload.put("email", email);
             payload.put("displayName", displayName);
+            payload.put("role", role != null ? role : "ROLE_USER");
             payload.put("iat", nowSeconds);
             payload.put("exp", expSeconds);
             String encodedPayload = base64UrlEncode(objectMapper.writeValueAsBytes(payload));
@@ -83,7 +88,8 @@ public class JwtTokenProvider {
             String userId = (String) claims.get("sub");
             String email = (String) claims.get("email");
             String displayName = (String) claims.get("displayName");
-            return UserPrincipal.create(userId, email, displayName);
+            String role = (String) claims.getOrDefault("role", "ROLE_USER");
+            return UserPrincipal.create(userId, email, displayName, role);
         });
     }
 

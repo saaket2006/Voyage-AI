@@ -70,11 +70,12 @@ class DatabaseFlywayIntegrationTest {
                     .contains("jdbc:h2:mem:voyage_flyway_test");
 
             assertThat(url.toLowerCase())
-                    .as("Safety violation prevention: Must NEVER point to host voyage or pat database")
+                    .as("Safety violation prevention: Must NEVER point to host voyage, pat, or legacy voyage_ai database")
                     .doesNotContain("localhost:3306/voyage")
                     .doesNotContain("localhost:3306/pat")
                     .doesNotContain(":3307/voyage")
-                    .doesNotContain(":3307/pat");
+                    .doesNotContain(":3307/pat")
+                    .doesNotContain("voyage_ai");
         }
     }
 

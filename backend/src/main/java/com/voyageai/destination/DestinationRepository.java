@@ -18,8 +18,18 @@ public interface DestinationRepository extends JpaRepository<Destination, String
            " LOWER(d.state) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
            " LOWER(d.description) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
            " LOWER(d.tagline) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
-           "(:region IS NULL OR :region = '' OR :region = 'All' OR LOWER(d.region) = LOWER(:region)) AND " +
-           "(:travelStyle IS NULL OR :travelStyle = '' OR :travelStyle = 'All' OR LOWER(d.travelStyles) LIKE LOWER(CONCAT('%', :travelStyle, '%'))) AND " +
+           "(:region IS NULL OR :region = '' OR :region = 'All' OR " +
+           " LOWER(d.region) = LOWER(:region) OR " +
+           " LOWER(d.region) LIKE LOWER(CONCAT(:region, '%')) OR " +
+           " LOWER(:region) LIKE LOWER(CONCAT(d.region, '%'))) AND " +
+           "(:travelStyle IS NULL OR :travelStyle = '' OR :travelStyle = 'All' OR " +
+           " LOWER(d.travelStyles) LIKE LOWER(CONCAT('%', :travelStyle, '%')) OR " +
+           " (:travelStyle = 'Heritage & Culture' AND (LOWER(d.travelStyles) LIKE '%heritage%' OR LOWER(d.travelStyles) LIKE '%culture%')) OR " +
+           " (:travelStyle = 'Nature & Wildlife' AND (LOWER(d.travelStyles) LIKE '%nature%' OR LOWER(d.travelStyles) LIKE '%wildlife%')) OR " +
+           " (:travelStyle = 'Wellness & Spiritual' AND (LOWER(d.travelStyles) LIKE '%spiritual%' OR LOWER(d.travelStyles) LIKE '%wellness%')) OR " +
+           " (:travelStyle = 'Beach & Coastal' AND (LOWER(d.travelStyles) LIKE '%beach%' OR LOWER(d.travelStyles) LIKE '%coastal%')) OR " +
+           " (:travelStyle = 'Adventure & Trekking' AND (LOWER(d.travelStyles) LIKE '%adventure%' OR LOWER(d.travelStyles) LIKE '%trekking%')) OR " +
+           " (:travelStyle = 'Culinary & Food' AND (LOWER(d.travelStyles) LIKE '%food%' OR LOWER(d.travelStyles) LIKE '%culinary%'))) AND " +
            "(:budgetTier IS NULL OR :budgetTier = '' OR :budgetTier = 'All' OR LOWER(d.budgetTier) = LOWER(:budgetTier))")
     Page<Destination> findWithFilters(@Param("search") String search,
                                       @Param("region") String region,
@@ -28,4 +38,9 @@ public interface DestinationRepository extends JpaRepository<Destination, String
                                       Pageable pageable);
 
     List<Destination> findByRegion(String region);
+
+    java.util.Optional<Destination> findBySourceProviderAndProviderRecordId(String sourceProvider, String providerRecordId);
+
+    java.util.Optional<Destination> findByNameIgnoreCase(String name);
 }
+

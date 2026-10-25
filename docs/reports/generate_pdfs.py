@@ -325,8 +325,8 @@ def render_markdown_to_html(md_content, title):
 {html_body}
     </div>
     <div class="footer-print">
-        <span>Voyage-AI (Phase 1 Baseline) · Implementation-Verified Documentation</span>
-        <span>Generated: October 21, 2026 · Confidential & Proprietary</span>
+        <span>Voyage-AI (Phase 2 Baseline) · Implementation-Verified Documentation</span>
+        <span>Generated: October 25, 2026 · Implementation-Verified</span>
     </div>
 </body>
 </html>"""

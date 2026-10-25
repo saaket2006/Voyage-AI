@@ -56,3 +56,15 @@ gemini:
   base-url: ${GEMINI_BASE_URL:https://generativelanguage.googleapis.com/v1beta}
   connect-timeout-ms: ${GEMINI_CONNECT_TIMEOUT_MS:5000}
   read-timeout-ms: ${GEMINI_READ_TIMEOUT_MS:15000}
+
+# Destination Ingestion & Provider Configuration
+app:
+  destinations:
+    import:
+      enabled: ${APP_DESTINATIONS_IMPORT_ENABLED:false}
+    wikimedia:
+      base-url: ${WIKIMEDIA_BASE_URL:https://en.wikipedia.org/api/rest_v1}
+      user-agent: ${WIKIMEDIA_USER_AGENT:VoyageAI/1.0 (academic-travel-planner; contact@voyageai.local)}
+      connect-timeout-ms: ${WIKIMEDIA_CONNECT_TIMEOUT_MS:5000}
+      read-timeout-ms: ${WIKIMEDIA_READ_TIMEOUT_MS:10000}
+

@@ -56,6 +56,15 @@ public class TripController {
         return ResponseEntity.ok(ApiResponse.success(response, "Trip updated successfully."));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<ApiResponse<TripResponse>> patchTrip(
+            @PathVariable String id,
+            @Valid @RequestBody UpdateTripRequest request,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        TripResponse response = tripService.updateTrip(id, principal.getId(), request);
+        return ResponseEntity.ok(ApiResponse.success(response, "Trip updated successfully."));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteTrip(
             @PathVariable String id,

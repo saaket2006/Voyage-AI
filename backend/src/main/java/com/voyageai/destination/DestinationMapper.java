@@ -92,7 +92,12 @@ public class DestinationMapper {
                 destination.getLicenseType(),
                 destination.getAttributionText(),
                 destination.getAttributionUrl(),
-                destination.getVerificationStatus()
+                destination.getVerificationStatus(),
+                destination.getImageAttributionText(),
+                destination.getImageLicenseType(),
+                destination.getImageLicenseUrl(),
+                destination.getImageSourceUrl(),
+                destination.getCurationStatus()
         );
         dto.setProvenance(provenance);
     }

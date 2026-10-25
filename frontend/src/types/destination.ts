@@ -56,6 +56,18 @@ export interface BudgetBreakdown {
   };
 }
 
+export interface DestinationProvenance {
+  provider: string;
+  sourceUrl?: string;
+  license?: string;
+  retrievedAt?: string;
+  imageAttributionText?: string;
+  imageLicenseType?: string;
+  imageLicenseUrl?: string;
+  imageSourceUrl?: string;
+  curationStatus?: string;
+}
+
 export interface Destination {
   id: string;
   name: string;
@@ -81,4 +93,5 @@ export interface Destination {
     tempC: number;
     condition: string;
   };
+  provenance?: DestinationProvenance;
 }

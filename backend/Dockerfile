@@ -14,6 +14,6 @@ RUN groupadd -r voyage && useradd -r -g voyage voyage
 COPY --from=builder /build/target/voyage-ai-backend-0.0.1-SNAPSHOT.jar app.jar
 
 USER voyage
-EXPOSE 8080
+EXPOSE 8081
 
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]

@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "backend/pom.xml": {
-    "mtime": 1792907567.2937708,
-    "ast_hash": "ab30b15ab8fbb8d1b47988859c104448",
+    "mtime": 1792910654.4812305,
+    "ast_hash": "f1b1c1d83b9bc0f3ae8c4a3f2dfe506c",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/VoyageAiApplication.java": {
@@ -75,8 +75,8 @@
     "semantic_hash": ""
   },
   "frontend/src/App.tsx": {
-    "mtime": 1792907143.2449365,
-    "ast_hash": "2b4c4a3b7da5e88eff009ad89d0d5d3b",
+    "mtime": 1792919523.3785646,
+    "ast_hash": "28b989d9b83d0ef764edb6040f60eaf0",
     "semantic_hash": ""
   },
   "frontend/src/components/common/Badge.tsx": {
@@ -100,13 +100,13 @@
     "semantic_hash": ""
   },
   "frontend/src/components/discovery/DestinationCard.tsx": {
-    "mtime": 1792491419.1621833,
-    "ast_hash": "8b37adc5fcfc616fad1a39146bd4db11",
+    "mtime": 1792919412.3261094,
+    "ast_hash": "efc739a63c38e3ad10dabbe6c058d84c",
     "semantic_hash": ""
   },
   "frontend/src/components/discovery/DestinationDetailModal.tsx": {
-    "mtime": 1792491204.530746,
-    "ast_hash": "6d94146d9ea6bb7a1cc1c5d6e9b6dfd0",
+    "mtime": 1792919436.9557104,
+    "ast_hash": "d999abd5516d865cb518865879c7bb23",
     "semantic_hash": ""
   },
   "frontend/src/components/discovery/FilterBar.tsx": {
@@ -140,8 +140,8 @@
     "semantic_hash": ""
   },
   "frontend/src/types/destination.ts": {
-    "mtime": 1792489815.23684,
-    "ast_hash": "2b355b2ce8ee64b4923faf0153df0234",
+    "mtime": 1792919394.9102557,
+    "ast_hash": "e38f511cbae4e144687e1bb35a147f33",
     "semantic_hash": ""
   },
   "frontend/src/vite-env.d.ts": {
@@ -435,13 +435,13 @@
     "semantic_hash": ""
   },
   "Architecture.md": {
-    "mtime": 1792908070.9072318,
-    "ast_hash": "462b4cdc4c437089154b5985902cf9c4",
+    "mtime": 1792923313.4866495,
+    "ast_hash": "9ed8bef1a8c28b03b804d85d1bbff95b",
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1792500636.2950363,
-    "ast_hash": "52bd333093bd3a811fe8108632d9acdd",
+    "mtime": 1792924013.8310087,
+    "ast_hash": "a2235c354293e60cf7fe4ee357725bab",
     "semantic_hash": ""
   },
   "backend/src/main/resources/application-dev.yml": {
@@ -450,13 +450,13 @@
     "semantic_hash": ""
   },
   "backend/src/main/resources/application-test.yml": {
-    "mtime": 1792907938.3186097,
-    "ast_hash": "8fa4c8f72522a5594299f58848e6818d",
+    "mtime": 1792922801.6691003,
+    "ast_hash": "f7b7633d3f1d6416316cbb8ab3e21949",
     "semantic_hash": ""
   },
   "backend/src/main/resources/application.yml": {
-    "mtime": 1792906056.3719957,
-    "ast_hash": "bb5745279433485d3ff754cbbb615fc4",
+    "mtime": 1792914108.3985386,
+    "ast_hash": "bc40b834296bb89697254a4ab0cabf6f",
     "semantic_hash": ""
   },
   "backend/src/main/resources/db/migration/README.md": {
@@ -470,8 +470,8 @@
     "semantic_hash": ""
   },
   "docs/IMPLEMENTATION_PLAN.md": {
-    "mtime": 1792485315.1865623,
-    "ast_hash": "2b0c0ae2d6fe4122c578f38b8ecb5942",
+    "mtime": 1792913197.2871337,
+    "ast_hash": "3e337bda7f243a56838d90f0085cbcf5",
     "semantic_hash": ""
   },
   "docs/JWT_AUTH_DESIGN.md": {
@@ -485,8 +485,8 @@
     "semantic_hash": ""
   },
   "docs/OPEN_DECISIONS.md": {
-    "mtime": 1792494527.0243642,
-    "ast_hash": "fec0690163ca0750a6836f33d1f0458d",
+    "mtime": 1792913217.791373,
+    "ast_hash": "34de8369169e7873ca09a3fe4118a6f9",
     "semantic_hash": ""
   },
   "docs/PRD.md": {
@@ -495,8 +495,8 @@
     "semantic_hash": ""
   },
   "docs/README.md": {
-    "mtime": 1792485315.020564,
-    "ast_hash": "bf7ecb852fe3471801e363ffeb247c0c",
+    "mtime": 1792913286.03232,
+    "ast_hash": "07b7f879d691d75cd45a9fad97104dfa",
     "semantic_hash": ""
   },
   "docs/SRS.md": {
@@ -510,23 +510,13 @@
     "semantic_hash": ""
   },
   "docs/TRACEABILITY_MATRIX.md": {
-    "mtime": 1792485315.1024692,
-    "ast_hash": "ce090729d9e6e0c0f710194b70ebe869",
+    "mtime": 1792913249.9960532,
+    "ast_hash": "b8f7f2adc355c8a43e13296c32e08d2c",
     "semantic_hash": ""
   },
   "docs/UI_UX_SPEC.md": {
     "mtime": 1792485315.1303492,
     "ast_hash": "37d13f7bd483c351177efe77e4a8e1a0",
-    "semantic_hash": ""
-  },
-  "docs/architecture/JWT_AUTH_DESIGN.md": {
-    "mtime": 1792488352.6761394,
-    "ast_hash": "952d5f0d77c2b094a9ced15f8606cdff",
-    "semantic_hash": ""
-  },
-  "docs/audit/PRE_IMPLEMENTATION_AUDIT.md": {
-    "mtime": 1792485855.6768782,
-    "ast_hash": "509b8b7996c5613be97dd9d68a1522e2",
     "semantic_hash": ""
   },
   "docs/audit/PRE_IMPLEMENTATION_AUDIT_v1.1.md": {
@@ -542,11 +532,6 @@
   "infra/docker-compose.yml": {
     "mtime": 1792495754.2140613,
     "ast_hash": "1a5bd352ff6e8370d54333f9c66b8aad",
-    "semantic_hash": ""
-  },
-  "task.md": {
-    "mtime": 1792490359.6020906,
-    "ast_hash": "6ec840f4576c6dd858e411a751d2dff9",
     "semantic_hash": ""
   },
   "docs/screenshots/discovery_prototype_budget.png": {
@@ -655,8 +640,8 @@
     "semantic_hash": ""
   },
   "backend/src/test/java/com/voyageai/integration/db/DatabaseFlywayIntegrationTest.java": {
-    "mtime": 1792906477.662367,
-    "ast_hash": "8b4390a206a15c9fd3ea8030ca33a0c0",
+    "mtime": 1792922810.1513689,
+    "ast_hash": "6debf0b646a6e74878e255d58dbdcab7",
     "semantic_hash": ""
   },
   "scripts/run-all-tests.ps1": {
@@ -675,8 +660,8 @@
     "semantic_hash": ""
   },
   "docs/TEST_STRATEGY.md": {
-    "mtime": 1792499822.9613612,
-    "ast_hash": "8576457ea33423d7e14456ee3c867f88",
+    "mtime": 1792913266.942855,
+    "ast_hash": "ca47726c8b7dacccb49ce313b67b6df0",
     "semantic_hash": ""
   },
   "tests/fixtures/mock-weather.json": {
@@ -715,13 +700,13 @@
     "semantic_hash": ""
   },
   "tests/src/test/java/com/voyageai/tests/browser/DestinationDetailModalTest.java": {
-    "mtime": 1792499276.1474602,
-    "ast_hash": "edd56ba1943c9b8d97543d4055cfb3c5",
+    "mtime": 1792915406.7682915,
+    "ast_hash": "bfb137f660af71832176ee6faba733ea",
     "semantic_hash": ""
   },
   "tests/src/test/java/com/voyageai/tests/browser/DestinationsDiscoveryTest.java": {
-    "mtime": 1792499265.2792418,
-    "ast_hash": "6e67bc1d4a136ef4a8f82b7ef6c7f1d0",
+    "mtime": 1792915178.5388775,
+    "ast_hash": "341a1a15809d96809d68d589b2a5963a",
     "semantic_hash": ""
   },
   "tests/src/test/java/com/voyageai/tests/browser/NavigationTest.java": {
@@ -730,8 +715,8 @@
     "semantic_hash": ""
   },
   "tests/src/test/java/com/voyageai/tests/browser/ResponsiveTest.java": {
-    "mtime": 1792499286.0867271,
-    "ast_hash": "c7e41636ac32ad0a11957924e3be64ff",
+    "mtime": 1792920522.938293,
+    "ast_hash": "f17d15b1f524cf8ef361d3777883a9a3",
     "semantic_hash": ""
   },
   "tests/src/test/java/com/voyageai/tests/config/TestConfig.java": {
@@ -760,8 +745,8 @@
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/auth/AuthService.java": {
-    "mtime": 1792907074.2943869,
-    "ast_hash": "7314288aa86eb34e4d694cf3074f50f4",
+    "mtime": 1792919623.7404652,
+    "ast_hash": "37fb727e77d0285f002ebec18b5ab986",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/auth/dto/AuthResponse.java": {
@@ -785,8 +770,8 @@
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/auth/dto/UserProfileResponse.java": {
-    "mtime": 1792907052.7586637,
-    "ast_hash": "fda601bfdb41f0790419d8c40b8828dc",
+    "mtime": 1792918900.7861724,
+    "ast_hash": "ac84e389cd92896e70fc06fae63f1086",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/auth/dto/UserSummaryDto.java": {
@@ -795,8 +780,8 @@
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/common/dto/ProvenanceDto.java": {
-    "mtime": 1792907107.152281,
-    "ast_hash": "c4da0dfbf4774687c03e9c64062e9a8e",
+    "mtime": 1792919077.4861724,
+    "ast_hash": "f8b22d27c14861022c0d3f13a50c8da3",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/common/exception/ConflictException.java": {
@@ -830,23 +815,23 @@
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/destination/Destination.java": {
-    "mtime": 1792906514.8811588,
-    "ast_hash": "503aae071cc532ee957a1e1854d6836b",
+    "mtime": 1792919035.9334574,
+    "ast_hash": "6639fcc3a0eb437684330659474b763a",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/destination/DestinationController.java": {
-    "mtime": 1792907220.2082784,
-    "ast_hash": "dbb5c742bd29e70a0c34fbbb90817a76",
+    "mtime": 1792919173.8603003,
+    "ast_hash": "d53c1078506938a7961aa22cf9796f2c",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/destination/DestinationMapper.java": {
-    "mtime": 1792907175.487082,
-    "ast_hash": "19980ba23b55868996fa201f3f077ecc",
+    "mtime": 1792919100.99463,
+    "ast_hash": "c71564728fc261e5be7ebb45831441cf",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/destination/DestinationRepository.java": {
-    "mtime": 1792906550.016659,
-    "ast_hash": "e90e2c0d3a7d2e8c9ebd40fbc47f8b7a",
+    "mtime": 1792919160.4452305,
+    "ast_hash": "f2d47184939c8f7dab2580932537b157",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/destination/DestinationService.java": {
@@ -980,18 +965,18 @@
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/security/JwtTokenProvider.java": {
-    "mtime": 1792906918.4693058,
-    "ast_hash": "2cc00d124e4fd57d2ddce6fb3662df6c",
+    "mtime": 1792918923.9524288,
+    "ast_hash": "ff8a20a923f28488be41f375cca1734e",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/security/SecurityConfig.java": {
-    "mtime": 1792907577.4709122,
-    "ast_hash": "fcb371be69809ceb13442d2d417d75df",
+    "mtime": 1792918985.026263,
+    "ast_hash": "042be01ae23c50b8a30aec78615ed2ea",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/security/UserPrincipal.java": {
-    "mtime": 1792906674.4695096,
-    "ast_hash": "d05960e875ff836e2801feb7abb36742",
+    "mtime": 1792918860.5637095,
+    "ast_hash": "72b70266e6c4f758e5b52c6cde9caef1",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/trip/Trip.java": {
@@ -1005,18 +990,18 @@
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/user/User.java": {
-    "mtime": 1792906489.1811626,
-    "ast_hash": "eda8358cee9d95a6ae90abfeed6ccba4",
+    "mtime": 1792918844.3526533,
+    "ast_hash": "5b699f9cd56aa46e15e78063c658d310",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/user/UserController.java": {
-    "mtime": 1792907094.208946,
-    "ast_hash": "583ff3d14d99db340ea44b99ec0bb069",
+    "mtime": 1792913913.2725632,
+    "ast_hash": "4a55c214abc67b1fb8e678e2040e2f18",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/user/UserRepository.java": {
-    "mtime": 1792906495.942443,
-    "ast_hash": "c88013b80528977c1d9f85cfc64936bf",
+    "mtime": 1792913815.2698705,
+    "ast_hash": "e5536b8d88d734b00f720a91312328ac",
     "semantic_hash": ""
   },
   "backend/src/main/resources/db/migration/V1__init_schema.sql": {
@@ -1055,23 +1040,23 @@
     "semantic_hash": ""
   },
   "frontend/src/components/ai/AiTravelAssistant.tsx": {
-    "mtime": 1792907095.9663017,
-    "ast_hash": "10b5b27d06f3cd2009a5d7e5bcfbccbf",
+    "mtime": 1792910882.7448444,
+    "ast_hash": "bde35c8118751226087f2517a4788d2b",
     "semantic_hash": ""
   },
   "docs/reports/README.md": {
-    "mtime": 1792589287.6376407,
-    "ast_hash": "e31e147e9d01d2cf1249fe08cad412d6",
+    "mtime": 1792913312.4313889,
+    "ast_hash": "0820de6931c1267272f3e1d647d174b0",
     "semantic_hash": ""
   },
   "docs/reports/architecture.md": {
-    "mtime": 1792589079.548641,
-    "ast_hash": "c652d5f6064e35a7a6b9fe2717ff3b37",
+    "mtime": 1792913464.9882884,
+    "ast_hash": "27d6c89d6fc84357474bd51d340eef97",
     "semantic_hash": ""
   },
   "docs/reports/implementation-status.md": {
-    "mtime": 1792908102.3706598,
-    "ast_hash": "88541d912a88886cbb4dc1774d693120",
+    "mtime": 1792911561.301314,
+    "ast_hash": "d28bb0319348b36453d4e5742bd96198",
     "semantic_hash": ""
   },
   "docs/reports/methodology.md": {
@@ -1080,53 +1065,53 @@
     "semantic_hash": ""
   },
   "docs/reports/project-report.md": {
-    "mtime": 1792589168.6761377,
-    "ast_hash": "5560bf3d6c219ebf1001d4d794c3b4a4",
+    "mtime": 1792913422.0977557,
+    "ast_hash": "f05ceb726354ca6fcdf64508993606a9",
     "semantic_hash": ""
   },
   "docs/reports/risks-and-roadmap.md": {
-    "mtime": 1792589264.9401836,
-    "ast_hash": "4a10e21e2e2b319948d54acdb94f4127",
+    "mtime": 1792913406.4660413,
+    "ast_hash": "d58efa048e637cfa391f46f1ab5f8d60",
     "semantic_hash": ""
   },
   "docs/reports/testing-and-quality.md": {
-    "mtime": 1792589235.7824047,
-    "ast_hash": "4eb9a6b6593fa60da38058c368fe32b6",
+    "mtime": 1792913342.264871,
+    "ast_hash": "a288b67f101f1694641eb6d2c5aa5407",
     "semantic_hash": ""
   },
   "docs/reports/README.pdf": {
-    "mtime": 1792589392.9031475,
-    "ast_hash": "80fa0d7793755f03d6d48920ceaaf3f8",
+    "mtime": 1792913490.572444,
+    "ast_hash": "c3b160253f60f1129704d037e1634bb5",
     "semantic_hash": ""
   },
   "docs/reports/architecture.pdf": {
-    "mtime": 1792589355.3626268,
-    "ast_hash": "c3bac88d3504747784456b6296497044",
+    "mtime": 1792913477.5952728,
+    "ast_hash": "406df156fcba82ce29e2222fa6977c57",
     "semantic_hash": ""
   },
   "docs/reports/implementation-status.pdf": {
-    "mtime": 1792589373.9497294,
-    "ast_hash": "cdd4ca4fec1fc4e36576008ea9f8f0f0",
+    "mtime": 1792913484.6322322,
+    "ast_hash": "691bc422c9e34b58bee476aa6aa2f350",
     "semantic_hash": ""
   },
   "docs/reports/methodology.pdf": {
-    "mtime": 1792589362.015902,
-    "ast_hash": "9f71505be2792b0bb9933baefdff755d",
+    "mtime": 1792913480.1823177,
+    "ast_hash": "ac2eaa7a1d78ea642af4825d057e5021",
     "semantic_hash": ""
   },
   "docs/reports/project-report.pdf": {
-    "mtime": 1792589368.495963,
-    "ast_hash": "a32cc35cc0bf5d569f07c4b2f03764ef",
+    "mtime": 1792913482.7279084,
+    "ast_hash": "27b2bd6f5fb5f086a12c4c305c11c434",
     "semantic_hash": ""
   },
   "docs/reports/risks-and-roadmap.pdf": {
-    "mtime": 1792589385.7144415,
-    "ast_hash": "a603b70d348b3b7bd570ee327b992dd1",
+    "mtime": 1792913488.747269,
+    "ast_hash": "7cd18dcc3a60b63bc7ba7bec5deadc6b",
     "semantic_hash": ""
   },
   "docs/reports/testing-and-quality.pdf": {
-    "mtime": 1792589379.5473287,
-    "ast_hash": "4af400162aa6730b2a3f5bcfafb0c91e",
+    "mtime": 1792913486.5167522,
+    "ast_hash": "f889036df348d042877dfadba12505d7",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/config/DatabaseMigrationConfig.java": {
@@ -1175,8 +1160,8 @@
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/trip/TripController.java": {
-    "mtime": 1792907403.6957483,
-    "ast_hash": "19e3a33e1c6f8f5a32efffd8ee0c7cbe",
+    "mtime": 1792913933.6248777,
+    "ast_hash": "77f8387be0db32e0a1017fe799112711",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/trip/TripMapper.java": {
@@ -1185,8 +1170,8 @@
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/trip/TripService.java": {
-    "mtime": 1792907372.1374416,
-    "ast_hash": "054b52a4a1fb1d024208ee84a53f9524",
+    "mtime": 1792911029.6429887,
+    "ast_hash": "a20cc985bb4e0694f1db5b8e2ce113a0",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/voyageai/trip/dto/CreateTripRequest.java": {
@@ -1222,6 +1207,111 @@
   "backend/src/test/java/com/voyageai/trip/TripApiTest.java": {
     "mtime": 1792907631.331806,
     "ast_hash": "63da091d9be61e0c977c2096d5cea3f4",
+    "semantic_hash": ""
+  },
+  "tests/src/test/java/com/voyageai/tests/api/AiApiTest.java": {
+    "mtime": 1792911044.8554518,
+    "ast_hash": "898861749d3885ab81c023895d60783d",
+    "semantic_hash": ""
+  },
+  "tests/src/test/java/com/voyageai/tests/api/PersistenceTripApiTest.java": {
+    "mtime": 1792911306.2462661,
+    "ast_hash": "4307a92da0f1d636e383b16851996ebc",
+    "semantic_hash": ""
+  },
+  "tests/src/test/java/com/voyageai/tests/browser/AiAssistantBrowserTest.java": {
+    "mtime": 1792911358.899933,
+    "ast_hash": "bd1aa1be58701f89f0d823bf851cefdf",
+    "semantic_hash": ""
+  },
+  "docs/reports/POST_IMPLEMENTATION_VERIFICATION.md": {
+    "mtime": 1792921709.8970406,
+    "ast_hash": "f53ee415050581148d9fba5adf279088",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/destination/ingestion/AdminDestinationController.java": {
+    "mtime": 1792918998.5945225,
+    "ast_hash": "1349642ea3d25cf3c718e3724215a467",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/destination/ingestion/DestinationImportRequest.java": {
+    "mtime": 1792914116.9768522,
+    "ast_hash": "7b661fed0c5c21d8750187a4d8c0bc4e",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/destination/ingestion/DestinationImportResult.java": {
+    "mtime": 1792914125.6053138,
+    "ast_hash": "205ad740ff6d3c6296e41a1577cca5c9",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/destination/ingestion/DestinationImportRunner.java": {
+    "mtime": 1792914200.887859,
+    "ast_hash": "b36054c5ec6c712f7bddd7d9449e8e4b",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/destination/ingestion/DestinationIngestionService.java": {
+    "mtime": 1792919265.2762997,
+    "ast_hash": "ddb14eb85b9589a52da7e25f2164b0cd",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/destination/ingestion/WikimediaSummaryResponse.java": {
+    "mtime": 1792914137.8961306,
+    "ast_hash": "245dbba36734312f8f2ced45ce99a482",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/user/dto/UpdateProfileRequest.java": {
+    "mtime": 1792913864.6940207,
+    "ast_hash": "60bffef738731673ef6b866a66969c7c",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/voyageai/user/dto/UserSyncRequest.java": {
+    "mtime": 1792913856.4829886,
+    "ast_hash": "6f74a9825fa630205be3c5a1e381ae7e",
+    "semantic_hash": ""
+  },
+  "backend/src/main/resources/db/migration/V3__user_profile_and_destination_indexes.sql": {
+    "mtime": 1792913769.1555588,
+    "ast_hash": "ca127987ebfd51b4e3374cae44ee4ff2",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/com/voyageai/auth/UserApiTest.java": {
+    "mtime": 1792914537.0558736,
+    "ast_hash": "7cba1d46042ebdf730439faa702dde23",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/com/voyageai/destination/AdminDestinationControllerTest.java": {
+    "mtime": 1792919286.6036017,
+    "ast_hash": "19e545820598e4995fe79df8f2ac8fc8",
+    "semantic_hash": ""
+  },
+  "backend/src/test/java/com/voyageai/destination/DestinationIngestionServiceTest.java": {
+    "mtime": 1792919869.7800627,
+    "ast_hash": "ad7ae5458431cc211a3bde90fb0a6dad",
+    "semantic_hash": ""
+  },
+  "tests/src/test/java/com/voyageai/tests/api/DestinationIngestionApiTest.java": {
+    "mtime": 1792920765.010786,
+    "ast_hash": "129cce012f72981b8e045c9bc2654d12",
+    "semantic_hash": ""
+  },
+  "tests/src/test/java/com/voyageai/tests/api/UserProfileApiTest.java": {
+    "mtime": 1792914782.9672797,
+    "ast_hash": "ea6ec788e7159c31b13886e596b63083",
+    "semantic_hash": ""
+  },
+  "backend/src/main/resources/db/migration/V4__add_user_roles_and_image_licensing.sql": {
+    "mtime": 1792918816.394701,
+    "ast_hash": "ffec89508d53d17c1c2ee010fb298d2b",
+    "semantic_hash": ""
+  },
+  "docs/reports/POST_IMPLEMENTATION_AUDIT.md": {
+    "mtime": 1792921633.2043197,
+    "ast_hash": "8254bd1d47955cc04cc1777d746ce36e",
+    "semantic_hash": ""
+  },
+  "task.md": {
+    "mtime": 1792917417.7339027,
+    "ast_hash": "4a5380279cc13f195fc3e79e1de9dd22",
     "semantic_hash": ""
   }
 }

@@ -81,6 +81,21 @@ public class Destination {
     @Column(name = "verification_status", length = 32, nullable = false)
     private String verificationStatus = "UNVERIFIED";
 
+    @Column(name = "image_attribution_text", length = 255)
+    private String imageAttributionText;
+
+    @Column(name = "image_license_type", length = 64)
+    private String imageLicenseType;
+
+    @Column(name = "image_license_url", length = 512)
+    private String imageLicenseUrl;
+
+    @Column(name = "image_source_url", length = 512)
+    private String imageSourceUrl;
+
+    @Column(name = "curation_status", length = 32, nullable = false)
+    private String curationStatus = "VERIFIED";
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -293,6 +308,46 @@ public class Destination {
 
     public void setVerificationStatus(String verificationStatus) {
         this.verificationStatus = verificationStatus;
+    }
+
+    public String getImageAttributionText() {
+        return imageAttributionText;
+    }
+
+    public void setImageAttributionText(String imageAttributionText) {
+        this.imageAttributionText = imageAttributionText;
+    }
+
+    public String getImageLicenseType() {
+        return imageLicenseType;
+    }
+
+    public void setImageLicenseType(String imageLicenseType) {
+        this.imageLicenseType = imageLicenseType;
+    }
+
+    public String getImageLicenseUrl() {
+        return imageLicenseUrl;
+    }
+
+    public void setImageLicenseUrl(String imageLicenseUrl) {
+        this.imageLicenseUrl = imageLicenseUrl;
+    }
+
+    public String getImageSourceUrl() {
+        return imageSourceUrl;
+    }
+
+    public void setImageSourceUrl(String imageSourceUrl) {
+        this.imageSourceUrl = imageSourceUrl;
+    }
+
+    public String getCurationStatus() {
+        return curationStatus;
+    }
+
+    public void setCurationStatus(String curationStatus) {
+        this.curationStatus = curationStatus;
     }
 
     public Instant getCreatedAt() {

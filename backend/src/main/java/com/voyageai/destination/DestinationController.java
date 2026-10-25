@@ -38,7 +38,17 @@ public class DestinationController {
                 searchTerm, region, travelStyle, budgetTier, pageRequest);
 
         List<DestinationSummaryResponse> destinations = pageResult.getContent();
-        return ResponseEntity.ok(ApiResponse.success(destinations, "Destinations retrieved successfully."));
+
+        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+        headers.add("X-Total-Count", String.valueOf(pageResult.getTotalElements()));
+        headers.add("X-Total-Pages", String.valueOf(pageResult.getTotalPages()));
+        headers.add("X-Current-Page", String.valueOf(pageResult.getNumber()));
+        headers.add("X-Page-Size", String.valueOf(pageResult.getSize()));
+        headers.add("Access-Control-Expose-Headers", "X-Total-Count, X-Total-Pages, X-Current-Page, X-Page-Size");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(ApiResponse.success(destinations, "Destinations retrieved successfully."));
     }
 
     @GetMapping("/{id}")

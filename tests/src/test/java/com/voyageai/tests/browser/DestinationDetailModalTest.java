@@ -33,10 +33,10 @@ public class DestinationDetailModalTest extends BasePlaywrightTest {
 
         // Verify modal title
         assertThat(dialog.getByRole(AriaRole.HEADING, new Locator.GetByRoleOptions().setLevel(2).setName("Jaipur"))).isVisible();
-        assertThat(dialog.locator("text=Rajasthan, India")).isVisible();
+        assertThat(dialog.locator("text=Rajasthan, India").first()).isVisible();
 
         // Verify weather info is displayed
-        assertThat(dialog.locator("text=°C")).isVisible();
+        assertThat(dialog.locator("text=°C").first()).isVisible();
     }
 
     @Test

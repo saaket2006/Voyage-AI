@@ -53,6 +53,7 @@ public class ResponsiveTest extends BasePlaywrightTest {
 
         // Multiple destination cards visible in the grid
         Locator cards = page.locator("article");
+        assertThat(cards.first()).isVisible();
         int count = cards.count();
         assertThat(count).isGreaterThan(1);
 

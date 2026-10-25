@@ -272,6 +272,65 @@ export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
                   ))}
                 </div>
               </div>
+
+              {/* Provenance and Licensing Transparency */}
+              {destination.provenance && (
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2 mt-4">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold uppercase tracking-wider text-slate-700 text-[11px] flex items-center gap-1.5">
+                      <Info className="w-3.5 h-3.5 text-brand-700" /> Source &amp; Licensing Transparency
+                    </span>
+                    {destination.provenance.curationStatus && (
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-200 text-slate-800">
+                        {destination.provenance.curationStatus}
+                      </span>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 text-[11px]">
+                    <div>
+                      <span className="text-slate-500">Text Source: </span>
+                      <span className="font-semibold text-slate-800">{destination.provenance.provider}</span>
+                      {destination.provenance.sourceUrl && (
+                        <a
+                          href={destination.provenance.sourceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="ml-1 text-brand-700 hover:underline inline-flex items-center"
+                        >
+                          Article <ExternalLink className="w-2.5 h-2.5 ml-0.5" />
+                        </a>
+                      )}
+                    </div>
+                    <div>
+                      <span className="text-slate-500">Text License: </span>
+                      <span className="font-medium text-slate-700">{destination.provenance.license || 'CC-BY-SA 4.0'}</span>
+                    </div>
+                    {destination.provenance.imageAttributionText && (
+                      <div>
+                        <span className="text-slate-500">Photo Credit: </span>
+                        <span className="font-semibold text-slate-800">{destination.provenance.imageAttributionText}</span>
+                      </div>
+                    )}
+                    {destination.provenance.imageLicenseType && (
+                      <div>
+                        <span className="text-slate-500">Photo License: </span>
+                        {destination.provenance.imageLicenseUrl ? (
+                          <a
+                            href={destination.provenance.imageLicenseUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-brand-700 hover:underline inline-flex items-center font-medium"
+                          >
+                            {destination.provenance.imageLicenseType} <ExternalLink className="w-2.5 h-2.5 ml-0.5" />
+                          </a>
+                        ) : (
+                          <span className="font-medium text-slate-700">{destination.provenance.imageLicenseType}</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

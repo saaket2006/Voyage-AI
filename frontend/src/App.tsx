@@ -23,6 +23,12 @@ export const App: React.FC = () => {
   const [savedDestinationIds, setSavedDestinationIds] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [backendConnected, setBackendConnected] = useState<boolean>(false);
+  const [apiDestinations, setApiDestinations] = useState<Destination[] | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [pageSize] = useState<number>(12);
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081/api/v1';
 
@@ -45,37 +51,168 @@ export const App: React.FC = () => {
     };
   }, [apiBaseUrl]);
 
-  // Filtered destinations calculation
-  const filteredDestinations = useMemo(() => {
+  // Reset page to 0 whenever search or filter options change
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [searchQuery, selectedRegion, selectedStyle, selectedBudget]);
+
+  // Fetch persistent destinations from backend when connected with pagination and server-side filtering
+  useEffect(() => {
+    if (!backendConnected) {
+      setApiDestinations(null);
+      return;
+    }
+
+    let isMounted = true;
+    const fetchDestinations = async () => {
+      setIsLoading(true);
+      setFetchError(null);
+      try {
+        const params = new URLSearchParams();
+        params.append('page', currentPage.toString());
+        params.append('size', pageSize.toString());
+        if (searchQuery.trim()) {
+          params.append('search', searchQuery.trim());
+        }
+        if (selectedRegion !== 'All') {
+          params.append('region', selectedRegion);
+        }
+        if (selectedStyle !== 'All') {
+          params.append('travelStyle', selectedStyle);
+        }
+        if (selectedBudget !== 'All') {
+          params.append('budgetTier', selectedBudget);
+        }
+
+        const res = await fetch(`${apiBaseUrl}/destinations?${params.toString()}`);
+        if (res.ok && isMounted) {
+          const totalCountHeader = res.headers.get('X-Total-Count');
+          const totalPagesHeader = res.headers.get('X-Total-Pages');
+          if (totalCountHeader) {
+            setTotalCount(parseInt(totalCountHeader, 10));
+          }
+          if (totalPagesHeader) {
+            setTotalPages(Math.max(1, parseInt(totalPagesHeader, 10)));
+          }
+
+          const json = await res.json();
+          const items = json.data || [];
+          const mapped: Destination[] = items.map((item: any) => {
+            const mock = MOCK_DESTINATIONS.find((m) => m.id === item.id || m.name.toLowerCase() === (item.name || '').toLowerCase());
+            return {
+              id: item.id,
+              name: item.name,
+              state: item.state || (mock ? mock.state : ''),
+              country: item.country || 'India',
+              region: (item.region || (mock ? mock.region : 'North India')) as Region,
+              tagline: item.tagline || (mock ? mock.tagline : `Explore ${item.name}`),
+              description: item.description || (mock ? mock.description : ''),
+              imageUrl: item.imageUrl || (mock ? mock.imageUrl : item.heroImageUrl) || 'https://images.unsplash.com/photo-1599661046289-e31897846e41',
+              heroImageUrl: item.heroImageUrl || (mock ? mock.heroImageUrl : item.imageUrl) || 'https://images.unsplash.com/photo-1599661046289-e31897846e41',
+              travelStyles: (item.travelStyles && item.travelStyles.length > 0)
+                ? item.travelStyles
+                : (mock ? mock.travelStyles : ['Heritage & Culture']),
+              budgetTier: (item.budgetTier as BudgetTier) || (mock ? mock.budgetTier : 'Comfort'),
+              recommendedDurationDays: item.recommendedDurationDays != null ? item.recommendedDurationDays : (mock ? mock.recommendedDurationDays : 3),
+              bestTimeToVisit: item.bestTimeToVisit || (mock ? mock.bestTimeToVisit : 'October to March'),
+              averageRating: mock ? mock.averageRating : 4.8,
+              reviewCount: mock ? mock.reviewCount : 120,
+              budgetBreakdown: mock ? mock.budgetBreakdown : {
+                currency: 'INR',
+                averageDaily: 4500,
+                estimatedTotalForTwo: 27000,
+                durationDays: item.recommendedDurationDays || 3,
+                tiers: { budget: 2500, comfort: 4500, luxury: 12000 }
+              },
+              stays: mock ? mock.stays : [],
+              dining: mock ? mock.dining : [],
+              attractions: mock ? mock.attractions : [],
+              highlights: (mock && mock.highlights.length > 0) ? mock.highlights : [item.state, item.region].filter(Boolean),
+              weather: mock ? mock.weather : { tempC: 25, condition: 'Sunny' },
+              provenance: item.provenance ? {
+                provider: item.provenance.provider,
+                sourceUrl: item.provenance.sourceUrl,
+                license: item.provenance.license,
+                retrievedAt: item.provenance.retrievedAt,
+                imageAttributionText: item.provenance.imageAttributionText,
+                imageLicenseType: item.provenance.imageLicenseType,
+                imageLicenseUrl: item.provenance.imageLicenseUrl,
+                imageSourceUrl: item.provenance.imageSourceUrl,
+                curationStatus: item.provenance.curationStatus,
+              } : undefined
+            };
+          });
+          setApiDestinations(mapped);
+          if (!totalCountHeader) {
+            setTotalCount(mapped.length);
+            setTotalPages(1);
+          }
+        } else if (isMounted) {
+          setFetchError(`Backend returned ${res.status}`);
+        }
+      } catch (err: any) {
+        console.warn('Failed to fetch destinations from backend:', err);
+        if (isMounted) {
+          setFetchError(err.message || 'Network error fetching destinations');
+        }
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    };
+
+    fetchDestinations();
+    return () => {
+      isMounted = false;
+    };
+  }, [backendConnected, apiBaseUrl, currentPage, pageSize, searchQuery, selectedRegion, selectedStyle, selectedBudget]);
+
+  // Mock destinations client-side filtering (fallback when backend is not connected)
+  const mockFiltered = useMemo(() => {
+    if (backendConnected && apiDestinations !== null) {
+      return [];
+    }
     return MOCK_DESTINATIONS.filter((item) => {
-      // Region filter
-      if (selectedRegion !== 'All' && item.region !== selectedRegion) {
-        return false;
-      }
-      // Style filter
-      if (selectedStyle !== 'All' && !item.travelStyles.includes(selectedStyle)) {
-        return false;
-      }
-      // Budget filter
-      if (selectedBudget !== 'All' && item.budgetTier !== selectedBudget) {
-        return false;
-      }
-      // Search query filter
+      if (selectedRegion !== 'All' && item.region !== selectedRegion) return false;
+      if (selectedStyle !== 'All' && !item.travelStyles.includes(selectedStyle)) return false;
+      if (selectedBudget !== 'All' && item.budgetTier !== selectedBudget) return false;
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
         const matchesName = item.name.toLowerCase().includes(query);
         const matchesState = item.state.toLowerCase().includes(query);
-        const matchesTagline = item.tagline.toLowerCase().includes(query);
-        const matchesHighlights = item.highlights.some((h) => h.toLowerCase().includes(query));
-        const matchesStays = item.stays.some((s) => s.name.toLowerCase().includes(query));
-        const matchesDining = item.dining.some((d) => d.name.toLowerCase().includes(query) || d.mustTry.toLowerCase().includes(query));
-        if (!matchesName && !matchesState && !matchesTagline && !matchesHighlights && !matchesStays && !matchesDining) {
+        const matchesTagline = (item.tagline || '').toLowerCase().includes(query);
+        const matchesHighlights = (item.highlights || []).some((h) => h.toLowerCase().includes(query));
+        if (!matchesName && !matchesState && !matchesTagline && !matchesHighlights) {
           return false;
         }
       }
       return true;
     });
-  }, [selectedRegion, selectedStyle, selectedBudget, searchQuery]);
+  }, [backendConnected, apiDestinations, selectedRegion, selectedStyle, selectedBudget, searchQuery]);
+
+  // Active destinations to render on the current page
+  const activeDestinations = useMemo(() => {
+    if (backendConnected && apiDestinations !== null) {
+      return apiDestinations;
+    }
+    const start = currentPage * pageSize;
+    return mockFiltered.slice(start, start + pageSize);
+  }, [backendConnected, apiDestinations, mockFiltered, currentPage, pageSize]);
+
+  // Total matching count across the entire catalog
+  const activeTotalCount = useMemo(() => {
+    if (backendConnected && apiDestinations !== null) {
+      return totalCount;
+    }
+    return mockFiltered.length;
+  }, [backendConnected, apiDestinations, totalCount, mockFiltered.length]);
+
+  // Total available pages
+  const activeTotalPages = useMemo(() => {
+    if (backendConnected && apiDestinations !== null) {
+      return totalPages;
+    }
+    return Math.max(1, Math.ceil(mockFiltered.length / pageSize));
+  }, [backendConnected, apiDestinations, totalPages, mockFiltered.length, pageSize]);
 
   const hasActiveFilters =
     selectedRegion !== 'All' || selectedStyle !== 'All' || selectedBudget !== 'All' || searchQuery.trim() !== '';
@@ -85,6 +222,7 @@ export const App: React.FC = () => {
     setSelectedStyle('All');
     setSelectedBudget('All');
     setSearchQuery('');
+    setCurrentPage(0);
   };
 
   const handleToggleSave = (id: string) => {
@@ -123,45 +261,90 @@ export const App: React.FC = () => {
             {/* Filter Bar */}
             <FilterBar
               selectedRegion={selectedRegion}
-              onSelectRegion={(reg) => {
-                setIsLoading(true);
-                setSelectedRegion(reg);
-                setTimeout(() => setIsLoading(false), 120);
-              }}
+              onSelectRegion={(reg) => setSelectedRegion(reg)}
               selectedStyle={selectedStyle}
-              onSelectStyle={(style) => {
-                setIsLoading(true);
-                setSelectedStyle(style);
-                setTimeout(() => setIsLoading(false), 120);
-              }}
+              onSelectStyle={(style) => setSelectedStyle(style)}
               selectedBudget={selectedBudget}
-              onSelectBudget={(budget) => {
-                setIsLoading(true);
-                setSelectedBudget(budget);
-                setTimeout(() => setIsLoading(false), 120);
-              }}
+              onSelectBudget={(budget) => setSelectedBudget(budget)}
               onResetFilters={handleResetFilters}
               hasActiveFilters={hasActiveFilters}
-              totalResultsCount={filteredDestinations.length}
+              totalResultsCount={activeTotalCount}
             />
 
-            {/* Destination Grid / Loading / Empty State */}
+            {/* Destination Grid / Loading / Error / Empty State */}
             {isLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
                   <SkeletonCard key={i} />
                 ))}
               </div>
-            ) : filteredDestinations.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredDestinations.map((dest) => (
-                  <DestinationCard
-                    key={dest.id}
-                    destination={dest}
-                    onSelect={(d) => setSelectedDestination(d)}
-                  />
-                ))}
+            ) : fetchError && activeDestinations.length === 0 ? (
+              <div className="p-10 text-center bg-white rounded-3xl border border-red-200/80 shadow-xs">
+                <p className="text-base font-semibold text-slate-800">Unable to load destinations</p>
+                <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">{fetchError}</p>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="mt-4"
+                  onClick={() => setCurrentPage(0)}
+                >
+                  Retry
+                </Button>
               </div>
+            ) : activeDestinations.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {activeDestinations.map((dest) => (
+                    <DestinationCard
+                      key={dest.id}
+                      destination={dest}
+                      onSelect={(d) => setSelectedDestination(d)}
+                    />
+                  ))}
+                </div>
+
+                {/* Pagination Controls */}
+                {activeTotalPages > 1 && (
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-slate-200/80 mt-10">
+                    <p className="text-xs text-slate-600 font-medium">
+                      Showing{' '}
+                      <span className="font-semibold text-slate-900">
+                        {currentPage * pageSize + 1}
+                      </span>
+                      -
+                      <span className="font-semibold text-slate-900">
+                        {Math.min((currentPage + 1) * pageSize, activeTotalCount)}
+                      </span>{' '}
+                      of{' '}
+                      <span className="font-semibold text-slate-900">{activeTotalCount}</span> destinations
+                    </p>
+
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        disabled={currentPage === 0}
+                        onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
+                        className="disabled:opacity-40 disabled:cursor-not-allowed text-xs"
+                      >
+                        Previous
+                      </Button>
+                      <span className="text-xs font-semibold text-slate-700 px-3 py-1 bg-white rounded-lg border border-slate-200 shadow-2xs">
+                        Page {currentPage + 1} of {activeTotalPages}
+                      </span>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        disabled={currentPage >= activeTotalPages - 1}
+                        onClick={() => setCurrentPage((p) => Math.min(activeTotalPages - 1, p + 1))}
+                        className="disabled:opacity-40 disabled:cursor-not-allowed text-xs"
+                      >
+                        Next
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </>
             ) : (
               <EmptyState onReset={handleResetFilters} />
             )}

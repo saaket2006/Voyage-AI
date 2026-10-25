@@ -45,6 +45,16 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({ destination, o
           </div>
         </div>
 
+        {/* Photo Attribution Credit when available */}
+        {destination.provenance?.imageAttributionText && (
+          <div
+            className="absolute bottom-1 right-2 z-10 px-1.5 py-0.5 rounded bg-black/60 backdrop-blur-xs text-[9px] text-slate-300 truncate max-w-[75%]"
+            title={`Photo: ${destination.provenance.imageAttributionText} (${destination.provenance.imageLicenseType || 'All Rights Reserved'})`}
+          >
+            📷 {destination.provenance.imageAttributionText}
+          </div>
+        )}
+
         {/* Bottom image overlay: Title & State */}
         <div className="absolute bottom-3.5 left-3.5 right-3.5 text-white pointer-events-none">
           <div className="flex items-center gap-1.5 text-xs text-slate-200 font-medium mb-0.5">
@@ -70,12 +80,12 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({ destination, o
               <span>{destination.averageRating.toFixed(1)}</span>
               <span className="text-slate-600 font-normal">({destination.reviewCount.toLocaleString()})</span>
               <span className="text-[10px] font-medium text-slate-600 bg-slate-100 px-1.5 py-0.2 rounded border border-slate-200">
-                Curated
+                {destination.provenance?.curationStatus === 'COMMUNITY_INGESTED' ? 'Community' : 'Curated'}
               </span>
             </div>
             <div className="flex items-center gap-1 text-slate-600">
               <Clock className="w-3.5 h-3.5" />
-              <span>{destination.recommendedDurationDays} Days Recommended</span>
+              <span>{destination.recommendedDurationDays > 0 ? `${destination.recommendedDurationDays} Days Recommended` : 'Flexible Duration'}</span>
             </div>
           </div>
 

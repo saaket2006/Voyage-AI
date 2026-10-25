@@ -54,18 +54,25 @@ Voyage-AI is an AI-powered travel companion connecting destination discovery, ac
 
 ## 3. Primary Data Stores & Persistence
 
-- **Primary Relational Database:** **MySQL 8.0**.
-- **Data Access:** Spring Data JPA with Hibernate ORM.
-- **Schema Management:** Versioned migrations using Flyway (`db/migration/V*`).
-- **Data Authenticity & Provenance:** Every factual travel entity table (`destinations`, `attractions`, `accommodations`, `dining_places`) enforces non-nullable provenance columns: `source_provider`, `provider_record_id`, `retrieved_at`, `stale_after`, `license_type`, `attribution_text`, and `verification_status` (defaulting to `'UNVERIFIED'`, never defaulting to verified). Volatile factual fields (entry fees, nightly rates, operational hours) use structured field-level verification envelopes.
+- **Primary Relational Database:** **MySQL 8.0** with single canonical schema **`voyage`** (the legacy `voyage_ai` schema is deprecated, retained strictly as a non-active historical recovery backup, and never contacted by runtime services or migrations).
+- **Data Access:** Spring Data JPA with Hibernate ORM (`ddl-auto: validate`).
+- **Schema Management:** Versioned migrations using Flyway (`db/migration/V*`) applied exclusively against `voyage`:
+  - `V0__baseline.sql`: Baseline schema definition.
+  - `V1__init_schema.sql`: Core relational tables (`users`, `destinations`, `travel_listings`, `trips`, `itinerary_days`, `itinerary_items`).
+  - `V2__seed_travel_data.sql`: Curated authentic seed records for heritage destinations.
+  - `V3__user_profile_and_destination_indexes.sql`: Extended user profile persistence (`auth_provider`, `provider_subject`, `profile_image_url`) and performance indexes (`idx_users_provider`, `idx_destinations_provider`).
+  - `V4__add_user_roles_and_image_licensing.sql`: User role authorization (`role` with `ROLE_USER` default and `ROLE_ADMIN`), destination image licensing (`image_attribution_text`, `image_license_type`, `image_license_url`, `image_source_url`), and destination curation status (`curation_status`).
+- **Data Authenticity & Provenance:** Every factual travel entity table (`destinations`, `attractions`, `accommodations`, `dining_places`) enforces non-nullable provenance columns: `source_provider`, `provider_record_id`, `retrieved_at`, `stale_after`, `license_type`, `attribution_text`, and `verification_status` (defaulting to `'UNVERIFIED'`, never defaulting to verified). Volatile factual fields (entry fees, nightly rates, operational hours) use structured field-level verification envelopes. Image media items carry distinct attribution text, specific Creative Commons / Public Domain license types, license URLs, and source URLs.
 - **Test Fixture Isolation:** Test fixtures are physically segregated in `src/test/` directories and never bundled, served, or fallen back to in production runtime flows.
 - **Core Entities:** `User`, `Destination`, `TravelListing`, `Trip`, `ItineraryDay`, `ItineraryItem`.
 
 ## 4. Authentication & Authorization Boundaries
 
-- **Public Zone:** Destination catalog, travel listings, user registration, and sign-in endpoints.
-- **Protected Zone:** User profile, trip creation, trip retrieval, itinerary editing, and AI proposal endpoints.
-- **Authorization Enforcement:** Server-side ownership verification ensures users can only read, update, or delete trips they own.
+- **Public Zone:** Destination catalog with server-side pagination, travel listings, user registration, and sign-in endpoints (`/api/v1/auth/**`, `/api/v1/destinations/**`, `/api/v1/listings/**`, `/api/v1/weather/**`, `/api/v1/ai/**`).
+- **Protected User Zone:** User profile management (`GET /api/v1/users/me`, `POST /api/v1/users/me/sync`, `PATCH /api/v1/users/me/profile`, `PUT /api/v1/users/me/preferences`), trip creation and scoped trips (`/api/v1/users/me/trips/**`, `/api/v1/trips/**`).
+- **Protected Administrator Zone:** Administrative operations (`POST /api/v1/admin/destinations/import`) secured via server-enforced `ROLE_ADMIN` (`@PreAuthorize("hasRole('ADMIN')")`). Unauthenticated requests yield 401 Unauthorized; ordinary authenticated users (`ROLE_USER`) yield 403 Forbidden.
+- **Administrative Role Provisioning:** Administrator privileges cannot be granted by client payloads, registration, profile updates, or preferences. Roles are assigned exclusively by server-controlled configuration (`app.security.admin-emails`) upon user creation or synchronization, and encoded into signed JWT claims.
+- **Authorization Enforcement:** Server-side ownership verification ensures users can only read, update, or delete trips they own (returning 403 Forbidden on cross-user access attempts).
 - **Security Boundary:** Stateless JWT Bearer tokens validated via Spring Security filter chains. All third-party provider keys reside exclusively in backend environment variables and are never leaked to frontend code, logs, or responses.
 
 ## 5. Major External Dependencies & Integrations
@@ -73,6 +80,7 @@ Voyage-AI is an AI-powered travel companion connecting destination discovery, ac
 - **Integration Adapter Architecture (`com.voyageai.integration`):** Decouples product domain services from specific third-party APIs via common Java interfaces with bounded timeouts (3s connect, 5s read) and circuit breaking.
 - **Interactive Map Rendering:** Leaflet.js with standard OpenStreetMap tile layer, adhering strictly to OSM Tile Usage Policies (visible attribution, HTTP cache headers respected, bulk downloading prohibited, no commercial SLA).
 - **Destinations & Heritage Data:** Attributable OpenStreetMap extracts and official Archaeological Survey of India (ASI) Gazette records stored in MySQL under ODbL; OpenTripMap designated as an optional candidate only pending formal terms confirmation.
+- **Live Destination Ingestion Pipeline (`com.voyageai.destination.ingestion`):** Automated real-data ingestion pipeline leveraging the official Wikipedia REST API (`https://en.wikipedia.org/api/rest_v1/page/summary/{title}`) for encyclopedic text and summaries under CC-BY-SA 4.0, and the Wikimedia Commons imageinfo API (`https://commons.wikimedia.org/w/api.php`) for verified photographer attribution, specific license types (CC-BY-SA 4.0, CC-BY 2.0, CC0, Public Domain), and license documentation URLs. Ingests authentic geographical coordinates (validated within [-90, +90] latitude and [-180, +180] longitude), authentic Wikibase identifiers (`wikibase_item`), and original photography. Deduplication logic enforces uniqueness by provider record ID and slug identifiers to eliminate duplicate entries. Uncurated ingested cities are flagged with `curationStatus = 'COMMUNITY_INGESTED'`, `verificationStatus = 'UNVERIFIED_SOURCE'`, and `recommendedDurationDays = 0`, eliminating synthetic travel plans. Exposed operationally via `POST /api/v1/admin/destinations/import` (requiring `ROLE_ADMIN`) and an optional startup `CommandLineRunner` (`app.destinations.import.enabled`). Truthful degradation ensures missing or malformed entities return structured error entries without synthetic fabrication.
 - **Weather & Climate:** Open-Meteo free non-commercial API (up to 10,000 calls/day) with 60-minute in-memory caching, strictly labeled as numerical model forecasts.
 - **Transit & Routing:** Abstract `RoutingProvider` interface with Open Source Routing Machine (OSRM) public demo server used only for controlled development evaluation, falling back to haversine direct distance.
 - **Verified Media:** Wikimedia Commons REST API (public domain and Creative Commons photography with per-image author, license, and page attribution).
@@ -81,16 +89,19 @@ Voyage-AI is an AI-powered travel companion connecting destination discovery, ac
 
 ## 6. Deployment Boundaries
 
-- **Development:** Frontend served via Vite dev server (`http://localhost:5173`); backend served via Spring Boot (`http://localhost:8081`, avoiding host port 8080 collision with AgentService); database hosted via local host MySQL on port `3306` (database: `voyage`, user: `root`) or via Docker MySQL container on port `3307`.
-- **Containerization:** Docker Compose manages multi-container local orchestration:
-  - `mysql` container targeting database `voyage` (mapped to host port `3307` to avoid port 3306 collision).
-  - `backend` container running the compiled runnable Spring Boot JAR (exposed on host port `8081`).
-  - Optional containerized frontend reverse-proxy.
+- **Development:** Frontend served via Vite dev server (`http://localhost:5173`); backend served via Spring Boot in Docker (`http://localhost:8081`, avoiding host port 8080 collision with AgentService); database hosted via Docker MySQL container on host port `3307` targeting canonical schema `voyage`.
+- **Containerization:** Docker Compose manages multi-container local orchestration (`infra/docker-compose.yml`):
+  - `mysql` container (`voyage_ai_mysql`) exposing internal port `3306` mapped to host port `3307` with canonical database `voyage`.
+  - `backend` container (`voyage_ai_backend`) running the compiled Spring Boot application connected to `jdbc:mysql://mysql:3306/voyage` (exposed on host port `8081`).
+  - Host development tools (Spring Boot CLI, MySQL Workbench) connect to the container database via `127.0.0.1:3307/voyage`.
+  - Host-side MySQL service on port `3306` remains completely isolated and untouched.
 
 ## 7. Automated Testing & Verification Architecture
 
 - **Backend Unit & Controller Tier:** Spring Boot MockMvc / Mockito suites (`src/test/`) verify endpoints, input validation, and upstream error mapping using mocked HTTP boundaries (no live network or Gemini/Open-Meteo external calls required).
-- **Database Integration Tier:** Dedicated Flyway integration tests run against an isolated in-memory or transient test database schema. Tests strictly assert that the production database (`voyage`) and host developer databases (`pat`) are never contacted or mutated.
+- **Database Integration Tier:** Dedicated Flyway integration tests run against an isolated in-memory test database schema (`jdbc:h2:mem:voyage_test`). Tests strictly assert that the production database (`voyage`), legacy schema (`voyage_ai`), and host developer databases (`pat`) are never contacted or mutated.
+- **Frontend Unit Tier:** Vitest with React Testing Library verifies component rendering, accessibility, and fallback states.
+- **End-to-End Browser Tier:** Playwright runs multi-viewport browser tests (Desktop & Mobile Chrome) against local development servers (`http://localhost:5173`, `http://localhost:8081`). Upstream external API routes are intercepted deterministically with labelled test fixtures; real provider integration is isolated to separately invoked `@smoke` tests.
 - **Frontend Unit Tier:** Vitest with React Testing Library verifies component rendering, accessibility, and fallback states.
 - **End-to-End Browser Tier:** Playwright runs multi-viewport browser tests (Desktop & Mobile Chrome) against local development servers (`http://localhost:5173`, `http://localhost:8081`). Upstream external API routes are intercepted deterministically with labelled test fixtures; real provider integration is isolated to separately invoked `@smoke` tests.
 

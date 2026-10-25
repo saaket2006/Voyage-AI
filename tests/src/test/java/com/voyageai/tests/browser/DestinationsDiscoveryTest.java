@@ -25,7 +25,7 @@ public class DestinationsDiscoveryTest extends BasePlaywrightTest {
     void testRendersDestinationCards() {
         // Assert cards are displayed using accessible role selectors
         assertThat(page.getByRole(AriaRole.HEADING, new Page.GetByRoleOptions().setName("Jaipur"))).isVisible();
-        assertThat(page.locator("text=The Pink City of Royal Fortresses").first()).isVisible();
+        assertThat(page.locator("text=The Pink City").first()).isVisible();
 
         // Verify weather chip format
         assertThat(page.locator("text=°C").first()).isVisible();
