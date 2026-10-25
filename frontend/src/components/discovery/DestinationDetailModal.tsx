@@ -21,23 +21,31 @@ import { ImageWithFallback } from '../common/ImageWithFallback';
 
 export interface DestinationDetailModalProps {
   destination: Destination | null;
+  initialTab?: TabType;
   onClose: () => void;
   isSaved?: boolean;
   onToggleSave?: (destinationId: string) => void;
 }
 
-type TabType = 'overview' | 'stays' | 'dining' | 'attractions' | 'budget';
+export type TabType = 'overview' | 'stays' | 'dining' | 'attractions' | 'budget';
 
 export const DestinationDetailModal: React.FC<DestinationDetailModalProps> = ({
   destination,
+  initialTab = 'overview',
   onClose,
   isSaved = false,
   onToggleSave,
 }) => {
-  const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const [activeTab, setActiveTab] = useState<TabType>(initialTab);
   const modalRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const previousActiveElement = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab, destination]);
 
   // Focus management, focus trap, and Escape key handling
   useEffect(() => {

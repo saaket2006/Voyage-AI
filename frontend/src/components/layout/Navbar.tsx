@@ -1,12 +1,16 @@
 import React from 'react';
-import { Compass, Sparkles, MapPin, Bed, Utensils, CalendarDays, Search } from 'lucide-react';
+import { Compass, Sparkles, MapPin, Bed, Utensils, CalendarDays } from 'lucide-react';
+import { SearchAutocomplete } from '../search/SearchAutocomplete';
+import { SearchItem } from '../../types/search';
 
 export interface NavbarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
+  onSelectSearchResult?: (item: SearchItem) => void;
   backendConnected: boolean;
+  apiBaseUrl?: string;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -14,7 +18,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   onTabChange,
   searchQuery,
   onSearchChange,
+  onSelectSearchResult,
   backendConnected,
+  apiBaseUrl,
 }) => {
   const navItems = [
     { id: 'destinations', label: 'Destinations', icon: <MapPin className="w-4 h-4" /> },
@@ -72,16 +78,17 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Right Section: Search & System Status */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Search Input Box */}
-            <div className="relative w-20 xs:w-28 sm:w-64">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 pointer-events-none" />
-              <input
-                type="text"
+            {/* Search Input Box with Real-time Autocomplete */}
+            <div className="relative w-20 xs:w-28 sm:w-64 md:w-72 lg:w-80">
+              <SearchAutocomplete
                 value={searchQuery}
-                onChange={(e) => onSearchChange(e.target.value)}
-                placeholder="Search Jaipur, tea, fort..."
-                aria-label="Search destinations, stays, or attractions"
-                className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-100/70 hover:bg-slate-100 focus:bg-white border border-slate-200/80 rounded-xl text-slate-900 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600 transition-colors"
+                onChange={onSearchChange}
+                onSelectResult={(item) => {
+                  if (onSelectSearchResult) {
+                    onSelectSearchResult(item);
+                  }
+                }}
+                apiBaseUrl={apiBaseUrl}
               />
             </div>
 

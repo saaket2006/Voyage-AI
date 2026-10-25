@@ -3,15 +3,62 @@ import { Navbar } from './components/layout/Navbar';
 import { HeroSection } from './components/discovery/HeroSection';
 import { FilterBar } from './components/discovery/FilterBar';
 import { DestinationCard } from './components/discovery/DestinationCard';
-import { DestinationDetailModal } from './components/discovery/DestinationDetailModal';
+import { DestinationDetailModal, TabType } from './components/discovery/DestinationDetailModal';
 import { SkeletonCard } from './components/common/SkeletonCard';
 import { EmptyState } from './components/common/EmptyState';
 import { MOCK_DESTINATIONS } from './data/mockDestinations';
 import { Destination, Region, TravelStyle, BudgetTier } from './types/destination';
+import { SearchItem } from './types/search';
 import { Compass, Sparkles, MapPin, Calendar, Heart, Layers, Info } from 'lucide-react';
 import { Button } from './components/common/Button';
 import { ImageWithFallback } from './components/common/ImageWithFallback';
 import { AiTravelAssistant } from './components/ai/AiTravelAssistant';
+
+export function mapApiDestination(item: any): Destination {
+  const mock = MOCK_DESTINATIONS.find((m) => m.id === item.id || m.name.toLowerCase() === (item.name || '').toLowerCase());
+  return {
+    id: item.id,
+    name: item.name,
+    state: item.state || (mock ? mock.state : ''),
+    country: item.country || 'India',
+    region: (item.region || (mock ? mock.region : 'North India')) as Region,
+    tagline: item.tagline || (mock ? mock.tagline : `Explore ${item.name}`),
+    description: item.description || (mock ? mock.description : ''),
+    imageUrl: item.imageUrl || (mock ? mock.imageUrl : item.heroImageUrl) || 'https://images.unsplash.com/photo-1599661046289-e31897846e41',
+    heroImageUrl: item.heroImageUrl || (mock ? mock.heroImageUrl : item.imageUrl) || 'https://images.unsplash.com/photo-1599661046289-e31897846e41',
+    travelStyles: (item.travelStyles && item.travelStyles.length > 0)
+      ? item.travelStyles
+      : (mock ? mock.travelStyles : ['Heritage & Culture']),
+    budgetTier: (item.budgetTier as BudgetTier) || (mock ? mock.budgetTier : 'Comfort'),
+    recommendedDurationDays: item.recommendedDurationDays != null ? item.recommendedDurationDays : (mock ? mock.recommendedDurationDays : 3),
+    bestTimeToVisit: item.bestTimeToVisit || (mock ? mock.bestTimeToVisit : 'October to March'),
+    averageRating: mock ? mock.averageRating : 4.8,
+    reviewCount: mock ? mock.reviewCount : 120,
+    budgetBreakdown: mock ? mock.budgetBreakdown : {
+      currency: 'INR',
+      averageDaily: 4500,
+      estimatedTotalForTwo: 27000,
+      durationDays: item.recommendedDurationDays || 3,
+      tiers: { budget: 2500, comfort: 4500, luxury: 12000 }
+    },
+    stays: (item.stays && item.stays.length > 0) ? item.stays : (mock ? mock.stays : []),
+    dining: (item.dining && item.dining.length > 0) ? item.dining : (mock ? mock.dining : []),
+    attractions: (item.attractions && item.attractions.length > 0) ? item.attractions : (mock ? mock.attractions : []),
+    highlights: (mock && mock.highlights.length > 0) ? mock.highlights : [item.state, item.region].filter(Boolean),
+    weather: mock ? mock.weather : { tempC: 25, condition: 'Sunny' },
+    provenance: item.provenance ? {
+      provider: item.provenance.provider,
+      sourceUrl: item.provenance.sourceUrl,
+      license: item.provenance.license,
+      retrievedAt: item.provenance.retrievedAt,
+      imageAttributionText: item.provenance.imageAttributionText,
+      imageLicenseType: item.provenance.imageLicenseType,
+      imageLicenseUrl: item.provenance.imageLicenseUrl,
+      imageSourceUrl: item.provenance.imageSourceUrl,
+      curationStatus: item.provenance.curationStatus,
+    } : undefined
+  };
+}
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('destinations');
@@ -97,51 +144,7 @@ export const App: React.FC = () => {
 
           const json = await res.json();
           const items = json.data || [];
-          const mapped: Destination[] = items.map((item: any) => {
-            const mock = MOCK_DESTINATIONS.find((m) => m.id === item.id || m.name.toLowerCase() === (item.name || '').toLowerCase());
-            return {
-              id: item.id,
-              name: item.name,
-              state: item.state || (mock ? mock.state : ''),
-              country: item.country || 'India',
-              region: (item.region || (mock ? mock.region : 'North India')) as Region,
-              tagline: item.tagline || (mock ? mock.tagline : `Explore ${item.name}`),
-              description: item.description || (mock ? mock.description : ''),
-              imageUrl: item.imageUrl || (mock ? mock.imageUrl : item.heroImageUrl) || 'https://images.unsplash.com/photo-1599661046289-e31897846e41',
-              heroImageUrl: item.heroImageUrl || (mock ? mock.heroImageUrl : item.imageUrl) || 'https://images.unsplash.com/photo-1599661046289-e31897846e41',
-              travelStyles: (item.travelStyles && item.travelStyles.length > 0)
-                ? item.travelStyles
-                : (mock ? mock.travelStyles : ['Heritage & Culture']),
-              budgetTier: (item.budgetTier as BudgetTier) || (mock ? mock.budgetTier : 'Comfort'),
-              recommendedDurationDays: item.recommendedDurationDays != null ? item.recommendedDurationDays : (mock ? mock.recommendedDurationDays : 3),
-              bestTimeToVisit: item.bestTimeToVisit || (mock ? mock.bestTimeToVisit : 'October to March'),
-              averageRating: mock ? mock.averageRating : 4.8,
-              reviewCount: mock ? mock.reviewCount : 120,
-              budgetBreakdown: mock ? mock.budgetBreakdown : {
-                currency: 'INR',
-                averageDaily: 4500,
-                estimatedTotalForTwo: 27000,
-                durationDays: item.recommendedDurationDays || 3,
-                tiers: { budget: 2500, comfort: 4500, luxury: 12000 }
-              },
-              stays: mock ? mock.stays : [],
-              dining: mock ? mock.dining : [],
-              attractions: mock ? mock.attractions : [],
-              highlights: (mock && mock.highlights.length > 0) ? mock.highlights : [item.state, item.region].filter(Boolean),
-              weather: mock ? mock.weather : { tempC: 25, condition: 'Sunny' },
-              provenance: item.provenance ? {
-                provider: item.provenance.provider,
-                sourceUrl: item.provenance.sourceUrl,
-                license: item.provenance.license,
-                retrievedAt: item.provenance.retrievedAt,
-                imageAttributionText: item.provenance.imageAttributionText,
-                imageLicenseType: item.provenance.imageLicenseType,
-                imageLicenseUrl: item.provenance.imageLicenseUrl,
-                imageSourceUrl: item.provenance.imageSourceUrl,
-                curationStatus: item.provenance.curationStatus,
-              } : undefined
-            };
-          });
+          const mapped: Destination[] = items.map(mapApiDestination);
           setApiDestinations(mapped);
           if (!totalCountHeader) {
             setTotalCount(mapped.length);
@@ -234,6 +237,44 @@ export const App: React.FC = () => {
     });
   };
 
+  const [modalInitialTab, setModalInitialTab] = useState<TabType>('overview');
+
+  const handleSelectSearchResult = async (item: SearchItem) => {
+    let tab: TabType = 'overview';
+    if (item.route.startsWith('/attractions/')) {
+      tab = 'attractions';
+    } else if (item.route.startsWith('/dining/')) {
+      tab = 'dining';
+    }
+
+    const cityKey = (item.location?.city || item.id).toLowerCase();
+    let target = apiDestinations?.find(
+      (d) => d.id === cityKey || d.name.toLowerCase() === cityKey
+    ) || MOCK_DESTINATIONS.find(
+      (d) => d.id === cityKey || d.name.toLowerCase() === cityKey
+    );
+
+    if (backendConnected) {
+      try {
+        const res = await fetch(`${apiBaseUrl}/destinations/${encodeURIComponent(cityKey)}`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.data) {
+            target = mapApiDestination(json.data);
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to fetch full destination details for search selection:', err);
+      }
+    }
+
+    if (target) {
+      setModalInitialTab(tab);
+      setSelectedDestination(target);
+      window.history.pushState({}, '', item.route);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans selection:bg-brand-900 selection:text-white">
       {/* Editorial Navigation */}
@@ -242,7 +283,9 @@ export const App: React.FC = () => {
         onTabChange={setActiveTab}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+        onSelectSearchResult={handleSelectSearchResult}
         backendConnected={backendConnected}
+        apiBaseUrl={apiBaseUrl}
       />
 
       {/* Main Container */}
@@ -579,37 +622,32 @@ export const App: React.FC = () => {
       {/* Destination Detail Modal */}
       <DestinationDetailModal
         destination={selectedDestination}
-        onClose={() => setSelectedDestination(null)}
+        initialTab={modalInitialTab}
+        onClose={() => {
+          setSelectedDestination(null);
+          setModalInitialTab('overview');
+        }}
         isSaved={selectedDestination ? savedDestinationIds.has(selectedDestination.id) : false}
         onToggleSave={handleToggleSave}
       />
 
       {/* Editorial Footer */}
-      <footer className="border-t border-slate-200 bg-white py-10 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-600">
+      <footer className="border-t border-slate-200 bg-white py-8 mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-xl bg-brand-900 text-white flex items-center justify-center">
               <Compass className="w-4 h-4" />
             </div>
-            <div>
-              <p className="font-bold text-slate-900 font-display text-sm">Voyage-AI</p>
-              <p className="text-[11px] text-slate-600">
-                Design Foundation & Curated Discovery Prototype (Phase 1)
-              </p>
-            </div>
+            <span className="font-bold text-slate-900 font-display text-sm tracking-tight">Voyage-AI</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 text-[11px]">
-            <span className="flex items-center gap-1">
+          <div className="flex flex-wrap items-center gap-3 text-[11px]">
+            <span className="flex items-center gap-1.5">
               <Layers className="w-3.5 h-3.5 text-brand-700" />
               <span>Spring Boot 4.1.1 (Port 8081)</span>
             </span>
-            <span>•</span>
+            <span className="text-slate-300">•</span>
             <span>MySQL 8.0 (Port 3307)</span>
-            <span>•</span>
-            <span>Emil Kowalski Design Tokens</span>
-            <span>•</span>
-            <span>WCAG 2.2 AA</span>
           </div>
         </div>
       </footer>

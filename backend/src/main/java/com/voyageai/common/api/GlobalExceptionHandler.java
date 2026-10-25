@@ -52,6 +52,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
+    @ExceptionHandler(com.voyageai.search.SearchValidationException.class)
+    public ResponseEntity<ErrorResponse> handleSearchValidationException(
+            com.voyageai.search.SearchValidationException ex,
+            jakarta.servlet.http.HttpServletRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getCode(),
+                ex.getMessage(),
+                ex.getStatus().value(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(ex.getStatus()).body(errorResponse);
+    }
+
     @ExceptionHandler(org.springframework.web.bind.MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorResponse> handleMissingParameterException(org.springframework.web.bind.MissingServletRequestParameterException ex) {
         ErrorResponse errorResponse = new ErrorResponse(

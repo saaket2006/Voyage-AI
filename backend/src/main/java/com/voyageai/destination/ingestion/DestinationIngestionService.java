@@ -348,7 +348,10 @@ public class DestinationIngestionService {
 
         destination.setImageSourceUrl(imageUrl);
 
-        if (imageUrl.contains("commons.wikimedia.org") || imageUrl.contains("upload.wikimedia.org/wikipedia/commons")) {
+        if (imageUrl.contains("commons.wikimedia.org")
+                || imageUrl.contains("upload.wikimedia.org/wikipedia/commons")
+                || imageUrl.contains("thumb.wikimedia.org/wikipedia/commons")
+                || imageUrl.contains("/wikipedia/commons/")) {
             String fileName = extractCommonsFileName(imageUrl);
             if (fileName != null && !fileName.isBlank()) {
                 try {
@@ -421,17 +424,22 @@ public class DestinationIngestionService {
             int idx = decoded.indexOf("/wikipedia/commons/");
             if (idx >= 0) {
                 String sub = decoded.substring(idx + "/wikipedia/commons/".length());
+                String candidate = null;
                 if (sub.startsWith("thumb/")) {
                     String[] parts = sub.split("/");
                     if (parts.length >= 4) {
-                        return parts[3];
+                        candidate = parts[3];
                     }
                 } else {
                     String[] parts = sub.split("/");
                     if (parts.length >= 3) {
-                        return parts[2];
+                        candidate = parts[2];
                     }
                 }
+                if (candidate != null && candidate.contains("?")) {
+                    candidate = candidate.substring(0, candidate.indexOf('?'));
+                }
+                return candidate;
             }
         } catch (Exception e) {
             log.debug("Could not parse Commons file name from URL: {}", url);

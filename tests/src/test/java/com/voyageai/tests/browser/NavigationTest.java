@@ -87,4 +87,49 @@ public class NavigationTest extends BasePlaywrightTest {
         Locator nav = page.locator("nav[aria-label=\"Main Navigation\"]");
         assertThat(nav).not().isVisible();
     }
+
+    @Test
+    @DisplayName("Verifies shared footer retains logo, Spring Boot, MySQL and cleanly removes prototype and token labels")
+    void testSharedFooterRendersCleanlyWithoutRemovedLabels() {
+        page.navigate("/");
+
+        Locator footer = page.locator("footer");
+        assertThat(footer).isVisible();
+
+        // Verify Voyage-AI logo and name in footer
+        assertThat(footer.locator("text=Voyage-AI")).isVisible();
+
+        // Verify Spring Boot and MySQL version and port details remain
+        assertThat(footer.locator("text=Spring Boot 4.1.1 (Port 8081)")).isVisible();
+        assertThat(footer.locator("text=MySQL 8.0 (Port 3307)")).isVisible();
+
+        // Verify removed labels are completely absent
+        assertThat(page.locator("text=Design Foundation & Curated Discovery Prototype (Phase 1)")).hasCount(0);
+        assertThat(page.locator("text=Emil Kowalski Design Tokens")).hasCount(0);
+        assertThat(footer.locator("text=WCAG 2.2 AA")).hasCount(0);
+    }
+
+    @Test
+    @DisplayName("Verifies responsive layout of footer on mobile viewport without horizontal overflow")
+    void testFooterResponsiveOnMobileViewport() {
+        page = createMobilePage();
+        page.navigate("/");
+
+        Locator footer = page.locator("footer");
+        assertThat(footer).isVisible();
+        assertThat(footer.locator("text=Voyage-AI")).isVisible();
+        assertThat(footer.locator("text=Spring Boot 4.1.1 (Port 8081)")).isVisible();
+        assertThat(footer.locator("text=MySQL 8.0 (Port 3307)")).isVisible();
+
+        // Confirm removed text is absent
+        assertThat(page.locator("text=Design Foundation & Curated Discovery Prototype (Phase 1)")).hasCount(0);
+        assertThat(page.locator("text=Emil Kowalski Design Tokens")).hasCount(0);
+
+        // Verify no horizontal overflow on mobile
+        Boolean hasHorizontalOverflow = (Boolean) page.evaluate("() => {" +
+                "  const clientWidth = document.documentElement.clientWidth || window.innerWidth;" +
+                "  return document.documentElement.scrollWidth > clientWidth + 2;" +
+                "}");
+        assertThat(hasHorizontalOverflow).isFalse();
+    }
 }

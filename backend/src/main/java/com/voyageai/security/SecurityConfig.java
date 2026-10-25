@@ -77,7 +77,8 @@ public class SecurityConfig {
                                 "/api/v1/destinations/**",
                                 "/api/v1/listings/**",
                                 "/api/v1/weather/**",
-                                "/api/v1/ai/**"
+                                "/api/v1/ai/**",
+                                "/api/v1/search/**"
                         ).permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .requestMatchers(

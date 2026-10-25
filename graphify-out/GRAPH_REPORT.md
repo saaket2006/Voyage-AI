@@ -1,16 +1,16 @@
 # Graph Report - Voyage-AI  (2026-10-25)
 
 ## Corpus Check
-- 247 files · ~325,886 words
+- 262 files · ~332,388 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3217 nodes · 5033 edges · 205 communities (165 shown, 40 thin omitted)
-- Extraction: 88% EXTRACTED · 12% INFERRED · 0% AMBIGUOUS · INFERRED: 612 edges (avg confidence: 0.8)
+- 3357 nodes · 5304 edges · 204 communities (162 shown, 42 thin omitted)
+- Extraction: 88% EXTRACTED · 12% INFERRED · 0% AMBIGUOUS · INFERRED: 627 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `deb29078`
+- Built from commit: `96375266`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -18,7 +18,7 @@
 - App.tsx
 - devDependencies
 - Voyage-AI — Software Requirements Specification (SRS)
-- UserApiTest.java
+- SecurityConfig
 - Expo Animation Recipes
 - Core Principles
 - Animation Recipes
@@ -32,9 +32,9 @@
 - Capabilities
 - Write Swift
 - onboard.md
-- ErrorResponse
+- GlobalExceptionHandler
 - dependencies
-- Voyage-AI — Functional Requirements Document (FRD)
+- 3. Functional requirements
 - compilerOptions
 - Apple Design
 - The Fixes
@@ -46,7 +46,7 @@
 - Glossary
 - Introduce Color Strategically
 - Design Critique
-- AuthController
+- PersistenceIntegrationTest.java
 - Animation Performance
 - ItineraryDayResponse
 - 2. Token Lifecycle & Transport
@@ -112,7 +112,7 @@
 - 4. Execution Commands
 - run-all-tests.sh script
 - .getWeather
-- ApiResponse
+- AuthController
 - Destination
 - scripts
 - TripResponse
@@ -122,38 +122,38 @@
 - TravelListingResponse
 - Voyage-AI — Database Testing Strategy & Isolation
 - @eslint/js
-- eslint-plugin-react-hooks
-- eslint-plugin-react-refresh
+- ItineraryItem
+- .getListings
 - postcss
 - tailwindcss
-- @testing-library/jest-dom
+- CustomAuthenticationEntryPoint
 - @testing-library/react
-- @types/node
+- CustomAccessDeniedHandler
 - typescript-eslint
 - vite
 - @vitejs/plugin-react
 - com.voyageai:voyage-ai-tests
-- .getId
+- TripService
 - DestinationSummaryResponse
 - ListingType
-- Trip
-- ItineraryDay
+- .createTrip
+- .testTripHierarchyPersistence
 - Voyage-AI — System Architecture & Technical Design Specification
-- User
+- .register
 - UserProfileResponse
 - ProvenanceDto
-- GeminiApiIntegrationTest.java
-- PersistenceIntegrationTest.java
+- AuthService
+- ErrorResponse
 - GeminiServiceTest
 - Voyage-AI — Comprehensive Project Report
 - AuthResponse
 - JwtTokenProvider
 - 2. End-to-End Operational Workflows
-- TripApiTest.java
-- .register
+- User
+- UserApiTest.java
 - AiHealthResponse
 - AiControllerTest.java
-- DestinationDetailResponse
+- DestinationService
 - AiGenerateResponse
 - DestinationIngestionService
 - .syncProfile
@@ -163,44 +163,43 @@
 - .addItemToDay
 - 3. Engineering Implementation Status & Completed Milestones
 - DestinationRepository
-- ItineraryItem
+- ItineraryItemResponse
 - Voyage-AI — Documentation Suite Index & Navigation Guide
 - .importDestinations
 - generate_pdfs.py
-- .updateProfile
+- ItineraryDay
 - .importDestinations
 - Voyage-AI — Post-Implementation Verification & Final Acceptance Report
-- ContentUrls
+- SearchItem
 - AdminDestinationControllerTest.java
-- 3. Functional requirements
-- TripService
+- @types/react-dom
+- ApiResponse
 - DestinationImportResult
 - .updateTrip
 - .updateItem
 - AuthApiTest
-- UserProfileApiTest.java
-- DestinationImportRunner
-- .getBackendBaseUrl
-- DestinationsDiscoveryTest
-- AiApiTest.java
+- SearchItemLocation
+- typescript
+- TestConfig
+- SearchSuggestionResponse
+- JwtAuthenticationFilter
 - GoogleGeminiService
-- .addDay
-- WeatherE2ETest.java
+- TripApiTest.java
+- GeminiApiIntegrationTest.java
 - DestinationIngestionServiceTest
 - DatabaseMigrationConfig.java
 - WeatherController.java
 - HealthController.java
-- AuthService
+- vitest
+- ResourceNotFoundException
+- SearchGroup
 - Design Context
-- .onCreate
-- .onUpdate
-- DestinationIngestionApiTest.java
-- PersistenceTripApiTest.java
-- AiAssistantBrowserTest
-- DestinationDetailModalTest
-- TestConfig
-- NavigationTest
-- ResponsiveTest
+- SearchController.java
+- .handleSearchValidationException
+- DestinationImportRunner
+- AiController
+- Voyage-AI — Open Decisions and Assumptions
+- globals
 - AiGenerateRequest
 - 10. Prioritized Issues Requiring Changes & Recommended Fixes
 - 11. Remediation and Confirmed Fixes Applied
@@ -212,8 +211,8 @@
 - 8. Summary of Tests Executed vs Not Executed
 
 ## God Nodes (most connected - your core abstractions)
-1. `Destination` - 84 edges
-2. `TravelListing` - 78 edges
+1. `Destination` - 86 edges
+2. `TravelListing` - 81 edges
 3. `TravelListingResponse` - 67 edges
 4. `ApiResponse` - 53 edges
 5. `TripResponse` - 52 edges
@@ -238,23 +237,23 @@
 ## Import Cycles
 - None detected.
 
-## Communities (205 total, 40 thin omitted)
+## Communities (204 total, 42 thin omitted)
 
 ### Community 0 - "App.tsx"
-Cohesion: 0.07
-Nodes (39): App(), AiTravelAssistant(), AiTravelAssistantProps, GenerateResponse, HealthResponse, SAMPLE_PROMPTS, Badge(), BadgeProps (+31 more)
+Cohesion: 0.06
+Nodes (47): App(), mapApiDestination(), AiTravelAssistant(), AiTravelAssistantProps, GenerateResponse, HealthResponse, SAMPLE_PROMPTS, Badge() (+39 more)
 
 ### Community 1 - "devDependencies"
 Cohesion: 0.12
-Nodes (17): autoprefixer, eslint, devDependencies, autoprefixer, eslint, globals, jsdom, @types/react (+9 more)
+Nodes (17): autoprefixer, eslint, eslint-plugin-react-hooks, eslint-plugin-react-refresh, devDependencies, autoprefixer, eslint, eslint-plugin-react-hooks (+9 more)
 
 ### Community 2 - "Voyage-AI — Software Requirements Specification (SRS)"
 Cohesion: 0.05
 Nodes (37): 10. SRS acceptance criteria, 1.1 Purpose, 1.2 Scope, 1.3 Definitions, 1.4 References, 1. Introduction, 2.1 Product perspective, 2.2 User classes (+29 more)
 
-### Community 3 - "UserApiTest.java"
+### Community 3 - "SecurityConfig"
 Cohesion: 0.21
-Nodes (8): ActiveProfiles, AutoConfigureMockMvc, DisplayName, MockMvc, ObjectMapper, SpringBootTest, Test, UserApiTest
+Nodes (12): AuthenticationConfiguration, AuthenticationManager, Bean, Configuration, ObjectMapper, PasswordEncoder, SecurityConfig, CorsConfigurationSource (+4 more)
 
 ### Community 4 - "Expo Animation Recipes"
 Cohesion: 0.06
@@ -308,17 +307,17 @@ Nodes (22): 10. ARC and object lifetime, 11. Testing — Swift Testing by defaul
 Cohesion: 0.09
 Nodes (22): Assess Onboarding Needs, Context Over Ceremony, Contextual Help, Design Onboarding Experiences, Documentation & Help, Empty State Design, Feature Discovery & Adoption, Guided Tours & Walkthroughs (+14 more)
 
-### Community 17 - "ErrorResponse"
-Cohesion: 0.05
-Nodes (39): AccessDeniedException, AccessDeniedHandler, AuthenticationConfiguration, AuthenticationEntryPoint, AuthenticationException, AuthenticationManager, ErrorResponse, GlobalExceptionHandler (+31 more)
+### Community 17 - "GlobalExceptionHandler"
+Cohesion: 0.14
+Nodes (12): GlobalExceptionHandler, Logger, ResponseEntity, ConflictException, UnauthorizedException, BadCredentialsException, ExceptionHandler, MethodArgumentNotValidException (+4 more)
 
 ### Community 18 - "dependencies"
-Cohesion: 0.18
-Nodes (11): clsx, dependencies, clsx, lucide-react, react, react-dom, tailwind-merge, lucide-react (+3 more)
+Cohesion: 0.13
+Nodes (15): clsx, dependencies, clsx, lucide-react, react, react-dom, react-markdown, remark-gfm (+7 more)
 
-### Community 19 - "Voyage-AI — Functional Requirements Document (FRD)"
-Cohesion: 0.15
-Nodes (12): 1. Purpose, 2. Roles, 4. Business rules, 5. Main use cases, 6. Acceptance tests for key workflows, 7. Dependencies, UC-01: Discover a destination, UC-02: Create a trip (+4 more)
+### Community 19 - "3. Functional requirements"
+Cohesion: 0.09
+Nodes (22): 1. Purpose, 2. Roles, 3. Functional requirements, 4. Business rules, 5. Main use cases, 6. Acceptance tests for key workflows, 7. Dependencies, A. Authentication and profile (+14 more)
 
 ### Community 20 - "compilerOptions"
 Cohesion: 0.09
@@ -364,9 +363,9 @@ Nodes (18): Accent Color Application, Accessibility, Assess Color Opportunity, B
 Cohesion: 0.11
 Nodes (18): 10. Microcopy & Voice, 1. AI Slop Detection (CRITICAL), 2. Visual Hierarchy, 3. Information Architecture, 4. Emotional Resonance, 5. Discoverability & Affordance, 6. Composition & Balance, 7. Typography as Communication (+10 more)
 
-### Community 31 - "AuthController"
-Cohesion: 0.31
-Nodes (5): AuthController, PostMapping, RequestMapping, ResponseEntity, RestController
+### Community 31 - "PersistenceIntegrationTest.java"
+Cohesion: 0.09
+Nodes (18): ForbiddenException, ItineraryDayRepository, Repository, ItineraryItemRepository, Repository, ItineraryService, Service, Query (+10 more)
 
 ### Community 32 - "Animation Performance"
 Cohesion: 0.11
@@ -465,16 +464,16 @@ Cohesion: 0.33
 Nodes (6): mvnw script, clean(), die(), exec_maven(), set_java_home(), verbose()
 
 ### Community 56 - "WikimediaSummaryResponse"
-Cohesion: 0.09
-Nodes (4): Coordinates, Image, JsonIgnoreProperties, WikimediaSummaryResponse
+Cohesion: 0.07
+Nodes (6): ContentUrls, Coordinates, Image, JsonIgnoreProperties, PageUrl, WikimediaSummaryResponse
 
 ### Community 57 - "Design Engineering"
 Cohesion: 0.22
 Nodes (8): Accessibility, Design Engineering, Initial Response, prefers-reduced-motion, Review Checklist, Review Format (Required), Stagger Animations, Touch device hover states
 
 ### Community 58 - "docs/README.md"
-Cohesion: 0.10
-Nodes (14): Assumptions, Provider selection checklist, Resolved Architecture & Implementation Decisions, Voyage-AI — Open Decisions and Assumptions, Core Specifications & Technical Plans, Implementation & Verification Reports (`docs/reports/`), Verified System Architecture, Voyage-AI — Project Documentation (+6 more)
+Cohesion: 0.12
+Nodes (10): Core Specifications & Technical Plans, Implementation & Verification Reports (`docs/reports/`), Verified System Architecture, Voyage-AI — Project Documentation, 1. Status Classification Definitions, 2. Comprehensive Implementation Status Inventory, 3. Comprehensive Verification Summary, Voyage-AI — Implementation Status & Feature Inventory (+2 more)
 
 ### Community 59 - "API Design Principles"
 Cohesion: 0.25
@@ -493,8 +492,8 @@ Cohesion: 0.22
 Nodes (8): 1. Overview & Major Components, 2. Communication and Data Flows, 3. Primary Data Stores & Persistence, 4. Authentication & Authorization Boundaries, 5. Major External Dependencies & Integrations, 6. Deployment Boundaries, 7. Automated Testing & Verification Architecture, Voyage-AI — High-Level System Architecture
 
 ### Community 63 - ".get"
-Cohesion: 0.12
-Nodes (20): HealthControllerTest, ActiveProfiles, AutoConfigureMockMvc, MockMvc, SpringBootTest, Test, DestinationApiTest, ActiveProfiles (+12 more)
+Cohesion: 0.09
+Nodes (27): HealthControllerTest, ActiveProfiles, AutoConfigureMockMvc, MockMvc, SpringBootTest, Test, DestinationApiTest, ActiveProfiles (+19 more)
 
 ### Community 64 - "The Animation Decision Framework"
 Cohesion: 0.33
@@ -565,8 +564,8 @@ Cohesion: 0.04
 Nodes (5): Entity, PrePersist, PreUpdate, Table, TravelListing
 
 ### Community 82 - "BasePlaywrightTest"
-Cohesion: 0.15
-Nodes (11): AfterAll, AfterEach, Browser, BrowserContext, Playwright, TestInfo, BasePlaywrightTest, BeforeAll (+3 more)
+Cohesion: 0.05
+Nodes (36): AfterAll, AfterEach, Browser, BrowserContext, Locator, Playwright, TestInfo, BasePlaywrightTest (+28 more)
 
 ### Community 92 - "Voyage-AI — Data Authenticity, Provenance & Academic Provider Plan (v2.1)"
 Cohesion: 0.10
@@ -585,20 +584,24 @@ Cohesion: 0.17
 Nodes (11): 1. Overview & Test Architecture, 2. Test Suites Summary & Scope, 3. Database Safety Mandate, 4. Execution Commands, 5. Prerequisites for Local Testing, Backend Unit, Controller & Database Tests, Frontend Unit & Component Tests (Vitest), Full Local Test Suite (All Layers) (+3 more)
 
 ### Community 102 - ".getWeather"
-Cohesion: 0.23
+Cohesion: 0.22
 Nodes (7): Override, HttpStatus, WeatherServiceException, DisplayName, MockRestServiceServer, Test, OpenMeteoWeatherServiceTest
 
-### Community 103 - "ApiResponse"
-Cohesion: 0.12
-Nodes (8): ApiResponse, PostMapping, GetMapping, RequestMapping, ResponseEntity, RestController, TravelListingController, PostMapping
+### Community 103 - "AuthController"
+Cohesion: 0.36
+Nodes (5): AuthController, PostMapping, RequestMapping, ResponseEntity, RestController
 
 ### Community 104 - "Destination"
 Cohesion: 0.03
-Nodes (3): Destination, Entity, Table
+Nodes (5): Destination, Entity, PrePersist, PreUpdate, Table
 
 ### Community 105 - "scripts"
 Cohesion: 0.25
 Nodes (8): scripts, build, dev, lint, preview, test, test:unit, typecheck
+
+### Community 106 - "TripResponse"
+Cohesion: 0.05
+Nodes (6): TripResponse, Entity, PrePersist, PreUpdate, Table, Trip
 
 ### Community 107 - "OpenMeteoWeatherService"
 Cohesion: 0.33
@@ -612,81 +615,85 @@ Nodes (5): Directory Structure, Failure Artifacts, Running Tests, Test Suites & 
 Cohesion: 0.40
 Nodes (4): name, private, type, version
 
-### Community 128 - ".getId"
-Cohesion: 0.21
-Nodes (9): DeleteMapping, GetMapping, PatchMapping, PostMapping, PutMapping, RequestMapping, ResponseEntity, RestController (+1 more)
+### Community 115 - "ItineraryItem"
+Cohesion: 0.11
+Nodes (5): ItineraryItem, Entity, PrePersist, PreUpdate, Table
+
+### Community 116 - ".getListings"
+Cohesion: 0.31
+Nodes (5): GetMapping, RequestMapping, ResponseEntity, RestController, TravelListingController
+
+### Community 119 - "CustomAuthenticationEntryPoint"
+Cohesion: 0.30
+Nodes (8): AuthenticationEntryPoint, AuthenticationException, CustomAuthenticationEntryPoint, Component, HttpServletRequest, HttpServletResponse, ObjectMapper, Override
+
+### Community 121 - "CustomAccessDeniedHandler"
+Cohesion: 0.30
+Nodes (8): AccessDeniedException, AccessDeniedHandler, CustomAccessDeniedHandler, Component, HttpServletRequest, HttpServletResponse, ObjectMapper, Override
+
+### Community 128 - "TripService"
+Cohesion: 0.14
+Nodes (9): DeleteMapping, GetMapping, PutMapping, RequestMapping, ResponseEntity, RestController, TripController, Transactional (+1 more)
 
 ### Community 130 - "ListingType"
-Cohesion: 0.12
-Nodes (9): ListingType, ACCOMMODATION, ACTIVITY, ATTRACTION, RESTAURANT, Service, Transactional, TravelListingService (+1 more)
-
-### Community 131 - "Trip"
-Cohesion: 0.06
-Nodes (6): CreateTripRequest, Entity, PrePersist, PreUpdate, Table, Trip
-
-### Community 132 - "ItineraryDay"
-Cohesion: 0.07
-Nodes (6): CreateItineraryDayRequest, ItineraryDay, Entity, PrePersist, PreUpdate, Table
+Cohesion: 0.10
+Nodes (13): ListingType, ACCOMMODATION, ACTIVITY, ATTRACTION, RESTAURANT, TravelListingMapper, Pageable, Query (+5 more)
 
 ### Community 133 - "Voyage-AI — System Architecture & Technical Design Specification"
 Cohesion: 0.09
 Nodes (22): 1.1 Project Purpose & System Boundaries, 1.2 Core Architectural Decisions & Trade-Offs, 1. Executive Architecture Overview, 2. Verified Technology Stack, 3.1 Backend Module Architecture (`com.voyageai`), 3. Component Architecture & Domain Boundaries, 4.1 System Context Diagram, 4.2 Component Architecture & Data Flow (+14 more)
 
-### Community 134 - "User"
-Cohesion: 0.10
-Nodes (6): UnauthorizedException, Entity, PrePersist, PreUpdate, Table, User
+### Community 134 - ".register"
+Cohesion: 0.15
+Nodes (4): RegisterRequest, BeforeEach, BeforeEach, BeforeEach
 
-### Community 137 - "GeminiApiIntegrationTest.java"
-Cohesion: 0.17
-Nodes (10): DotenvLoader, Logger, GeminiApiIntegrationTest, BeforeAll, DisplayName, Logger, Tag, Test (+2 more)
-
-### Community 138 - "PersistenceIntegrationTest.java"
-Cohesion: 0.10
-Nodes (18): ForbiddenException, ItineraryDayRepository, Repository, ItineraryItemRepository, Repository, ItineraryService, Service, Repository (+10 more)
+### Community 137 - "AuthService"
+Cohesion: 0.26
+Nodes (5): AuthService, PasswordEncoder, Service, Repository, UserRepository
 
 ### Community 139 - "GeminiServiceTest"
-Cohesion: 0.35
+Cohesion: 0.33
 Nodes (5): GeminiServiceException, HttpStatus, GeminiServiceTest, DisplayName, Test
 
 ### Community 140 - "Voyage-AI — Comprehensive Project Report"
 Cohesion: 0.18
 Nodes (10): 1. Executive Summary, 2.1 The Crisis of Modern Travel Planning, 2.2 Core Project Objectives, 2. Problem Statement & Strategic Objectives, 3. Project Scope & Deliverables Matrix, 4.1 High-Level Architecture, 4.2 Verified Technology Summary, 4. System Overview & Technology Stack (+2 more)
 
-### Community 141 - "AuthResponse"
-Cohesion: 0.11
-Nodes (3): AuthResponse, UserSummaryDto, BeforeEach
-
 ### Community 142 - "JwtTokenProvider"
-Cohesion: 0.13
-Nodes (11): Component, HttpServletRequest, HttpServletResponse, Override, JwtAuthenticationFilter, Component, Logger, ObjectMapper (+3 more)
+Cohesion: 0.28
+Nodes (4): Component, Logger, ObjectMapper, JwtTokenProvider
 
 ### Community 143 - "2. End-to-End Operational Workflows"
 Cohesion: 0.13
 Nodes (14): 1.1 Evidenced Engineering Process, 1.2 Module Implementation Sequence, 1. Development Methodology & Engineering Lifecycle, 2.1 Workflow 1: Destination Discovery & Full-Catalog Paginated Filtering, 2.2 Workflow 2: User Authentication & Profile Synchronization, 2.3 Workflow 3: Multi-Day Trip Planning & Ownership Enforcement, 2.4 Workflow 4: Real Wikimedia Ingestion Pipeline with Creative Commons Attribution, 2.5 Workflow 5: Grounded AI Reasoning & Weather Forecast Retrieval (+6 more)
 
-### Community 144 - "TripApiTest.java"
-Cohesion: 0.20
-Nodes (9): ActiveProfiles, AutoConfigureMockMvc, BeforeEach, DisplayName, MockMvc, ObjectMapper, SpringBootTest, Test (+1 more)
+### Community 144 - "User"
+Cohesion: 0.08
+Nodes (6): LoginRequest, Entity, PrePersist, PreUpdate, Table, User
+
+### Community 145 - "UserApiTest.java"
+Cohesion: 0.21
+Nodes (8): ActiveProfiles, AutoConfigureMockMvc, DisplayName, MockMvc, ObjectMapper, SpringBootTest, Test, UserApiTest
 
 ### Community 146 - "AiHealthResponse"
-Cohesion: 0.14
-Nodes (7): AiController, GetMapping, RequestMapping, ResponseEntity, RestController, AiHealthResponse, Override
+Cohesion: 0.17
+Nodes (4): GetMapping, ResponseEntity, AiHealthResponse, Override
 
 ### Community 147 - "AiControllerTest.java"
-Cohesion: 0.25
-Nodes (8): GeminiService, AiControllerTest, ActiveProfiles, AutoConfigureMockMvc, DisplayName, MockMvc, SpringBootTest, Test
+Cohesion: 0.24
+Nodes (7): AiControllerTest, ActiveProfiles, AutoConfigureMockMvc, DisplayName, MockMvc, SpringBootTest, Test
 
-### Community 148 - "DestinationDetailResponse"
-Cohesion: 0.11
-Nodes (11): DestinationController, GetMapping, RequestMapping, ResponseEntity, RestController, DestinationService, Page, Pageable (+3 more)
+### Community 148 - "DestinationService"
+Cohesion: 0.22
+Nodes (8): DestinationController, RequestMapping, RestController, DestinationService, Page, Pageable, Service, Transactional
 
 ### Community 150 - "DestinationIngestionService"
 Cohesion: 0.21
 Nodes (8): DestinationIngestionService, DestinationMetadata, Autowired, Logger, ObjectMapper, RestClient, Service, Transactional
 
 ### Community 152 - "UserPrincipal"
-Cohesion: 0.20
-Nodes (4): Override, UserPrincipal, GrantedAuthority, UserDetails
+Cohesion: 0.11
+Nodes (11): ItineraryController, DeleteMapping, PostMapping, PutMapping, RequestMapping, ResponseEntity, RestController, Override (+3 more)
 
 ### Community 153 - "Voyage-AI — Testing Strategy & Software Quality Assessment"
 Cohesion: 0.18
@@ -701,12 +708,8 @@ Cohesion: 0.15
 Nodes (12): 1. Technical Risk Register, 2. Prioritized Engineering Roadmap, 3.1 Task 1 (P0): Relational Schema & Persistence Foundation — **COMPLETED & VERIFIED**, 3.2 Task 2 (P0): Stateless JWT Security & Role Authorization — **COMPLETED & VERIFIED**, 3.3 Task 3 (P1): Full-Catalog Server Pagination & Search — **COMPLETED & VERIFIED**, 3.4 Task 4 (P1): Real Wikimedia Ingestion Pipeline — **COMPLETED & VERIFIED**, 3.5 Task 5 (P2): Google Gemini AI Travel Concierge — **COMPLETED & VERIFIED**, 3.6 Task 6 (P2): Local Development Orchestrator (`start.bat`) — **COMPLETED & VERIFIED** (+4 more)
 
 ### Community 157 - "DestinationRepository"
-Cohesion: 0.29
-Nodes (5): DestinationRepository, Page, Pageable, Query, Repository
-
-### Community 158 - "ItineraryItem"
-Cohesion: 0.05
-Nodes (6): ItineraryItemResponse, ItineraryItem, Entity, PrePersist, PreUpdate, Table
+Cohesion: 0.22
+Nodes (9): DestinationRepository, Page, Pageable, Query, Repository, SearchSuggestionResponse, Service, Transactional (+1 more)
 
 ### Community 159 - "Voyage-AI — Documentation Suite Index & Navigation Guide"
 Cohesion: 0.22
@@ -720,6 +723,10 @@ Nodes (3): Override, DisplayName, Test
 Cohesion: 0.36
 Nodes (7): generate_pdf_via_edge(), main(), Converts Markdown text to full HTML5 with custom typography and CSS., Invokes Microsoft Edge Chromium in headless mode to render HTML to PDF., Validates the PDF using PyMuPDF (fitz). Returns dict with page count, size, and…, render_markdown_to_html(), validate_pdf()
 
+### Community 162 - "ItineraryDay"
+Cohesion: 0.12
+Nodes (5): ItineraryDay, Entity, PrePersist, PreUpdate, Table
+
 ### Community 163 - ".importDestinations"
 Cohesion: 0.16
 Nodes (7): AdminDestinationController, PostMapping, RequestMapping, ResponseEntity, RestController, DestinationImportRequest, PreAuthorize
@@ -729,52 +736,36 @@ Cohesion: 0.12
 Nodes (16): 1. Executive Summary, 2. Requirement-to-Implementation Traceability Matrix, 3.1 Test Suite Summary Breakdown, 3.2 Individual Test Suite Results, 3. Comprehensive Test Execution Evidence, 4.1 Google Gemini AI Verification ("Capital of India"), 4.2 Open-Meteo Weather Verification (New Delhi), 4.3 Wikimedia Commons Media Licensing (+8 more)
 
 ### Community 166 - "AdminDestinationControllerTest.java"
-Cohesion: 0.23
-Nodes (9): AdminDestinationControllerTest, ActiveProfiles, AutoConfigureMockMvc, BeforeEach, DisplayName, MockMvc, ObjectMapper, SpringBootTest (+1 more)
+Cohesion: 0.35
+Nodes (8): AdminDestinationControllerTest, ActiveProfiles, AutoConfigureMockMvc, DisplayName, MockMvc, ObjectMapper, SpringBootTest, Test
 
-### Community 167 - "3. Functional requirements"
-Cohesion: 0.20
-Nodes (10): 3. Functional requirements, A. Authentication and profile, B. Destination discovery, C. Travel listings, D. Trip setup, E. Recommendations and AI, F. Itinerary management, G. Budget (+2 more)
-
-### Community 168 - "TripService"
-Cohesion: 0.14
-Nodes (10): Transactional, TripService, DeleteMapping, GetMapping, PatchMapping, PutMapping, RequestMapping, ResponseEntity (+2 more)
+### Community 168 - "ApiResponse"
+Cohesion: 0.12
+Nodes (13): ApiResponse, GetMapping, ResponseEntity, PostMapping, DeleteMapping, GetMapping, PatchMapping, PostMapping (+5 more)
 
 ### Community 172 - "AuthApiTest"
-Cohesion: 0.14
-Nodes (10): LoginRequest, AuthApiTest, ActiveProfiles, AutoConfigureMockMvc, BeforeEach, DisplayName, MockMvc, ObjectMapper (+2 more)
+Cohesion: 0.22
+Nodes (9): AuthApiTest, ActiveProfiles, AutoConfigureMockMvc, BeforeEach, DisplayName, MockMvc, ObjectMapper, SpringBootTest (+1 more)
 
-### Community 173 - "UserProfileApiTest.java"
-Cohesion: 0.40
-Nodes (7): AuthInfo, DisplayName, HttpClient, ObjectMapper, Tag, Test, UserProfileApiTest
+### Community 175 - "TestConfig"
+Cohesion: 0.06
+Nodes (43): AiApiTest, DisplayName, HttpClient, Logger, ObjectMapper, Tag, Test, DestinationIngestionApiTest (+35 more)
 
-### Community 174 - "DestinationImportRunner"
-Cohesion: 0.48
-Nodes (5): DestinationImportRunner, Component, Logger, CommandLineRunner, ConditionalOnProperty
-
-### Community 175 - ".getBackendBaseUrl"
-Cohesion: 0.40
-Nodes (6): DisplayName, HttpClient, ObjectMapper, Tag, Test, WeatherApiTest
-
-### Community 176 - "DestinationsDiscoveryTest"
-Cohesion: 0.40
-Nodes (4): DestinationsDiscoveryTest, BeforeEach, DisplayName, Test
-
-### Community 177 - "AiApiTest.java"
-Cohesion: 0.40
-Nodes (7): AiApiTest, DisplayName, HttpClient, Logger, ObjectMapper, Tag, Test
+### Community 177 - "JwtAuthenticationFilter"
+Cohesion: 0.27
+Nodes (7): Component, HttpServletRequest, HttpServletResponse, Override, JwtAuthenticationFilter, FilterChain, OncePerRequestFilter
 
 ### Community 178 - "GoogleGeminiService"
-Cohesion: 0.24
-Nodes (6): GoogleGeminiService, Autowired, Logger, RestClient, Service, BeforeEach
+Cohesion: 0.31
+Nodes (5): GoogleGeminiService, Autowired, Logger, RestClient, Service
 
-### Community 179 - ".addDay"
-Cohesion: 0.24
-Nodes (7): ItineraryController, DeleteMapping, PostMapping, PutMapping, RequestMapping, ResponseEntity, RestController
+### Community 179 - "TripApiTest.java"
+Cohesion: 0.28
+Nodes (8): ActiveProfiles, AutoConfigureMockMvc, DisplayName, MockMvc, ObjectMapper, SpringBootTest, Test, TripApiTest
 
-### Community 180 - "WeatherE2ETest.java"
-Cohesion: 0.40
-Nodes (5): DisplayName, ObjectMapper, Tag, Test, WeatherE2ETest
+### Community 180 - "GeminiApiIntegrationTest.java"
+Cohesion: 0.17
+Nodes (10): DotenvLoader, Logger, GeminiApiIntegrationTest, BeforeAll, DisplayName, Logger, Tag, Test (+2 more)
 
 ### Community 181 - "DestinationIngestionServiceTest"
 Cohesion: 0.36
@@ -792,41 +783,37 @@ Nodes (6): GetMapping, RequestMapping, ResponseEntity, RestController, WeatherCo
 Cohesion: 0.48
 Nodes (5): HealthController, GetMapping, RequestMapping, ResponseEntity, RestController
 
-### Community 186 - "AuthService"
-Cohesion: 0.11
-Nodes (9): AuthService, PasswordEncoder, Service, Transactional, UpdatePreferencesRequest, ResourceNotFoundException, Repository, UserRepository (+1 more)
+### Community 186 - "ResourceNotFoundException"
+Cohesion: 0.12
+Nodes (4): Transactional, UpdatePreferencesRequest, ResourceNotFoundException, UpdateProfileRequest
 
 ### Community 188 - "Design Context"
 Cohesion: 0.20
 Nodes (9): 1. Component Inventory, 2. Design Review Table (Emil Kowalski Philosophy Alignment), Aesthetic & Token Specifications, Brand Personality, Design Context, Design Principles (Impeccable & Emil Kowalski Alignment), Phase 1 Implementation & Design Decisions, Users & Purpose (+1 more)
 
-### Community 191 - "DestinationIngestionApiTest.java"
-Cohesion: 0.38
-Nodes (6): DestinationIngestionApiTest, DisplayName, HttpClient, ObjectMapper, Tag, Test
+### Community 189 - "SearchController.java"
+Cohesion: 0.36
+Nodes (6): GetMapping, HttpServletRequest, RequestMapping, ResponseEntity, RestController, SearchController
 
-### Community 192 - "PersistenceTripApiTest.java"
-Cohesion: 0.44
-Nodes (6): DisplayName, HttpClient, ObjectMapper, Tag, Test, PersistenceTripApiTest
+### Community 190 - ".handleSearchValidationException"
+Cohesion: 0.43
+Nodes (3): HttpServletRequest, HttpStatus, SearchValidationException
 
-### Community 193 - "AiAssistantBrowserTest"
-Cohesion: 0.42
-Nodes (6): AiAssistantBrowserTest, DisplayName, Logger, ObjectMapper, Tag, Test
+### Community 191 - "DestinationImportRunner"
+Cohesion: 0.48
+Nodes (5): DestinationImportRunner, Component, Logger, CommandLineRunner, ConditionalOnProperty
 
-### Community 194 - "DestinationDetailModalTest"
-Cohesion: 0.42
-Nodes (4): DestinationDetailModalTest, BeforeEach, DisplayName, Test
+### Community 192 - "AiController"
+Cohesion: 0.40
+Nodes (4): AiController, RequestMapping, RestController, GeminiService
 
-### Community 195 - "TestConfig"
-Cohesion: 0.30
-Nodes (6): HealthApiTest, DisplayName, HttpClient, ObjectMapper, Test, TestConfig
+### Community 193 - "Voyage-AI — Open Decisions and Assumptions"
+Cohesion: 0.40
+Nodes (4): Assumptions, Provider selection checklist, Resolved Architecture & Implementation Decisions, Voyage-AI — Open Decisions and Assumptions
 
-### Community 197 - "NavigationTest"
-Cohesion: 0.62
-Nodes (3): DisplayName, Test, NavigationTest
-
-### Community 198 - "ResponsiveTest"
-Cohesion: 0.67
-Nodes (3): DisplayName, Test, ResponsiveTest
+### Community 205 - "AiGenerateRequest"
+Cohesion: 0.25
+Nodes (3): AiGenerateRequest, BeforeEach, MockRestServiceServer
 
 ### Community 206 - "10. Prioritized Issues Requiring Changes & Recommended Fixes"
 Cohesion: 0.33
@@ -861,23 +848,23 @@ Cohesion: 0.67
 Nodes (3): 8.1 Tests Actually Executed by the Auditor, 8.2 Tests Not Executed and Technical Rationale, 8. Summary of Tests Executed vs Not Executed
 
 ## Knowledge Gaps
-- **1110 isolated node(s):** `com.voyageai:voyage-ai-backend`, `ACCOMMODATION`, `RESTAURANT`, `ATTRACTION`, `ACTIVITY` (+1105 more)
+- **1113 isolated node(s):** `com.voyageai:voyage-ai-backend`, `ACCOMMODATION`, `RESTAURANT`, `ATTRACTION`, `ACTIVITY` (+1108 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **40 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **42 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `ApiResponse` connect `ApiResponse` to `.getId`, `.importDestinations`, `TripService`, `AiHealthResponse`, `.addDay`, `DestinationDetailResponse`, `WeatherE2ETest.java`, `WeatherController.java`, `HealthController.java`, `AuthController`?**
-  _High betweenness centrality (0.094) - this node is a cross-community bridge._
+- **Why does `ApiResponse` connect `ApiResponse` to `TripService`, `.importDestinations`, `.createTrip`, `AuthController`, `.updateTrip`, `TestConfig`, `AiHealthResponse`, `.getListings`, `WeatherController.java`, `HealthController.java`, `UserPrincipal`?**
+  _High betweenness centrality (0.072) - this node is a cross-community bridge._
 - **Why does `WeatherResponse` connect `WeatherResponse` to `DailyForecastDTO`, `WeatherProvenanceDTO`, `WeatherUnitsDTO`, `.getWeather`, `WeatherController.java`, `CurrentData`, `CurrentWeatherDTO`, `.get`?**
-  _High betweenness centrality (0.056) - this node is a cross-community bridge._
-- **Why does `Destination` connect `Destination` to `DestinationSummaryResponse`, `PersistenceIntegrationTest.java`, `TravelListing`, `DestinationDetailResponse`, `DestinationRepository`, `DestinationIngestionService`, `WikimediaSummaryResponse`, `.onCreate`, `.onUpdate`?**
+  _High betweenness centrality (0.041) - this node is a cross-community bridge._
+- **Why does `ResourceNotFoundException` connect `ResourceNotFoundException` to `TripService`, `ListingType`, `.createTrip`, `.testTripHierarchyPersistence`, `AuthService`, `.updateTrip`, `.updateItem`, `GlobalExceptionHandler`, `DestinationService`, `.syncProfile`, `.addItemToDay`, `PersistenceIntegrationTest.java`?**
   _High betweenness centrality (0.033) - this node is a cross-community bridge._
 - **What connects `com.voyageai:voyage-ai-backend`, `ACCOMMODATION`, `RESTAURANT` to the rest of the system?**
-  _1110 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1113 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `App.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.06766917293233082 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.058823529411764705 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.11764705882352941 - nodes in this community are weakly interconnected._
 - **Should `Voyage-AI — Software Requirements Specification (SRS)` be split into smaller, more focused modules?**

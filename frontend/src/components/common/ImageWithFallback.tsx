@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Compass, ImageOff } from 'lucide-react';
 
 export interface ImageWithFallbackProps extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -12,9 +12,14 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
   className = '',
   fallbackTitle,
   fallbackSubtitle,
+  referrerPolicy = 'no-referrer-when-downgrade',
   ...props
 }) => {
   const [hasError, setHasError] = useState<boolean>(false);
+
+  useEffect(() => {
+    setHasError(false);
+  }, [src]);
 
   if (hasError || !src) {
     return (
@@ -50,6 +55,7 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
     <img
       src={src}
       alt={alt}
+      referrerPolicy={referrerPolicy}
       onError={() => setHasError(true)}
       className={className}
       {...props}

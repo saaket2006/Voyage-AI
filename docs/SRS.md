@@ -103,7 +103,8 @@ The FRD is the user-facing functional source of detail. The following requiremen
 **SYS-F-051:** APIs shall use appropriate HTTP status codes for success, validation failure, unauthenticated access, forbidden access, missing resources, conflict, rate limit, and unexpected errors.  
 **SYS-F-052:** API errors shall use a consistent structure containing a safe message, stable error code, and optional field errors/correlation ID.  
 **SYS-F-053:** Mutating endpoints shall validate request bodies and path parameters.  
-**SYS-F-054:** API documentation shall be maintained alongside the implementation.
+**SYS-F-054:** API documentation shall be maintained alongside the implementation in OpenAPI 3.0 specification (`docs/openapi.yaml`).  
+**SYS-F-055:** The global autocomplete search API (`GET /api/v1/search/suggestions`) shall provide debounced, real-time matching suggestions grouped strictly in order: Cities (`CITY`) -> Attractions (`ATTRACTION`) -> Dining (`DINING`), strictly sourcing authentic records without synthetic placeholders. Empty groups shall be explicitly retained.
 
 ## 4. External interface requirements
 

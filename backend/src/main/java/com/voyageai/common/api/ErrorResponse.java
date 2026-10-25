@@ -1,12 +1,17 @@
 package com.voyageai.common.api;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.time.Instant;
 import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
 
     private String code;
     private String message;
+    private Integer status;
+    private String path;
     private Map<String, String> fieldErrors;
     private Instant timestamp;
 
@@ -17,6 +22,14 @@ public class ErrorResponse {
     public ErrorResponse(String code, String message) {
         this.code = code;
         this.message = message;
+        this.timestamp = Instant.now();
+    }
+
+    public ErrorResponse(String code, String message, Integer status, String path) {
+        this.code = code;
+        this.message = message;
+        this.status = status;
+        this.path = path;
         this.timestamp = Instant.now();
     }
 
@@ -49,6 +62,22 @@ public class ErrorResponse {
 
     public void setFieldErrors(Map<String, String> fieldErrors) {
         this.fieldErrors = fieldErrors;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public Instant getTimestamp() {

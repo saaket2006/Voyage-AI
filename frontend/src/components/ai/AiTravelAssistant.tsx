@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { Sparkles, Send, Copy, Check, AlertCircle, RefreshCw, Bot, Zap } from 'lucide-react';
 import { Button } from '../common/Button';
 
@@ -39,7 +41,7 @@ export const AiTravelAssistant: React.FC<AiTravelAssistantProps> = ({ apiBaseUrl
   const [health, setHealth] = useState<HealthResponse | null>(null);
   const [healthLoading, setHealthLoading] = useState<boolean>(true);
 
-  // Check Gemini connectivity on mount
+  // Check AI connectivity on mount
   useEffect(() => {
     let isMounted = true;
     const fetchHealth = async () => {
@@ -57,7 +59,7 @@ export const AiTravelAssistant: React.FC<AiTravelAssistantProps> = ({ apiBaseUrl
               model: 'gemini-3.5-flash-lite',
               configured: false,
               reachable: false,
-              message: 'Gemini service returned non-200 status.',
+              message: 'AI service returned non-200 status.',
             });
           }
         }
@@ -145,7 +147,7 @@ export const AiTravelAssistant: React.FC<AiTravelAssistantProps> = ({ apiBaseUrl
             Curated Travel Intelligence
           </h3>
           <p className="text-xs text-slate-600 mt-1 max-w-xl">
-            Ask for customized itineraries, local dining secrets, cultural etiquette, or transit insights powered by Google Gemini.
+            Ask for customized itineraries, local dining secrets, cultural etiquette, or transit insights.
           </p>
         </div>
 
@@ -163,12 +165,12 @@ export const AiTravelAssistant: React.FC<AiTravelAssistantProps> = ({ apiBaseUrl
           </div>
           <div className="text-left">
             <div className="flex items-center gap-1.5">
-              <span className="text-[11px] font-bold text-slate-800">gemini-3.5-flash-lite</span>
+              <span className="text-[11px] font-bold text-slate-800">{health?.model || 'gemini-3.5-flash-lite'}</span>
               <span className="text-[9px] font-semibold px-1.5 py-0.2 rounded bg-brand-50 text-brand-900 border border-brand-200/60 uppercase">
                 {healthLoading ? 'Checking...' : health?.status || 'Unknown'}
               </span>
             </div>
-            <p className="text-[10px] text-slate-600">Google Gemini Developer API</p>
+            <p className="text-[10px] text-slate-600">Travel AI Engine</p>
           </div>
         </div>
       </div>
@@ -236,12 +238,12 @@ export const AiTravelAssistant: React.FC<AiTravelAssistantProps> = ({ apiBaseUrl
             {isLoading ? (
               <>
                 <RefreshCw className="w-4 h-4 animate-spin" />
-                <span>Thinking with Gemini...</span>
+                <span>Thinking…</span>
               </>
             ) : (
               <>
                 <Send className="w-4 h-4" />
-                <span>Ask Gemini</span>
+                <span>Ask AI</span>
               </>
             )}
           </Button>
@@ -306,8 +308,96 @@ export const AiTravelAssistant: React.FC<AiTravelAssistantProps> = ({ apiBaseUrl
             </button>
           </div>
 
-          <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/90 text-sm leading-relaxed text-slate-800 whitespace-pre-wrap font-sans">
-            {response.response}
+          <div
+            data-testid="ai-response-content"
+            className="p-5 rounded-2xl bg-slate-50 border border-slate-200/90 text-sm text-slate-800 font-sans ai-response-content whitespace-pre-wrap break-words"
+          >
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                a: ({ href, children, ...props }) => {
+                  const isSafe =
+                    href &&
+                    (href.startsWith('https://') ||
+                      href.startsWith('http://') ||
+                      href.startsWith('mailto:'));
+                  if (!isSafe) {
+                    return <span className="text-slate-800 font-medium">{children}</span>;
+                  }
+                  return (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-brand-900 hover:text-brand-700 font-medium underline underline-offset-2 transition-colors"
+                      {...props}
+                    >
+                      {children}
+                    </a>
+                  );
+                },
+                h1: ({ children }) => (
+                  <h1 className="text-xl font-bold font-display text-slate-900 mt-4 mb-2 first:mt-0 tracking-tight">
+                    {children}
+                  </h1>
+                ),
+                h2: ({ children }) => (
+                  <h2 className="text-lg font-bold font-display text-slate-900 mt-3.5 mb-1.5 first:mt-0 tracking-tight">
+                    {children}
+                  </h2>
+                ),
+                h3: ({ children }) => (
+                  <h3 className="text-base font-bold font-display text-slate-900 mt-3 mb-1.5 first:mt-0">
+                    {children}
+                  </h3>
+                ),
+                h4: ({ children }) => (
+                  <h4 className="text-sm font-bold font-display text-slate-900 mt-2 mb-1 first:mt-0">
+                    {children}
+                  </h4>
+                ),
+                p: ({ children }) => <p className="mb-2.5 last:mb-0 leading-relaxed text-slate-800">{children}</p>,
+                ul: ({ children }) => <ul className="list-disc pl-5 mb-3 space-y-1 text-slate-800">{children}</ul>,
+                ol: ({ children }) => <ol className="list-decimal pl-5 mb-3 space-y-1 text-slate-800">{children}</ol>,
+                li: ({ children }) => <li className="leading-relaxed pl-1">{children}</li>,
+                strong: ({ children }) => <strong className="font-semibold text-slate-900">{children}</strong>,
+                em: ({ children }) => <em className="italic text-slate-800">{children}</em>,
+                blockquote: ({ children }) => (
+                  <blockquote className="border-l-4 border-brand-500/80 bg-brand-50/50 rounded-r-xl pl-3.5 py-1.5 my-3 text-slate-700 italic">
+                    {children}
+                  </blockquote>
+                ),
+                pre: ({ children }) => (
+                  <pre className="p-3.5 my-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto">
+                    {children}
+                  </pre>
+                ),
+                code: ({ className, children, ...props }) => {
+                  const isBlock = className && className.startsWith('language-');
+                  if (isBlock) {
+                    return <code className={className} {...props}>{children}</code>;
+                  }
+                  return (
+                    <code className="px-1.5 py-0.5 rounded-md bg-slate-200/80 text-slate-900 font-mono text-xs" {...props}>
+                      {children}
+                    </code>
+                  );
+                },
+                table: ({ children }) => (
+                  <div className="overflow-x-auto my-3 rounded-xl border border-slate-200 shadow-xs">
+                    <table className="min-w-full divide-y divide-slate-200 text-xs text-left">{children}</table>
+                  </div>
+                ),
+                thead: ({ children }) => <thead className="bg-slate-100 font-semibold text-slate-900">{children}</thead>,
+                tbody: ({ children }) => <tbody className="divide-y divide-slate-100 bg-white">{children}</tbody>,
+                tr: ({ children }) => <tr className="hover:bg-slate-50/50 transition-colors">{children}</tr>,
+                th: ({ children }) => <th className="px-3.5 py-2 font-semibold text-slate-900">{children}</th>,
+                td: ({ children }) => <td className="px-3.5 py-2 text-slate-700">{children}</td>,
+                hr: () => <hr className="my-3.5 border-slate-200" />,
+              }}
+            >
+              {response.response}
+            </ReactMarkdown>
           </div>
         </div>
       )}

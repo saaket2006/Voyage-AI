@@ -7,7 +7,8 @@ Voyage-AI is an AI-powered travel companion connecting destination discovery, ac
 - **Frontend Client (`frontend/`):** A single-page application built with React, TypeScript, and Vite, utilizing Tailwind CSS for styling. It manages user presentation, client-side routing, discovery browsing, trip manipulation, and interaction feedback.
 - **Backend Service (`backend/`):** A Spring Boot REST application (Java 17, Spring Boot 4.1.x) organized into modular domain boundaries:
   - `auth` & `security`: Authentication, authorization, and ownership enforcement.
-  - `destination` & `listing`: Public discovery search, filters, catalog details, and data provenance.
+  - `destination` & `listing`: Public discovery catalog, destination details, listings, and data provenance.
+  - `search`: Global real-time autocomplete suggestions service (`/api/v1/search/suggestions`), ordering matching results strictly into Cities -> Attractions -> Dining groups.
   - `trip` & `itinerary`: Private trip setup, day-by-day scheduling, and budget calculations.
   - `integration`: Isolated provider adapters for external travel data, weather, routing, and AI models.
 
@@ -62,13 +63,14 @@ Voyage-AI is an AI-powered travel companion connecting destination discovery, ac
   - `V2__seed_travel_data.sql`: Curated authentic seed records for heritage destinations.
   - `V3__user_profile_and_destination_indexes.sql`: Extended user profile persistence (`auth_provider`, `provider_subject`, `profile_image_url`) and performance indexes (`idx_users_provider`, `idx_destinations_provider`).
   - `V4__add_user_roles_and_image_licensing.sql`: User role authorization (`role` with `ROLE_USER` default and `ROLE_ADMIN`), destination image licensing (`image_attribution_text`, `image_license_type`, `image_license_url`, `image_source_url`), and destination curation status (`curation_status`).
+  - `V6__seed_delhi_listings.sql`: Curated verified listings for Delhi from Archaeological Survey of India (Red Fort, Qutub Minar) and OpenStreetMap (Karim's).
 - **Data Authenticity & Provenance:** Every factual travel entity table (`destinations`, `attractions`, `accommodations`, `dining_places`) enforces non-nullable provenance columns: `source_provider`, `provider_record_id`, `retrieved_at`, `stale_after`, `license_type`, `attribution_text`, and `verification_status` (defaulting to `'UNVERIFIED'`, never defaulting to verified). Volatile factual fields (entry fees, nightly rates, operational hours) use structured field-level verification envelopes. Image media items carry distinct attribution text, specific Creative Commons / Public Domain license types, license URLs, and source URLs.
 - **Test Fixture Isolation:** Test fixtures are physically segregated in `src/test/` directories and never bundled, served, or fallen back to in production runtime flows.
 - **Core Entities:** `User`, `Destination`, `TravelListing`, `Trip`, `ItineraryDay`, `ItineraryItem`.
 
 ## 4. Authentication & Authorization Boundaries
 
-- **Public Zone:** Destination catalog with server-side pagination, travel listings, user registration, and sign-in endpoints (`/api/v1/auth/**`, `/api/v1/destinations/**`, `/api/v1/listings/**`, `/api/v1/weather/**`, `/api/v1/ai/**`).
+- **Public Zone:** Destination catalog with server-side pagination, travel listings, global autocomplete search, user registration, and sign-in endpoints (`/api/v1/auth/**`, `/api/v1/destinations/**`, `/api/v1/listings/**`, `/api/v1/search/**`, `/api/v1/weather/**`, `/api/v1/ai/**`).
 - **Protected User Zone:** User profile management (`GET /api/v1/users/me`, `POST /api/v1/users/me/sync`, `PATCH /api/v1/users/me/profile`, `PUT /api/v1/users/me/preferences`), trip creation and scoped trips (`/api/v1/users/me/trips/**`, `/api/v1/trips/**`).
 - **Protected Administrator Zone:** Administrative operations (`POST /api/v1/admin/destinations/import`) secured via server-enforced `ROLE_ADMIN` (`@PreAuthorize("hasRole('ADMIN')")`). Unauthenticated requests yield 401 Unauthorized; ordinary authenticated users (`ROLE_USER`) yield 403 Forbidden.
 - **Administrative Role Provisioning:** Administrator privileges cannot be granted by client payloads, registration, profile updates, or preferences. Roles are assigned exclusively by server-controlled configuration (`app.security.admin-emails`) upon user creation or synchronization, and encoded into signed JWT claims.

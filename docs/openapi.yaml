@@ -1,0 +1,260 @@
+openapi: 3.0.3
+info:
+  title: Voyage-AI Global Search & Discovery API
+  description: RESTful API for Voyage-AI authentic travel discovery, AI assistance, and real-time autocomplete suggestions.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081
+    description: Local Docker development server
+paths:
+  /api/v1/search/suggestions:
+    get:
+      summary: Global Autocomplete Search Suggestions
+      description: |
+        Retrieves matching travel suggestions grouped into Cities, Attractions, and Dining options.
+        Results are returned strictly in the order: CITY -> ATTRACTION -> DINING.
+        Empty groups are preserved with `items: []`.
+      operationId: getSearchSuggestions
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Search query string (1-100 characters, whitespace trimmed).
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+            example: Delhi
+        - name: limit
+          in: query
+          required: false
+          description: Maximum results per category group (between 1 and 10, default 5).
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+            default: 5
+            example: 5
+      responses:
+        '200':
+          description: Successful search suggestions response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchSuggestionResponse'
+              example:
+                query: "Delhi"
+                groups:
+                  - type: "CITY"
+                    label: "Cities"
+                    items:
+                      - id: "delhi"
+                        name: "Delhi"
+                        subtitle: "Cities"
+                        description: "Megacity and union territory of India"
+                        location:
+                          city: "Delhi"
+                          region: "Delhi"
+                          country: "India"
+                          latitude: 28.61
+                          longitude: 77.23
+                        imageUrl: "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Jama_Masjid_2011.jpg/330px-Jama_Masjid_2011.jpg"
+                        sourceUrl: "https://en.wikipedia.org/wiki/Delhi"
+                        route: "/destinations/delhi"
+                  - type: "ATTRACTION"
+                    label: "Attractions"
+                    items:
+                      - id: "dl-att-1"
+                        name: "Red Fort"
+                        subtitle: "Attractions"
+                        description: "Historic 17th-century Mughal fort complex in Delhi"
+                        location:
+                          city: "Delhi"
+                          region: "Delhi"
+                          country: "India"
+                          latitude: 28.6558
+                          longitude: 77.2408
+                        imageUrl: "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Delhi_fort.jpg/330px-Delhi_fort.jpg"
+                        sourceUrl: "https://en.wikipedia.org/wiki/Red_Fort"
+                        route: "/attractions/dl-att-1"
+                  - type: "DINING"
+                    label: "Dining"
+                    items:
+                      - id: "dl-din-1"
+                        name: "Karim's"
+                        subtitle: "Dining"
+                        description: "Historic culinary institution near Jama Masjid established in 1913"
+                        location:
+                          city: "Delhi"
+                          region: "Delhi"
+                          country: "India"
+                          latitude: 28.6507
+                          longitude: 77.2334
+                        imageUrl: "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Karim%27s.jpg/330px-Karim%27s.jpg"
+                        sourceUrl: "https://en.wikipedia.org/wiki/Karim%27s"
+                        route: "/dining/dl-din-1"
+                meta:
+                  limitPerGroup: 5
+                  totalResults: 3
+        '400':
+          description: Invalid search query or limit parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidQuery:
+                  summary: Missing or blank search query
+                  value:
+                    timestamp: "2026-10-25T12:00:00Z"
+                    status: 400
+                    code: "INVALID_SEARCH_QUERY"
+                    message: "The search query must contain between 1 and 100 characters."
+                    path: "/api/v1/search/suggestions"
+                invalidLimit:
+                  summary: Limit out of range
+                  value:
+                    timestamp: "2026-10-25T12:00:00Z"
+                    status: 400
+                    code: "INVALID_SEARCH_LIMIT"
+                    message: "The limit parameter must be an integer between 1 and 10."
+                    path: "/api/v1/search/suggestions"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    SearchSuggestionResponse:
+      type: object
+      required:
+        - query
+        - groups
+        - meta
+      properties:
+        query:
+          type: string
+          description: Cleaned query string used for search.
+        groups:
+          type: array
+          description: Grouped results in fixed order [CITY, ATTRACTION, DINING].
+          items:
+            $ref: '#/components/schemas/SearchGroup'
+        meta:
+          $ref: '#/components/schemas/SearchMeta'
+
+    SearchGroup:
+      type: object
+      required:
+        - type
+        - label
+        - items
+      properties:
+        type:
+          type: string
+          enum: [CITY, ATTRACTION, DINING]
+          description: Category group type.
+        label:
+          type: string
+          description: Human-readable group label.
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchItem'
+
+    SearchItem:
+      type: object
+      required:
+        - id
+        - name
+        - subtitle
+        - route
+      properties:
+        id:
+          type: string
+          description: Stable database ID for destination or listing.
+        name:
+          type: string
+          description: Display name of destination, attraction, or restaurant.
+        subtitle:
+          type: string
+          description: Category subtitle (Cities, Attractions, Dining).
+        description:
+          type: string
+          nullable: true
+          description: Authentic encyclopedic description or summary.
+        location:
+          $ref: '#/components/schemas/SearchItemLocation'
+        imageUrl:
+          type: string
+          nullable: true
+          description: Verified source image URL.
+        sourceUrl:
+          type: string
+          nullable: true
+          description: Verified provenance source URL.
+        route:
+          type: string
+          description: Frontend route for navigation.
+
+    SearchItemLocation:
+      type: object
+      properties:
+        city:
+          type: string
+          nullable: true
+        region:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        latitude:
+          type: number
+          format: double
+          nullable: true
+        longitude:
+          type: number
+          format: double
+          nullable: true
+
+    SearchMeta:
+      type: object
+      required:
+        - limitPerGroup
+        - totalResults
+      properties:
+        limitPerGroup:
+          type: integer
+          description: Applied limit per category group.
+        totalResults:
+          type: integer
+          description: Total matching items returned across all groups.
+
+    ErrorResponse:
+      type: object
+      required:
+        - timestamp
+        - status
+        - code
+        - message
+        - path
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+          example: 400
+        code:
+          type: string
+          example: "INVALID_SEARCH_QUERY"
+        message:
+          type: string
+          example: "The search query must contain between 1 and 100 characters."
+        path:
+          type: string
+          example: "/api/v1/search/suggestions"
