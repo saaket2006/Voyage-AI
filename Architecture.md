@@ -59,7 +59,7 @@ Voyage-AI is an AI-powered travel companion connecting destination discovery, ac
 - **Schema Management:** Versioned migrations using Flyway (`db/migration/V*`).
 - **Data Authenticity & Provenance:** Every factual travel entity table (`destinations`, `attractions`, `accommodations`, `dining_places`) enforces non-nullable provenance columns: `source_provider`, `provider_record_id`, `retrieved_at`, `stale_after`, `license_type`, `attribution_text`, and `verification_status` (defaulting to `'UNVERIFIED'`, never defaulting to verified). Volatile factual fields (entry fees, nightly rates, operational hours) use structured field-level verification envelopes.
 - **Test Fixture Isolation:** Test fixtures are physically segregated in `src/test/` directories and never bundled, served, or fallen back to in production runtime flows.
-- **Core Entities:** `User`, `Destination`, `Attraction`, `Accommodation`, `DiningPlace`, `Trip`, `ItineraryDay`, `ItineraryItem`.
+- **Core Entities:** `User`, `Destination`, `TravelListing`, `Trip`, `ItineraryDay`, `ItineraryItem`.
 
 ## 4. Authentication & Authorization Boundaries
 
@@ -76,8 +76,8 @@ Voyage-AI is an AI-powered travel companion connecting destination discovery, ac
 - **Weather & Climate:** Open-Meteo free non-commercial API (up to 10,000 calls/day) with 60-minute in-memory caching, strictly labeled as numerical model forecasts.
 - **Transit & Routing:** Abstract `RoutingProvider` interface with Open Source Routing Machine (OSRM) public demo server used only for controlled development evaluation, falling back to haversine direct distance.
 - **Verified Media:** Wikimedia Commons REST API (public domain and Creative Commons photography with per-image author, license, and page attribution).
-- **AI / LLM Reasoning:** Google Gemini 1.5 Flash (via Google AI Studio Free Tier, 15 RPM / 1,500 RPD) with structured schema output and strict entity grounding on database IDs. Prompts strictly exclude user PII or confidential data, adhering to free-tier human review disclosure terms.
-- **Zero-Fabrication Degradation Rule:** When an external provider is unreachable, unconfigured, or quota-exhausted, the adapter returns an explicit unavailable state without synthetic fallback data.
+- **AI / LLM Reasoning (`com.voyageai.integration.ai`):** Google Gemini Developer API using the official `gemini-3.5-flash-lite` model. The service is encapsulated in `GoogleGeminiService` using Spring's `RestClient` with externalized configuration (`GEMINI_API_KEY`, `GEMINI_MODEL=gemini-3.5-flash-lite`), configurable connection (5s) and read (15s) timeouts, and structured exception handling (`GEMINI_CONFIG_MISSING`, `GEMINI_AUTHENTICATION_FAILED`, `GEMINI_RATE_LIMITED`, `GEMINI_TIMEOUT`, `GEMINI_UPSTREAM_ERROR`, `GEMINI_EMPTY_RESPONSE`). Exposed via `POST /api/v1/ai/generate` and separate live health connectivity probe `GET /api/v1/ai/health`. Live API verification is encapsulated in `GeminiApiIntegrationTest` (tagged `@Tag("live-api")`), separated from deterministic mocked unit tests.
+- **Zero-Fabrication Degradation Rule:** When an external provider (Gemini or Open-Meteo) is unreachable, unconfigured, or quota-exhausted, the adapter returns an explicit unavailable state or structured error code without synthetic or mock fallback data.
 
 ## 6. Deployment Boundaries
 

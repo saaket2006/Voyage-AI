@@ -79,6 +79,45 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(ex.getStatus()).body(errorResponse);
     }
 
+    @ExceptionHandler(com.voyageai.integration.ai.GeminiServiceException.class)
+    public ResponseEntity<ErrorResponse> handleGeminiServiceException(com.voyageai.integration.ai.GeminiServiceException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getErrorCode(),
+                ex.getMessage()
+        );
+        return ResponseEntity.status(ex.getStatus()).body(errorResponse);
+    }
+
+    @ExceptionHandler(com.voyageai.common.exception.ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(com.voyageai.common.exception.ResourceNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("NOT_FOUND", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(com.voyageai.common.exception.UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedException(com.voyageai.common.exception.UnauthorizedException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("UNAUTHENTICATED", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+    @ExceptionHandler({com.voyageai.common.exception.ForbiddenException.class, org.springframework.security.access.AccessDeniedException.class})
+    public ResponseEntity<ErrorResponse> handleForbiddenException(Exception ex) {
+        ErrorResponse errorResponse = new ErrorResponse("FORBIDDEN", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+    }
+
+    @ExceptionHandler(com.voyageai.common.exception.ConflictException.class)
+    public ResponseEntity<ErrorResponse> handleConflictException(com.voyageai.common.exception.ConflictException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("CONFLICT", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
+    @ExceptionHandler(org.springframework.security.authentication.BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentialsException(org.springframework.security.authentication.BadCredentialsException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("INVALID_CREDENTIALS", "Invalid email or password.");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
         log.error("Unhandled exception intercepted by GlobalExceptionHandler", ex);

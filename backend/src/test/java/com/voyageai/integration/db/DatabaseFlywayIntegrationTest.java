@@ -133,9 +133,15 @@ class DatabaseFlywayIntegrationTest {
     }
 
     @Test
-    @DisplayName("Connectivity test: can execute query against isolated test database")
+    @DisplayName("Connectivity test: can execute query against isolated test database and verify seed data")
     void testDatabaseConnectivity() {
         Integer result = jdbcTemplate.queryForObject("SELECT 1", Integer.class);
         assertThat(result).isEqualTo(1);
+
+        Integer destinationCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM destinations", Integer.class);
+        assertThat(destinationCount).as("Curated authentic destinations must be seeded").isEqualTo(4);
+
+        Integer listingsCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM travel_listings", Integer.class);
+        assertThat(listingsCount).as("Authentic travel listings must be seeded").isGreaterThanOrEqualTo(14);
     }
 }

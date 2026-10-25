@@ -11,6 +11,7 @@ import { Destination, Region, TravelStyle, BudgetTier } from './types/destinatio
 import { Compass, Sparkles, MapPin, Calendar, Heart, Layers, Info } from 'lucide-react';
 import { Button } from './components/common/Button';
 import { ImageWithFallback } from './components/common/ImageWithFallback';
+import { AiTravelAssistant } from './components/ai/AiTravelAssistant';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('destinations');
@@ -385,6 +386,9 @@ export const App: React.FC = () => {
                 </div>
               )}
             </div>
+
+            {/* AI Travel Assistant powered by Google Gemini 3.5 Flash-Lite */}
+            <AiTravelAssistant apiBaseUrl={apiBaseUrl} />
           </div>
         )}
       </main>
