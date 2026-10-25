@@ -1,15 +1,17 @@
 import React from 'react';
 import { Destination } from '../../types/destination';
-import { Star, Clock, CloudSun, ArrowRight, Bed, Utensils, MapPin } from 'lucide-react';
+import { Star, Clock, CloudSun, ArrowRight, Bed, Utensils, MapPin, Bookmark } from 'lucide-react';
 import { Badge } from '../common/Badge';
 import { ImageWithFallback } from '../common/ImageWithFallback';
 
 export interface DestinationCardProps {
   destination: Destination;
   onSelect: (destination: Destination) => void;
+  isSaved?: boolean;
+  onToggleSave?: (destinationId: string) => void;
 }
 
-export const DestinationCard: React.FC<DestinationCardProps> = ({ destination, onSelect }) => {
+export const DestinationCard: React.FC<DestinationCardProps> = ({ destination, onSelect, isSaved, onToggleSave }) => {
   const budgetColorMap = {
     Budget: 'text-emerald-700 bg-emerald-50 border-emerald-200/60',
     Comfort: 'text-brand-900 bg-brand-50 border-brand-200/60',
@@ -30,18 +32,38 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({ destination, o
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/20 to-transparent pointer-events-none" />
 
-        {/* Region & Weather Badges */}
-        <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between gap-2 pointer-events-none">
+        {/* Region & Weather Badges + Bookmark */}
+        <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between gap-2 z-10 pointer-events-auto">
           <Badge variant="outline" size="sm" className="bg-white/95 text-slate-800 font-semibold shadow-xs">
             {destination.region}
           </Badge>
-          <div
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900/85 backdrop-blur-md text-white text-[11px] font-medium border border-white/10 shadow-xs"
-            title="Seasonal median temperature estimate (Illustrative)"
-          >
-            <CloudSun className="w-3.5 h-3.5 text-amber-300" />
-            <span>{destination.weather.tempC}°C</span>
-            <span className="text-[9px] text-slate-400 font-normal">est.</span>
+          <div className="flex items-center gap-1.5">
+            <div
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900/85 backdrop-blur-md text-white text-[11px] font-medium border border-white/10 shadow-xs"
+              title="Seasonal median temperature estimate (Illustrative)"
+            >
+              <CloudSun className="w-3.5 h-3.5 text-amber-300" />
+              <span>{destination.weather.tempC}°C</span>
+              <span className="text-[9px] text-slate-400 font-normal">est.</span>
+            </div>
+            {onToggleSave && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleSave(destination.id);
+                }}
+                className={`p-1.5 rounded-full backdrop-blur-md border shadow-xs transition-[transform,background-color] active:scale-90 focus:outline-none ${
+                  isSaved
+                    ? 'bg-terracotta-600 text-white border-terracotta-500 hover:bg-terracotta-700'
+                    : 'bg-slate-900/85 text-white/90 border-white/10 hover:bg-slate-800'
+                }`}
+                aria-label={isSaved ? `Remove ${destination.name} from wishlist` : `Save ${destination.name} to wishlist`}
+                title={isSaved ? 'Saved to Wishlist' : 'Save to Wishlist'}
+              >
+                <Bookmark className={`w-3.5 h-3.5 ${isSaved ? 'fill-current' : ''}`} />
+              </button>
+            )}
           </div>
         </div>
 

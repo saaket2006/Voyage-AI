@@ -164,4 +164,77 @@ class UserApiTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(0)));
     }
+
+    @Test
+    @DisplayName("Wishlist persistence: add multiple cities, check duplicates, remove city, verify persistence")
+    void wishlist_fullLifecycle_persistsAndUpdates() throws Exception {
+        // 1. Initial wishlist should be empty
+        mockMvc.perform(get("/api/v1/users/me/wishlist")
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data", hasSize(0)));
+
+        // 2. Add Jaipur
+        mockMvc.perform(post("/api/v1/users/me/wishlist/jaipur")
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(1)))
+                .andExpect(jsonPath("$.data[0]").value("jaipur"));
+
+        // 3. Add Varanasi
+        mockMvc.perform(post("/api/v1/users/me/wishlist/varanasi")
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(2)))
+                .andExpect(jsonPath("$.data[0]").value("jaipur"))
+                .andExpect(jsonPath("$.data[1]").value("varanasi"));
+
+        // 4. Add Delhi
+        mockMvc.perform(post("/api/v1/users/me/wishlist/delhi")
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(3)))
+                .andExpect(jsonPath("$.data[0]").value("jaipur"))
+                .andExpect(jsonPath("$.data[1]").value("varanasi"))
+                .andExpect(jsonPath("$.data[2]").value("delhi"));
+
+        // 5. Add duplicate Jaipur -> should not duplicate
+        mockMvc.perform(post("/api/v1/users/me/wishlist/jaipur")
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(3)));
+
+        // 6. Verify GET persists all 3
+        mockMvc.perform(get("/api/v1/users/me/wishlist")
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(3)))
+                .andExpect(jsonPath("$.data[0]").value("jaipur"))
+                .andExpect(jsonPath("$.data[1]").value("varanasi"))
+                .andExpect(jsonPath("$.data[2]").value("delhi"));
+
+        // 7. Remove Varanasi -> should leave Jaipur and Delhi
+        mockMvc.perform(delete("/api/v1/users/me/wishlist/varanasi")
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(2)))
+                .andExpect(jsonPath("$.data[0]").value("jaipur"))
+                .andExpect(jsonPath("$.data[1]").value("delhi"));
+
+        // 8. Verify GET reflects removal
+        mockMvc.perform(get("/api/v1/users/me/wishlist")
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(2)))
+                .andExpect(jsonPath("$.data[0]").value("jaipur"))
+                .andExpect(jsonPath("$.data[1]").value("delhi"));
+    }
+
+    @Test
+    @DisplayName("GET /api/v1/users/me/wishlist unauthenticated returns 401")
+    void wishlist_unauthenticated_returnsUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/v1/users/me/wishlist"))
+                .andExpect(status().isUnauthorized());
+    }
 }

@@ -5,21 +5,28 @@ import App from './App';
 describe('Voyage-AI Phase 1 Discovery Prototype', () => {
   beforeEach(() => {
     // Mock global fetch for health check
-    global.fetch = vi.fn().mockImplementation(() =>
-      Promise.resolve({
-        ok: true,
-        json: () =>
-          Promise.resolve({
-            success: true,
-            data: {
-              status: 'UP',
-              service: 'voyage-ai-backend',
-              profile: 'dev',
-              version: '0.0.1-SNAPSHOT',
-            },
-          }),
-      })
-    );
+    global.fetch = vi.fn().mockImplementation((url: string) => {
+      if (typeof url === 'string' && url.includes('/health')) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              success: true,
+              data: {
+                status: 'UP',
+                service: 'voyage-ai-backend',
+                profile: 'dev',
+                version: '0.0.1-SNAPSHOT',
+              },
+            }),
+        });
+      }
+      return Promise.resolve({
+        ok: false,
+        status: 404,
+        json: () => Promise.resolve({ success: false, data: [] }),
+      });
+    });
   });
 
   it('renders the navigation, hero section, and curated destinations with transparency labels', async () => {
@@ -91,5 +98,44 @@ describe('Voyage-AI Phase 1 Discovery Prototype', () => {
 
     // Verify focus restoration
     expect(document.activeElement).toBe(exploreButton);
+  });
+
+  it('allows saving multiple destinations and manages Trip Studio wishlist correctly', async () => {
+    render(<App />);
+
+    // Save Jaipur via card bookmark button
+    const saveJaipurBtn = screen.getByRole('button', { name: /save jaipur to wishlist/i });
+    fireEvent.click(saveJaipurBtn);
+
+    // Save Varanasi via card bookmark button
+    const saveVaranasiBtn = screen.getByRole('button', { name: /save varanasi to wishlist/i });
+    fireEvent.click(saveVaranasiBtn);
+
+    // Save Munnar via card bookmark button
+    const saveMunnarBtn = screen.getByRole('button', { name: /save munnar to wishlist/i });
+    fireEvent.click(saveMunnarBtn);
+
+    // Navigate to Trip Studio (Planner tab)
+    const tripStudioNav = screen.getByRole('button', { name: /trip studio/i });
+    fireEvent.click(tripStudioNav);
+
+    // Verify all 3 cities appear under Saved For Itinerary with count (3)
+    expect(screen.getByText(/Saved For Itinerary \(3\)/i)).toBeInTheDocument();
+    expect(screen.getByTestId('saved-card-jaipur')).toBeInTheDocument();
+    expect(screen.getByTestId('saved-card-varanasi')).toBeInTheDocument();
+    expect(screen.getByTestId('saved-card-munnar')).toBeInTheDocument();
+
+    // Verify multi-city connected itinerary route overview is displayed
+    expect(screen.getByText('Connected Route Overview')).toBeInTheDocument();
+
+    // Remove Varanasi
+    const removeVaranasiBtn = screen.getByRole('button', { name: /remove varanasi from itinerary/i });
+    fireEvent.click(removeVaranasiBtn);
+
+    // Verify count updates to (2) and only Jaipur and Munnar remain
+    expect(screen.getByText(/Saved For Itinerary \(2\)/i)).toBeInTheDocument();
+    expect(screen.getByTestId('saved-card-jaipur')).toBeInTheDocument();
+    expect(screen.getByTestId('saved-card-munnar')).toBeInTheDocument();
+    expect(screen.queryByTestId('saved-card-varanasi')).not.toBeInTheDocument();
   });
 });

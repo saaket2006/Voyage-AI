@@ -38,9 +38,41 @@ public class GoogleGeminiService implements GeminiService {
             @Value("${gemini.base-url:https://generativelanguage.googleapis.com/v1beta}") String baseUrl,
             @Value("${gemini.connect-timeout-ms:5000}") int connectTimeoutMs,
             @Value("${gemini.read-timeout-ms:15000}") int readTimeoutMs) {
-        this.apiKey = DotenvLoader.cleanValue(apiKey);
+        String resolvedKey = DotenvLoader.cleanValue(apiKey);
+        if (resolvedKey.isBlank()) {
+            String sysPropKey = System.getProperty("gemini.api-key");
+            if (sysPropKey != null && !sysPropKey.isBlank()) {
+                resolvedKey = DotenvLoader.cleanValue(sysPropKey);
+            }
+        }
+        if (resolvedKey.isBlank()) {
+            String sysPropEnvKey = System.getProperty("GEMINI_API_KEY");
+            if (sysPropEnvKey != null && !sysPropEnvKey.isBlank()) {
+                resolvedKey = DotenvLoader.cleanValue(sysPropEnvKey);
+            }
+        }
+        if (resolvedKey.isBlank()) {
+            String envKey = System.getenv("GEMINI_API_KEY");
+            if (envKey != null && !envKey.isBlank()) {
+                resolvedKey = DotenvLoader.cleanValue(envKey);
+            }
+        }
+        if (resolvedKey.isBlank()) {
+            java.util.Map<String, Object> dotenv = DotenvLoader.load();
+            Object keyObj = dotenv.get("GEMINI_API_KEY");
+            if (keyObj != null && !keyObj.toString().isBlank()) {
+                resolvedKey = DotenvLoader.cleanValue(keyObj.toString());
+            }
+        }
+        this.apiKey = resolvedKey;
         this.model = (model == null || model.isBlank()) ? "gemini-3.5-flash-lite" : model.trim();
         this.baseUrl = (baseUrl == null || baseUrl.isBlank()) ? "https://generativelanguage.googleapis.com/v1beta" : baseUrl.trim();
+
+        if (this.apiKey.isBlank()) {
+            log.warn("Gemini API key is NOT configured [presence: FALSE, non-blank: FALSE]. Checked gemini.api-key, system properties, environment variables, and .env. AI features will report GEMINI_CONFIG_MISSING.");
+        } else {
+            log.info("Gemini API key is configured [presence: TRUE, non-blank: TRUE, length: {} chars, model: {}]. GoogleGeminiService initialized successfully.", this.apiKey.length(), this.model);
+        }
 
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout(Duration.ofMillis(connectTimeoutMs));
@@ -140,10 +172,17 @@ public class GoogleGeminiService implements GeminiService {
 
             if (statusCode == 401 || statusCode == 403) {
                 throw new GeminiServiceException(
-                        "Gemini API authentication failed. Please verify that a valid GEMINI_API_KEY is configured.",
+                        "Gemini API authentication failed. The configured API key was rejected by Google AI Studio (HTTP " + statusCode + "). Please check your GEMINI_API_KEY.",
                         ex,
                         HttpStatus.UNAUTHORIZED,
                         "GEMINI_AUTHENTICATION_FAILED"
+                );
+            } else if (statusCode == 404) {
+                throw new GeminiServiceException(
+                        "Gemini model '" + this.model + "' was not found or is unsupported for API version v1beta (HTTP 404).",
+                        ex,
+                        HttpStatus.NOT_FOUND,
+                        "GEMINI_MODEL_NOT_FOUND"
                 );
             } else if (statusCode == 429) {
                 throw new GeminiServiceException(
@@ -154,7 +193,7 @@ public class GoogleGeminiService implements GeminiService {
                 );
             } else if (statusCode >= 500) {
                 throw new GeminiServiceException(
-                        "Google Gemini service is temporarily unavailable. Please try again later.",
+                        "Google Gemini service is temporarily unavailable (HTTP " + statusCode + "). Please try again later.",
                         ex,
                         HttpStatus.SERVICE_UNAVAILABLE,
                         "GEMINI_UPSTREAM_ERROR"
@@ -215,8 +254,10 @@ public class GoogleGeminiService implements GeminiService {
         } catch (RestClientResponseException ex) {
             int status = ex.getStatusCode().value();
             String desc = (status == 401 || status == 403)
-                    ? "Authentication failed: invalid GEMINI_API_KEY."
-                    : (status == 429) ? "Rate limit or quota exhausted." : "Upstream error (HTTP " + status + ").";
+                    ? "Authentication failed: invalid GEMINI_API_KEY (HTTP " + status + ")."
+                    : (status == 404)
+                    ? "Model not found or unsupported: " + this.model + " (HTTP 404)."
+                    : (status == 429) ? "Rate limit or quota exhausted (HTTP 429)." : "Upstream error (HTTP " + status + ").";
             return new AiHealthResponse(
                     "UNAVAILABLE",
                     this.model,

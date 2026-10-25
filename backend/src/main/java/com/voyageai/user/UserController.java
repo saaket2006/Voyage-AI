@@ -62,6 +62,31 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success(profile, "Preferences updated successfully."));
     }
 
+    // --- Wishlist Endpoints ---
+
+    @GetMapping("/wishlist")
+    public ResponseEntity<ApiResponse<List<String>>> getWishlist(
+            @AuthenticationPrincipal UserPrincipal principal) {
+        List<String> wishlist = authService.getWishlist(principal.getId());
+        return ResponseEntity.ok(ApiResponse.success(wishlist, "Wishlist retrieved successfully."));
+    }
+
+    @PostMapping("/wishlist/{destinationId}")
+    public ResponseEntity<ApiResponse<List<String>>> addToWishlist(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable String destinationId) {
+        List<String> wishlist = authService.addToWishlist(principal.getId(), destinationId);
+        return ResponseEntity.ok(ApiResponse.success(wishlist, "Destination added to wishlist."));
+    }
+
+    @DeleteMapping("/wishlist/{destinationId}")
+    public ResponseEntity<ApiResponse<List<String>>> removeFromWishlist(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable String destinationId) {
+        List<String> wishlist = authService.removeFromWishlist(principal.getId(), destinationId);
+        return ResponseEntity.ok(ApiResponse.success(wishlist, "Destination removed from wishlist."));
+    }
+
     // --- User Trips Endpoints ---
 
     @GetMapping("/trips")

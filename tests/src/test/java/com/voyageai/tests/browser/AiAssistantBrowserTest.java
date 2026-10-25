@@ -218,4 +218,65 @@ public class AiAssistantBrowserTest extends BasePlaywrightTest {
                 generatedText.length() > 60 ? generatedText.substring(0, 60) + "..." : generatedText
         );
     }
+
+    @Test
+    @DisplayName("Verify frontend Retry button sends a new request and displays result upon failure recovery")
+    void testRetryButtonResubmitsRequestAndDisplaysResult() {
+        java.util.concurrent.atomic.AtomicInteger attemptCount = new java.util.concurrent.atomic.AtomicInteger(0);
+
+        // First attempt fails with 503, second attempt (via Retry button) succeeds
+        page.route(url -> url.contains("/api/v1/ai/generate"), route -> {
+            if ("OPTIONS".equalsIgnoreCase(route.request().method())) {
+                route.fulfill(new Route.FulfillOptions()
+                        .setStatus(200)
+                        .setHeaders(java.util.Map.of(
+                                "Access-Control-Allow-Origin", "*",
+                                "Access-Control-Allow-Methods", "POST, OPTIONS",
+                                "Access-Control-Allow-Headers", "*"
+                        )));
+            } else {
+                int attempt = attemptCount.incrementAndGet();
+                if (attempt == 1) {
+                    route.fulfill(new Route.FulfillOptions()
+                            .setStatus(503)
+                            .setContentType("application/json")
+                            .setHeaders(java.util.Map.of("Access-Control-Allow-Origin", "*"))
+                            .setBody("{\"success\":false,\"message\":\"Google Gemini service is temporarily unavailable. Please try again later.\"}"));
+                } else {
+                    route.fulfill(new Route.FulfillOptions()
+                            .setStatus(200)
+                            .setContentType("application/json")
+                            .setHeaders(java.util.Map.of("Access-Control-Allow-Origin", "*"))
+                            .setBody("{\"success\":true,\"model\":\"gemini-3.5-flash-lite\",\"response\":\"The capital of India is New Delhi.\"}"));
+                }
+            }
+        });
+
+        page.navigate("/");
+        page.locator("nav button:has-text('Itinerary Planner')").click();
+
+        Locator textarea = page.locator("textarea[placeholder*='walking tour']");
+        textarea.fill("What is the capital of India?");
+        page.locator("button:has-text('Ask AI')").click();
+
+        // 1. Verify error alert and Retry button appear after initial failure
+        Locator errorAlert = page.locator("role=alert");
+        assertThat(errorAlert).isVisible();
+        assertThat(errorAlert).containsText("AI Generation Notice");
+        assertThat(errorAlert).containsText("temporarily unavailable");
+
+        Locator retryBtn = errorAlert.locator("button:has-text('Retry')");
+        assertThat(retryBtn).isVisible();
+
+        // 2. Click Retry button
+        retryBtn.click();
+
+        // 3. Verify error is cleared and genuine response is rendered
+        Locator responseContent = page.locator("[data-testid='ai-response-content']");
+        assertThat(responseContent).isVisible();
+        assertThat(responseContent).containsText("New Delhi");
+        assertThat(errorAlert).not().isVisible();
+        assertThat(attemptCount.get()).isEqualTo(2);
+    }
 }
+

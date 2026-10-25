@@ -151,27 +151,25 @@ export const AiTravelAssistant: React.FC<AiTravelAssistantProps> = ({ apiBaseUrl
           </p>
         </div>
 
-        {/* Live Connectivity Badge */}
-        <div className="flex items-center gap-2.5 px-3 py-2 rounded-2xl bg-slate-50 border border-slate-200/80 shrink-0 self-start sm:self-center">
-          <div className="relative flex h-2.5 w-2.5">
-            {health?.reachable ? (
-              <>
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-              </>
-            ) : (
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500" />
-            )}
-          </div>
-          <div className="text-left">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[11px] font-bold text-slate-800">{health?.model || 'gemini-3.5-flash-lite'}</span>
-              <span className="text-[9px] font-semibold px-1.5 py-0.2 rounded bg-brand-50 text-brand-900 border border-brand-200/60 uppercase">
-                {healthLoading ? 'Checking...' : health?.status || 'Unknown'}
-              </span>
-            </div>
-            <p className="text-[10px] text-slate-600">Travel AI Engine</p>
-          </div>
+        <div className="flex items-center gap-2">
+          {healthLoading ? (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-50 text-slate-600 text-[10px] font-semibold border border-slate-200">
+              <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+              <span className="text-slate-500 font-mono text-[9px]">gemini-3.5-flash-lite</span>
+            </span>
+          ) : health?.reachable ? (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-semibold border border-emerald-200/60">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span>{health.status || 'OPERATIONAL'}</span>
+              <span className="text-slate-500 font-mono text-[9px]">{health.model || 'gemini-3.5-flash-lite'}</span>
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 text-[10px] font-semibold border border-amber-200/60">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+              <span>{health?.status || 'STANDBY'}</span>
+              <span className="text-slate-500 font-mono text-[9px]">{health?.model || 'gemini-3.5-flash-lite'}</span>
+            </span>
+          )}
         </div>
       </div>
 

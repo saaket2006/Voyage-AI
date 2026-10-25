@@ -9,7 +9,7 @@ import { EmptyState } from './components/common/EmptyState';
 import { MOCK_DESTINATIONS } from './data/mockDestinations';
 import { Destination, Region, TravelStyle, BudgetTier } from './types/destination';
 import { SearchItem } from './types/search';
-import { Compass, Sparkles, MapPin, Calendar, Heart, Layers, Info } from 'lucide-react';
+import { Compass, Sparkles, MapPin, Calendar, Heart, Layers, Info, Trash2 } from 'lucide-react';
 import { Button } from './components/common/Button';
 import { ImageWithFallback } from './components/common/ImageWithFallback';
 import { AiTravelAssistant } from './components/ai/AiTravelAssistant';
@@ -68,6 +68,8 @@ export const App: React.FC = () => {
   const [selectedBudget, setSelectedBudget] = useState<BudgetTier | 'All'>('All');
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
   const [savedDestinationIds, setSavedDestinationIds] = useState<Set<string>>(new Set());
+  const [destinationCache, setDestinationCache] = useState<Record<string, Destination>>({});
+  const [authToken, setAuthToken] = useState<string | null>(() => localStorage.getItem('voyage_token'));
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [backendConnected, setBackendConnected] = useState<boolean>(false);
   const [apiDestinations, setApiDestinations] = useState<Destination[] | null>(null);
@@ -97,6 +99,110 @@ export const App: React.FC = () => {
       isMounted = false;
     };
   }, [apiBaseUrl]);
+
+  // Establish authenticated session and retrieve persisted wishlist for current user
+  useEffect(() => {
+    let isMounted = true;
+    const initAuthAndWishlist = async () => {
+      let token = authToken || localStorage.getItem('voyage_token');
+
+      // Verify existing token with backend
+      if (token) {
+        try {
+          const profileRes = await fetch(`${apiBaseUrl}/users/me`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (!profileRes.ok) {
+            token = null;
+            localStorage.removeItem('voyage_token');
+          }
+        } catch {
+          // Keep token if temporary network issue
+        }
+      }
+
+      // If unauthenticated, auto-login canonical traveler
+      if (!token) {
+        try {
+          const loginRes = await fetch(`${apiBaseUrl}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: 'traveler@voyageai.local',
+              password: 'Password123!',
+            }),
+          });
+          if (loginRes.ok) {
+            const loginData = await loginRes.json();
+            token = loginData.data?.token || null;
+            if (token) {
+              localStorage.setItem('voyage_token', token);
+            }
+          }
+        } catch (err) {
+          console.warn('Auto-login traveler session unavailable:', err);
+        }
+      }
+
+      if (isMounted) {
+        setAuthToken(token);
+      }
+
+      // Retrieve persisted saved destinations from backend
+      if (token) {
+        try {
+          const wishRes = await fetch(`${apiBaseUrl}/users/me/wishlist`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (wishRes.ok) {
+            const wishJson = await wishRes.json();
+            if (Array.isArray(wishJson.data) && isMounted) {
+              setSavedDestinationIds(new Set(wishJson.data.map((id: string) => id.toLowerCase())));
+            }
+          }
+        } catch (err) {
+          console.warn('Failed to retrieve user wishlist:', err);
+        }
+      }
+    };
+
+    if (backendConnected) {
+      initAuthAndWishlist();
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [backendConnected, apiBaseUrl]);
+
+  // Preload details for any saved destinations not present in active catalog
+  useEffect(() => {
+    if (!backendConnected || savedDestinationIds.size === 0) return;
+
+    let isMounted = true;
+    savedDestinationIds.forEach(async (id) => {
+      const cleanId = id.toLowerCase();
+      const inApi = apiDestinations?.some((d) => d.id.toLowerCase() === cleanId || d.name.toLowerCase() === cleanId);
+      const inCache = Boolean(destinationCache[cleanId]);
+      if (!inApi && !inCache) {
+        try {
+          const res = await fetch(`${apiBaseUrl}/destinations/${encodeURIComponent(cleanId)}`);
+          if (res.ok && isMounted) {
+            const json = await res.json();
+            if (json.data) {
+              const mapped = mapApiDestination(json.data);
+              setDestinationCache((prev) => ({ ...prev, [cleanId]: mapped }));
+            }
+          }
+        } catch (e) {
+          console.warn(`Failed to preload destination details for ${cleanId}:`, e);
+        }
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [backendConnected, apiBaseUrl, savedDestinationIds, apiDestinations, destinationCache]);
 
   // Reset page to 0 whenever search or filter options change
   useEffect(() => {
@@ -133,8 +239,8 @@ export const App: React.FC = () => {
 
         const res = await fetch(`${apiBaseUrl}/destinations?${params.toString()}`);
         if (res.ok && isMounted) {
-          const totalCountHeader = res.headers.get('X-Total-Count');
-          const totalPagesHeader = res.headers.get('X-Total-Pages');
+          const totalCountHeader = res.headers?.get('X-Total-Count');
+          const totalPagesHeader = res.headers?.get('X-Total-Pages');
           if (totalCountHeader) {
             setTotalCount(parseInt(totalCountHeader, 10));
           }
@@ -143,7 +249,7 @@ export const App: React.FC = () => {
           }
 
           const json = await res.json();
-          const items = json.data || [];
+          const items = Array.isArray(json.data) ? json.data : [];
           const mapped: Destination[] = items.map(mapApiDestination);
           setApiDestinations(mapped);
           if (!totalCountHeader) {
@@ -228,14 +334,90 @@ export const App: React.FC = () => {
     setCurrentPage(0);
   };
 
-  const handleToggleSave = (id: string) => {
+  const handleToggleSave = async (id: string) => {
+    if (!id) return;
+    const cleanId = id.trim().toLowerCase();
+    const isCurrentlySaved = savedDestinationIds.has(cleanId);
+
     setSavedDestinationIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (isCurrentlySaved) next.delete(cleanId);
+      else next.add(cleanId);
       return next;
     });
+
+    const token = authToken || localStorage.getItem('voyage_token');
+    if (token && backendConnected) {
+      try {
+        const method = isCurrentlySaved ? 'DELETE' : 'POST';
+        const res = await fetch(`${apiBaseUrl}/users/me/wishlist/${encodeURIComponent(cleanId)}`, {
+          method,
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (Array.isArray(json.data)) {
+            setSavedDestinationIds(new Set(json.data.map((item: string) => item.toLowerCase())));
+          }
+        }
+      } catch (err) {
+        console.error('Failed to sync wishlist with backend:', err);
+      }
+    }
   };
+
+  // Resolved destination objects for all saved destination IDs
+  const savedDestinationsList = useMemo(() => {
+    const list: Destination[] = [];
+    savedDestinationIds.forEach((id) => {
+      const cleanId = id.toLowerCase();
+      let dest = apiDestinations?.find(
+        (d) => d.id.toLowerCase() === cleanId || d.name.toLowerCase() === cleanId
+      );
+      if (!dest && destinationCache[cleanId]) {
+        dest = destinationCache[cleanId];
+      }
+      if (!dest) {
+        dest = MOCK_DESTINATIONS.find(
+          (d) => d.id.toLowerCase() === cleanId || d.name.toLowerCase() === cleanId || d.id.toLowerCase().startsWith(cleanId)
+        );
+      }
+      if (dest) {
+        list.push({ ...dest, id: cleanId });
+      } else {
+        list.push({
+          id: cleanId,
+          name: cleanId.charAt(0).toUpperCase() + cleanId.slice(1),
+          state: 'India',
+          country: 'India',
+          region: 'North India',
+          tagline: `Explore ${cleanId.charAt(0).toUpperCase() + cleanId.slice(1)}`,
+          description: `Saved destination for itinerary planning.`,
+          imageUrl: 'https://images.unsplash.com/photo-1599661046289-e31897846e41',
+          heroImageUrl: 'https://images.unsplash.com/photo-1599661046289-e31897846e41',
+          travelStyles: ['Heritage & Culture'],
+          budgetTier: 'Comfort',
+          recommendedDurationDays: 3,
+          bestTimeToVisit: 'October to March',
+          averageRating: 4.8,
+          reviewCount: 150,
+          budgetBreakdown: {
+            currency: 'INR',
+            averageDaily: 4500,
+            estimatedTotalForTwo: 27000,
+            durationDays: 3,
+            tiers: { budget: 2500, comfort: 4500, luxury: 12000 }
+          },
+          stays: [],
+          dining: [],
+          attractions: [],
+          highlights: [],
+          weather: { tempC: 25, condition: 'Pleasant' }
+        });
+      }
+    });
+    return list;
+  }, [savedDestinationIds, apiDestinations, destinationCache]);
 
   const [modalInitialTab, setModalInitialTab] = useState<TabType>('overview');
 
@@ -296,8 +478,10 @@ export const App: React.FC = () => {
             {/* Editorial Showcase Hero */}
             <HeroSection
               onFeaturedClick={() => {
-                const jaipur = MOCK_DESTINATIONS.find((d) => d.id === 'jaipur-rajasthan');
-                if (jaipur) setSelectedDestination(jaipur);
+                const jaipur = apiDestinations?.find((d) => d.id === 'jaipur' || d.name.toLowerCase() === 'jaipur')
+                  || destinationCache['jaipur']
+                  || MOCK_DESTINATIONS.find((d) => d.id === 'jaipur' || d.id === 'jaipur-rajasthan');
+                if (jaipur) setSelectedDestination({ ...jaipur, id: 'jaipur' });
               }}
             />
 
@@ -341,6 +525,8 @@ export const App: React.FC = () => {
                     <DestinationCard
                       key={dest.id}
                       destination={dest}
+                      isSaved={savedDestinationIds.has(dest.id.toLowerCase())}
+                      onToggleSave={handleToggleSave}
                       onSelect={(d) => setSelectedDestination(d)}
                     />
                   ))}
@@ -551,37 +737,83 @@ export const App: React.FC = () => {
               </p>
 
               {savedDestinationIds.size > 0 ? (
-                <div className="space-y-4">
-                  <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
-                    Saved For Itinerary ({savedDestinationIds.size})
-                  </h3>
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
+                    <div>
+                      <h3 className="text-base font-bold text-slate-900 uppercase tracking-wider">
+                        Saved For Itinerary ({savedDestinationIds.size})
+                      </h3>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        {savedDestinationIds.size === 1 ? '1 destination' : `${savedDestinationIds.size} destinations`} included in multi-city planner
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Multi-City Itinerary Intelligence Summary */}
+                  {savedDestinationsList.length > 1 && (
+                    <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 text-white shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-bold text-terracotta-300 uppercase tracking-widest block">
+                          Connected Route Overview
+                        </span>
+                        <div className="text-base font-bold font-display flex flex-wrap items-center gap-2">
+                          {savedDestinationsList.map((d, idx) => (
+                            <React.Fragment key={d.id}>
+                              <span>{d.name}</span>
+                              {idx < savedDestinationsList.length - 1 && (
+                                <span className="text-terracotta-400 font-sans font-normal">→</span>
+                              )}
+                            </React.Fragment>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-6 text-xs shrink-0 border-t md:border-t-0 md:border-l border-white/10 pt-3 md:pt-0 md:pl-6">
+                        <div>
+                          <span className="text-slate-400 block text-[10px] font-medium uppercase tracking-wider">Aggregated Duration</span>
+                          <span className="font-bold text-sm text-white">
+                            {savedDestinationsList.reduce((acc, d) => acc + (d.recommendedDurationDays || 3), 0)} Days
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 block text-[10px] font-medium uppercase tracking-wider">Estimated Budget (2p)</span>
+                          <span className="font-bold text-sm text-amber-300">
+                            ₹{savedDestinationsList.reduce((acc, d) => acc + (d.budgetBreakdown?.estimatedTotalForTwo || (d.budgetBreakdown?.averageDaily || 4500) * 6), 0).toLocaleString()}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {Array.from(savedDestinationIds).map((id) => {
-                      const dest = MOCK_DESTINATIONS.find((d) => d.id === id);
-                      if (!dest) return null;
-                      return (
-                        <div
-                          key={dest.id}
-                          className="flex items-center justify-between p-4 rounded-2xl border border-slate-200 bg-white shadow-xs"
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-slate-900">
-                              <ImageWithFallback
-                                src={dest.imageUrl}
-                                alt={dest.name}
-                                fallbackTitle={dest.name}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <div>
-                              <h4 className="text-sm font-bold text-slate-900 font-display">
-                                {dest.name}
-                              </h4>
-                              <p className="text-xs text-slate-600">
-                                {dest.recommendedDurationDays} Days • Avg ₹{dest.budgetBreakdown.averageDaily.toLocaleString()}/day
-                              </p>
-                            </div>
+                    {savedDestinationsList.map((dest) => (
+                      <div
+                        key={dest.id}
+                        data-testid={`saved-card-${dest.id}`}
+                        className="flex items-center justify-between p-4 rounded-2xl border border-slate-200 bg-white shadow-xs hover:border-slate-300 transition-colors"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 bg-slate-900">
+                            <ImageWithFallback
+                              src={dest.imageUrl}
+                              alt={dest.name}
+                              fallbackTitle={dest.name}
+                              className="w-full h-full object-cover"
+                            />
                           </div>
+                          <div className="min-w-0">
+                            <h4 className="text-sm font-bold text-slate-900 font-display truncate">
+                              {dest.name}
+                            </h4>
+                            <p className="text-xs text-slate-600 truncate">
+                              {dest.recommendedDurationDays} Days • Avg ₹{dest.budgetBreakdown?.averageDaily?.toLocaleString() || '4,500'}/day
+                            </p>
+                            <span className="inline-block mt-0.5 text-[10px] font-medium text-brand-900 bg-brand-50 px-1.5 py-0.5 rounded border border-brand-200/50">
+                              {dest.state} • {dest.budgetTier}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0 ml-3">
                           <Button
                             variant="secondary"
                             size="sm"
@@ -589,9 +821,18 @@ export const App: React.FC = () => {
                           >
                             Details
                           </Button>
+                          <button
+                            type="button"
+                            onClick={() => handleToggleSave(dest.id)}
+                            className="p-2 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-200 transition-colors"
+                            aria-label={`Remove ${dest.name} from itinerary`}
+                            title={`Remove ${dest.name} from itinerary`}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
-                      );
-                    })}
+                      </div>
+                    ))}
                   </div>
                 </div>
               ) : (
@@ -627,7 +868,7 @@ export const App: React.FC = () => {
           setSelectedDestination(null);
           setModalInitialTab('overview');
         }}
-        isSaved={selectedDestination ? savedDestinationIds.has(selectedDestination.id) : false}
+        isSaved={selectedDestination ? savedDestinationIds.has(selectedDestination.id.toLowerCase()) : false}
         onToggleSave={handleToggleSave}
       />
 

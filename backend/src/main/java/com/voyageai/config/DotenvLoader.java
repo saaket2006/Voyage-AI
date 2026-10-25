@@ -57,11 +57,17 @@ public final class DotenvLoader {
                 // Strip matching surrounding quotes if present
                 String cleanVal = cleanValue(rawVal);
 
-                if (!key.isEmpty()) {
+                    if (!key.isEmpty()) {
                     properties.put(key, cleanVal);
-                    // Also populate system property if not already set by system env or JVM flag
-                    if (System.getProperty(key) == null && System.getenv(key) == null) {
+                    // Also populate system property if not already set by non-blank system env or JVM flag
+                    String currentSysProp = System.getProperty(key);
+                    String currentEnvVal = System.getenv(key);
+                    if ((currentSysProp == null || currentSysProp.isBlank()) &&
+                        (currentEnvVal == null || currentEnvVal.isBlank())) {
                         System.setProperty(key, cleanVal);
+                    }
+                    if ("GEMINI_API_KEY".equalsIgnoreCase(key)) {
+                        System.setProperty("gemini.api-key", cleanVal);
                     }
                 }
             }
@@ -90,20 +96,30 @@ public final class DotenvLoader {
     }
 
     /**
-     * Locates .env starting from working directory up to parent levels.
+     * Locates .env starting from working directory, user.dir, up to parent levels.
      */
     public static Path findEnvFile() {
-        Path[] candidates = new Path[]{
-                Path.of(".env"),
-                Path.of("../.env"),
-                Path.of("../../.env")
-        };
+        java.util.List<Path> candidates = new java.util.ArrayList<>();
+        candidates.add(Path.of(".env"));
+        candidates.add(Path.of("../.env"));
+        candidates.add(Path.of("../../.env"));
+        candidates.add(Path.of("/app/.env"));
+
+        String userDir = System.getProperty("user.dir");
+        if (userDir != null && !userDir.isBlank()) {
+            candidates.add(Path.of(userDir, ".env"));
+            candidates.add(Path.of(userDir, "..", ".env"));
+        }
 
         for (Path p : candidates) {
-            if (Files.isRegularFile(p)) {
-                return p;
+            try {
+                if (Files.isRegularFile(p)) {
+                    return p.toAbsolutePath().normalize();
+                }
+            } catch (Exception ignored) {
             }
         }
         return null;
     }
 }
+

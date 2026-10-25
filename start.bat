@@ -21,6 +21,36 @@ if not exist .env (
 )
 
 REM ============================================================
+REM Load .env variables into environment (never echoes secrets)
+REM ============================================================
+if exist .env (
+    for /f "usebackq tokens=1* delims==" %%A in (`findstr /v "^#" .env ^| findstr "="`) do (
+        set "KEY_NAME=%%A"
+        set "KEY_VAL=%%B"
+        for /f "tokens=* delims= " %%C in ("!KEY_NAME!") do set "KEY_NAME=%%C"
+        for /f "tokens=* delims= " %%C in ("!KEY_VAL!") do set "KEY_VAL=%%C"
+        if defined KEY_VAL (
+            if "!KEY_VAL:~0,1!"=="\"" if "!KEY_VAL:~-1!"=="\"" set "KEY_VAL=!KEY_VAL:~1,-1!"
+            if "!KEY_VAL:~0,1!"=="'" if "!KEY_VAL:~-1!"=="'" set "KEY_VAL=!KEY_VAL:~1,-1!"
+        )
+        if defined KEY_NAME if defined KEY_VAL (
+            set "!KEY_NAME!=!KEY_VAL!"
+        )
+    )
+)
+
+REM Safe startup diagnostic for Gemini configuration (reports presence only, never value)
+if defined GEMINI_API_KEY (
+    if not "!GEMINI_API_KEY!"=="" (
+        echo [DIAGNOSTIC] GEMINI_API_KEY: Configured [presence: YES, non-blank: YES].
+    ) else (
+        echo [DIAGNOSTIC] GEMINI_API_KEY: Defined but blank. AI concierge will report unconfigured.
+    )
+) else (
+    echo [DIAGNOSTIC] GEMINI_API_KEY: Not set in environment or .env. AI concierge will report unconfigured.
+)
+
+REM ============================================================
 REM STEP 1: MySQL Database [Port 3307 / 3306]
 REM ============================================================
 echo [1/3] Checking MySQL Database...
@@ -68,7 +98,7 @@ if %MYSQL_WAIT% geq 30 (
     echo            Backend startup may fail if the database is not accessible.
     goto :STEP_BACKEND
 )
-timeout /t 1 /nobreak >nul
+ping 127.0.0.1 -n 2 >nul
 goto :WAIT_MYSQL_LOOP
 
 
@@ -79,25 +109,35 @@ REM ============================================================
 echo.
 echo [2/3] Checking Spring Boot Backend...
 
-REM Check if backend is already healthy at http://localhost:8081/api/v1/health
-call :CHECK_BACKEND_HEALTH
-if "%BACKEND_HEALTHY%"=="1" (
-    echo   - [OK] Backend service is running and healthy at http://localhost:8081
-    goto :STEP_FRONTEND
-)
-
-REM Check if port 8081 is open but still initializing
+REM Check if port 8081 is open
 call :CHECK_PORT 8081
 if "%PORT_OPEN%"=="1" (
-    echo   - [INFO] Backend is currently initializing on port 8081. Waiting for health endpoint...
-    goto :WAIT_BACKEND_HEALTH
+    call :CHECK_BACKEND_HEALTH
+    if "%BACKEND_HEALTHY%"=="1" (
+        REM If .env has a key, verify running backend has operational Gemini
+        if defined GEMINI_API_KEY if not "!GEMINI_API_KEY!"=="" (
+            call :CHECK_GEMINI_HEALTH
+            if "!GEMINI_CONFIGURED!"=="0" (
+                echo   - [WARN] Backend running on port 8081 has stale/unconfigured Gemini service.
+                echo            Stopping stale backend to apply updated configuration...
+                call :STOP_BACKEND
+                goto :START_BACKEND
+            )
+        )
+        echo   - [OK] Backend service is running and healthy at http://localhost:8081
+        goto :STEP_FRONTEND
+    ) else (
+        echo   - [WARN] Port 8081 is occupied by an unresponsive process. Stopping it...
+        call :STOP_BACKEND
+    )
 )
 
+:START_BACKEND
 REM Backend is not running; start via Docker Compose if Docker is available
 where.exe docker >nul 2>&1
 if not errorlevel 1 (
     echo   - [INFO] Starting backend container via Docker Compose...
-    docker compose -f infra/docker-compose.yml --env-file .env up -d backend >nul 2>&1
+    docker compose -f infra/docker-compose.yml --env-file .env up -d --build backend >nul 2>&1
     if not errorlevel 1 (
         echo   - [INFO] Waiting for containerized backend to report healthy...
         goto :WAIT_BACKEND_HEALTH
@@ -126,7 +166,7 @@ if %BACKEND_WAIT% geq 35 (
     echo            It may still be compiling or starting up in the background.
     goto :STEP_FRONTEND
 )
-timeout /t 1 /nobreak >nul
+ping 127.0.0.1 -n 2 >nul
 goto :WAIT_BACKEND_LOOP
 
 
@@ -166,7 +206,7 @@ if %FRONTEND_WAIT% geq 20 (
     echo   - [WARN] Frontend did not respond within 20 seconds. It may still be launching.
     goto :STEP_COMPLETE
 )
-timeout /t 1 /nobreak >nul
+ping 127.0.0.1 -n 2 >nul
 goto :WAIT_FRONTEND_LOOP
 
 
@@ -221,3 +261,23 @@ REM Fallback to TCP port check if curl gets non-200 during Vite startup
 call :CHECK_PORT 5173
 if "%PORT_OPEN%"=="1" set FRONTEND_READY=1
 exit /b 0
+
+:CHECK_GEMINI_HEALTH
+REM Checks if backend reports Gemini service as operational
+set GEMINI_CONFIGURED=0
+curl.exe -s http://localhost:8081/api/v1/ai/health 2>nul | findstr /i "OPERATIONAL" >nul 2>&1
+if not errorlevel 1 set GEMINI_CONFIGURED=1
+exit /b 0
+
+:STOP_BACKEND
+REM Terminate any stale container or local host process on port 8081
+echo   - [INFO] Stopping stale backend on port 8081...
+where.exe docker >nul 2>&1
+if not errorlevel 1 (
+    docker compose -f infra/docker-compose.yml stop backend >nul 2>&1
+    docker rm -f voyage_ai_backend >nul 2>&1
+)
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$conns = Get-NetTCPConnection -LocalPort 8081 -ErrorAction SilentlyContinue; foreach ($c in $conns) { Stop-Process -Id $c.OwningProcess -Force -ErrorAction SilentlyContinue }" >nul 2>&1
+ping 127.0.0.1 -n 3 >nul
+exit /b 0
+

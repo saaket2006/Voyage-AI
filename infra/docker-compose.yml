@@ -34,6 +34,10 @@ services:
         condition: service_healthy
     ports:
       - "${SERVER_PORT:-8081}:8081"
+    env_file:
+      - ../.env
+    volumes:
+      - ../.env:/app/.env:ro
     environment:
       SERVER_PORT: 8081
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
@@ -44,7 +48,6 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-voyage_dev_password}
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
       JWT_SECRET: ${JWT_SECRET:-voyageai_dev_secret_key_placeholder_not_for_production_min_256_bits_required!}
-      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
     networks:
       - voyage-network
     healthcheck:

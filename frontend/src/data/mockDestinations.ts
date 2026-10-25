@@ -2,7 +2,7 @@ import { Destination } from '../types/destination';
 
 export const MOCK_DESTINATIONS: Destination[] = [
   {
-    id: 'jaipur-rajasthan',
+    id: 'jaipur',
     name: 'Jaipur',
     state: 'Rajasthan',
     country: 'India',
@@ -91,7 +91,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
     ],
   },
   {
-    id: 'munnar-kerala',
+    id: 'munnar',
     name: 'Munnar',
     state: 'Kerala',
     country: 'India',
@@ -155,7 +155,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
     ],
   },
   {
-    id: 'varanasi-uttar-pradesh',
+    id: 'varanasi',
     name: 'Varanasi',
     state: 'Uttar Pradesh',
     country: 'India',
@@ -347,7 +347,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
     ],
   },
   {
-    id: 'hampi-karnataka',
+    id: 'hampi',
     name: 'Hampi',
     state: 'Karnataka',
     country: 'India',

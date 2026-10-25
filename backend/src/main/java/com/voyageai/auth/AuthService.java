@@ -7,29 +7,52 @@ import com.voyageai.common.exception.UnauthorizedException;
 import com.voyageai.security.JwtTokenProvider;
 import com.voyageai.user.User;
 import com.voyageai.user.UserRepository;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class AuthService {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ObjectMapper objectMapper;
     private final String adminEmails;
+
+    @Autowired
+    public AuthService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       JwtTokenProvider jwtTokenProvider,
+                       ObjectMapper objectMapper,
+                       @Value("${app.security.admin-emails:admin@voyageai.local,admin@voyage.ai}") String adminEmails) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.objectMapper = objectMapper != null ? objectMapper : new ObjectMapper();
+        this.adminEmails = adminEmails;
+    }
 
     public AuthService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        JwtTokenProvider jwtTokenProvider,
                        @Value("${app.security.admin-emails:admin@voyageai.local,admin@voyage.ai}") String adminEmails) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.adminEmails = adminEmails;
+        this(userRepository, passwordEncoder, jwtTokenProvider, new ObjectMapper(), adminEmails);
     }
 
     private boolean isAdminEmail(String email) {
@@ -164,6 +187,93 @@ public class AuthService {
         user = userRepository.save(user);
 
         return toProfileResponse(user);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> getWishlist(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+        return extractWishlistFromPreferences(user.getPreferences());
+    }
+
+    @Transactional
+    public List<String> addToWishlist(String userId, String destinationId) {
+        if (destinationId == null || destinationId.trim().isEmpty()) {
+            return getWishlist(userId);
+        }
+        String cleanId = destinationId.trim().toLowerCase();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+
+        List<String> list = new ArrayList<>(extractWishlistFromPreferences(user.getPreferences()));
+        if (!list.contains(cleanId)) {
+            list.add(cleanId);
+            user.setPreferences(saveWishlistToPreferences(user.getPreferences(), list));
+            userRepository.save(user);
+        }
+        return list;
+    }
+
+    @Transactional
+    public List<String> removeFromWishlist(String userId, String destinationId) {
+        if (destinationId == null || destinationId.trim().isEmpty()) {
+            return getWishlist(userId);
+        }
+        String cleanId = destinationId.trim().toLowerCase();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+
+        List<String> list = new ArrayList<>(extractWishlistFromPreferences(user.getPreferences()));
+        if (list.remove(cleanId)) {
+            user.setPreferences(saveWishlistToPreferences(user.getPreferences(), list));
+            userRepository.save(user);
+        }
+        return list;
+    }
+
+    private List<String> extractWishlistFromPreferences(String preferencesJson) {
+        if (preferencesJson == null || preferencesJson.isBlank()) {
+            return Collections.emptyList();
+        }
+        try {
+            JsonNode root = objectMapper.readTree(preferencesJson);
+            if (root.has("savedDestinationIds") && root.get("savedDestinationIds").isArray()) {
+                List<String> result = new ArrayList<>();
+                for (JsonNode node : root.get("savedDestinationIds")) {
+                    if (node.isTextual() && !node.asText().isBlank() && !result.contains(node.asText().toLowerCase())) {
+                        result.add(node.asText().toLowerCase());
+                    }
+                }
+                return result;
+            }
+        } catch (Exception e) {
+            log.warn("Failed to parse user preferences JSON for wishlist: {}", e.getMessage());
+        }
+        return Collections.emptyList();
+    }
+
+    private String saveWishlistToPreferences(String preferencesJson, List<String> wishlist) {
+        try {
+            ObjectNode root;
+            if (preferencesJson != null && !preferencesJson.isBlank()) {
+                JsonNode existing = objectMapper.readTree(preferencesJson);
+                if (existing.isObject()) {
+                    root = (ObjectNode) existing;
+                } else {
+                    root = objectMapper.createObjectNode();
+                }
+            } else {
+                root = objectMapper.createObjectNode();
+            }
+            ArrayNode arr = root.putArray("savedDestinationIds");
+            for (String id : wishlist) {
+                arr.add(id);
+            }
+            return objectMapper.writeValueAsString(root);
+        } catch (Exception e) {
+            log.warn("Failed to serialize wishlist to user preferences: {}", e.getMessage());
+            return preferencesJson;
+        }
     }
 
     private UserProfileResponse toProfileResponse(User user) {
